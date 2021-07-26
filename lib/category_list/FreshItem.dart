@@ -39,12 +39,15 @@ class _FreshItemState extends State<FreshItem> {
   bool isAgent;
   String deviceId;
   double selectPrice;
+  double distributorPrice;
+  double productPrice;
   @override
   void initState() {
     // TODO: implement initState
     deviceId = widget.deviceId;
     item = widget.itemProduct;
     pr = widget.itemProduct.productAttribute;
+    print("Pr..." + pr.toString());
     isAgent = widget.isAgent != null ? widget.isAgent : false;
     //print("Iteam..." + item.toString());
     super.initState();
@@ -111,6 +114,19 @@ class _FreshItemState extends State<FreshItem> {
     // var size=MediaQuery.of(context).size.width/2 -50;
     // print(size);
     print("Fresh..1." + widget.itemProduct.productType.toString());
+    print("Fresh..11." + widget.itemProduct.productAttribute.toString());
+    var productAt = widget.itemProduct.productAttribute;
+    print("ff.." + productAt.length.toString());
+    //List<ProductAttribute> productAttr = [];
+    if (productAt.length > 0) {
+      //ProductAttribute pr = ProductAttribute();
+      for (int p = 0; p < productAt.length; p++) {
+        var pa = productAt[0];
+        // print("Pa..." + pa.name.toString());
+        // productAttr.add(pa);
+        // print("Pa..." + productAttr.toString());
+      }
+    }
     //ProductAttribute productAttribute = widget.pr;
     //print("dfdsf" + productAttribute.toString());
     if (widget.itemProduct.productType == "variable") {
@@ -118,6 +134,18 @@ class _FreshItemState extends State<FreshItem> {
           widget.itemProduct.productAttribute[0].productPrice.toString());
     } else {
       selectPrice = double.parse(widget.itemProduct.productPrice);
+    }
+
+    if (widget.itemProduct.productType == "variable") {
+      distributorPrice = double.parse(widget
+          .itemProduct.productAttribute[0].productDistributorPrice
+          .toString());
+      productPrice = double.parse(
+          widget.itemProduct.productAttribute[0].productPrice.toString());
+    } else {
+      distributorPrice =
+          double.parse(widget.itemProduct.productDistributorPrice.toString());
+      productPrice = double.parse(widget.itemProduct.productPrice.toString());
     }
     return InkWell(
       onTap: () {
@@ -184,7 +212,8 @@ class _FreshItemState extends State<FreshItem> {
             Row(
               children: [
                 Text(
-                  "\u20B9 ${isAgent ? item.productDistributorPrice : item.productPrice}",
+                  "\u20B9 ${isAgent ? (item.productType == "variable" ? distributorPrice : distributorPrice) : (item.productType == "variable" ? productPrice : productPrice)}",
+                  //"\u20B9 ${isAgent ? (item.productType == "variable" ? distributorPrice : item.productDistributorPrice) : (item.productType == "variable" ? productPrice : item.productPrice)}",
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

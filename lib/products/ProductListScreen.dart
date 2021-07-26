@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:groceryapp/products/BrandDetails.dart';
 import 'package:groceryapp/search/Search.dart';
 import 'package:groceryapp/shopping_cart/ShoppingCartScreen.dart';
 import 'package:groceryapp/util/AppColors.dart';
@@ -15,6 +16,8 @@ import '../navigation_drawer/Navigation.dart';
 import '../products/ItemProduct.dart';
 import '../shapes/screen_clip.dart';
 import '../util/Consts.dart';
+import 'CatDetails.dart';
+import 'ProductAttribute.dart';
 import 'ProductModel.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -168,16 +171,74 @@ class _ProductListScreenState extends State<ProductListScreen> {
             item.galleryImages = galleryImages;
 
             //Extra data
+
             item.categoryId = itemData['categoryID'];
             //item.categoryName = itemData['category_name'];
 
-            // var brandDetails = itemData['brand_details'];
-            item.brandId = itemData['brand_id'];
-            item.brandName = itemData['brand_name'];
-            item.brandDesc = itemData['brand_description'];
+            // var brandDDetails = itemData['brand_details'];
+            // List<BrandDetails> brandDetails = [];
+            // if (brandDetails.length > 0) {
+            //   for (int bd = 0; bd < brandDDetails.length; bd++) {
+            //     var bdDetails = brandDDetails[bd];
+            //     BrandDetails brand = BrandDetails();
+            //     brand.brandId = bdDetails["brand_id"];
+            //     brand.brandName = bdDetails["brand_name"];
+            //     brand.brandDescription = bdDetails["brand_description"];
+            //     brandDetails.add(brand);
+            //   }
+            //   item.brandDetails = brandDetails;
+            // } else {
+            //   item.brandDetails = brandDetails;
+            // }
+            // print("item...1.." + item.toString());
+            // var catDetails = itemData["cat_details"];
+            // List<CatDetails> catDetails1 = [];
+            // if (catDetails.length > 0) {
+            //   for (int cd = 0; cd < catDetails.length; cd++) {
+            //     var cdDetails = catDetails[cd];
+            //     CatDetails cat = CatDetails();
+            //     cat.categoryId = cdDetails["category_id"];
+            //     cat.catName = cdDetails["cat_name"];
+            //     cat.catDescription = cdDetails["cat_description"];
+            //     catDetails1.add(cat);
+            //   }
+            //   item.catDetails = catDetails1;
+            // } else {
+            //   item.catDetails = catDetails1;
+            //   //mList.add(item);
+            // }
+            // print("item...0.." + item.toString());
+            var productAttribute = itemData["product_attribute"];
+            List<ProductAttribute> pattribute = [];
+            if (productAttribute.length > 0) {
+              for (int pa = 0; pa < productAttribute.length; pa++) {
+                var productAttr = productAttribute[pa];
+                ProductAttribute product = ProductAttribute();
+                product.productId = productAttr["product_id"];
 
+                product.attributeId = productAttr["attribute_id"];
+                product.name = productAttr["name"];
+                product.productPrice = productAttr["product_price"];
+                product.productRegularPrice =
+                    productAttr["product_regular_price"];
+                product.productDistributorPrice =
+                    productAttr["product_distributor_price"];
+                product.variationId = productAttr["variation_id"];
+                product.variableAttributeId =
+                    productAttr["variable_attribute_id"];
+                pattribute.add(product);
+              }
+              item.productAttribute = pattribute;
+            } else {
+              item.productAttribute = pattribute;
+              //mList.add(item);
+            }
+            print("item...4.." + item.toString());
+            // item.brandId = itemData['brand_id'];
+            // item.brandName = itemData['brand_name'];
+            // item.brandDesc = itemData['brand_description'];
             mList.add(item);
-            print("mList..." + mList.toString());
+            print("mList00..." + mList.toString());
           }
         }
       } else {

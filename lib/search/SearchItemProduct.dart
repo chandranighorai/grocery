@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:groceryapp/products/ProductAttribute.dart';
+
 import '../products/ProductModel.dart';
 import '../util/AppColors.dart';
 import '../util/Util.dart';
@@ -34,15 +36,19 @@ class _ItemProductState extends State<SearchItemProduct> {
   Productdata itemProduct;
   var requestParam;
   String deviceID;
-
+  //List<ProductAttribute> productAttr;
   @override
   initState() {
     deviceID = '';
 
     initPlatformState();
+    print("item brand.0.." + widget.productdata.productType.toString());
+    // print("item brand.0p.." +
+    //     widget.productdata.productAttribute.length.toString());
     itemProduct = widget.productdata;
     print("item brand..." + itemProduct.brandName.toString());
     print("item brand..." + itemProduct.isInWishlist.toString());
+
     isWish = itemProduct.isInWishlist == 1 ? true : false;
     isAgent = false;
     super.initState();
@@ -178,6 +184,10 @@ class _ItemProductState extends State<SearchItemProduct> {
   Widget build(BuildContext context) {
     // double containerWidth = 100;
     print("hjhj" + itemProduct.toString());
+    print("hjhj..." + itemProduct.productTitle.toString());
+    print("hjhj0.." + itemProduct.productAttribute.toString());
+    // productAttr = widget.productdata.productAttribute;
+    // print("ppp...." + productAttr[0].name.toString());
     return InkWell(
       onTap: () {
         print("Details click");
@@ -278,7 +288,7 @@ class _ItemProductState extends State<SearchItemProduct> {
                             Row(
                               children: [
                                 Text(
-                                  "\u20B9 ${isAgent ? itemProduct.productDistributorPrice : itemProduct.productPrice}",
+                                  "\u20B9 ${isAgent ? (itemProduct.productDistributorPrice) : itemProduct.productPrice}",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,

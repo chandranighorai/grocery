@@ -5,5 +5,6 @@ class ProductAttribute {
   String variationId;
   String productPrice;
   String productRegularPrice;
+  String productDistributorPrice;
   String name;
 }

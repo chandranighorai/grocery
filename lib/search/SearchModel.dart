@@ -1,3 +1,5 @@
+//import 'package:groceryapp/products/ProductAttribute.dart';
+
 class SearchModel {
   String status;
   String message;
@@ -12,6 +14,7 @@ class SearchModel {
       productdata = new List<Productdata>();
       json['productdata'].forEach((v) {
         productdata.add(new Productdata.fromJson(v));
+        print("v..." + v.toString());
       });
     }
   }
@@ -58,6 +61,7 @@ class Productdata {
   String productcatimg;
   int isInWishlist;
   List<String> galleryImages;
+  List<ProductAttribute> productAttribute;
 
   // String variableAttributeId;
   // String variationId;
@@ -65,43 +69,43 @@ class Productdata {
   // String productAttributeRegularPrice;
   // String productName;
 
-  Productdata({
-    this.categoryID,
-    this.categoryName,
-    this.brandName,
-    this.brandDescription,
-    this.productId,
-    this.productType,
-    this.productCode,
-    this.uniqueKey,
-    this.productTitle,
-    this.productDescription,
-    this.categoryId,
-    this.brandId,
-    this.gstId,
-    this.productPrice,
-    this.productRegularPrice,
-    this.productDistributorPrice,
-    this.productUnit,
-    this.productBatchNo,
-    this.productQuantityInfo,
-    this.productImage,
-    this.stockCount,
-    this.status,
-    this.metaTitle,
-    this.metaKeyword,
-    this.metaDescription,
-    this.addedDate,
-    this.productcatimg,
-    this.isInWishlist,
-    this.galleryImages,
-
-    // this.variableAttributeId,
-    // this.variationId,
-    // this.productAttributePrice,
-    // this.productAttributeRegularPrice,
-    // this.productName
-  });
+  Productdata(
+      {this.categoryID,
+      this.categoryName,
+      this.brandName,
+      this.brandDescription,
+      this.productId,
+      this.productType,
+      this.productCode,
+      this.uniqueKey,
+      this.productTitle,
+      this.productDescription,
+      this.categoryId,
+      this.brandId,
+      this.gstId,
+      this.productPrice,
+      this.productRegularPrice,
+      this.productDistributorPrice,
+      this.productUnit,
+      this.productBatchNo,
+      this.productQuantityInfo,
+      this.productImage,
+      this.stockCount,
+      this.status,
+      this.metaTitle,
+      this.metaKeyword,
+      this.metaDescription,
+      this.addedDate,
+      this.productcatimg,
+      this.isInWishlist,
+      this.galleryImages,
+      this.productAttribute
+      // this.variableAttributeId,
+      // this.variationId,
+      // this.productAttributePrice,
+      // this.productAttributeRegularPrice,
+      // this.productName
+      });
 
   Productdata.fromJson(Map<String, dynamic> json) {
     categoryID = json['categoryID'];
@@ -133,6 +137,15 @@ class Productdata {
     productcatimg = json['productcatimg'];
     isInWishlist = json['is_in_wishlist'];
     galleryImages = json['gallery_images'].cast<String>();
+    print(
+        "product_Attribute..1." + json['product_attribute'].length.toString());
+    if (json['product_attribute'].length != 0) {
+      print("product_Attribute..." + json['product_attribute'].toString());
+      productAttribute = new List<ProductAttribute>();
+      json['product_attribute'].forEach((v) {
+        productAttribute.add(new ProductAttribute.fromJson(v));
+      });
+    }
 
     // variableAttributeId = json["product_attribute"];
     // variationId =
@@ -169,7 +182,56 @@ class Productdata {
     data['productcatimg'] = this.productcatimg;
     data['is_in_wishlist'] = this.isInWishlist;
     data['gallery_images'] = this.galleryImages;
+    if (this.productAttribute != null) {
+      data['product_attribute'] =
+          this.productAttribute.map((v) => v.toJson()).toList();
+    }
     print("Data..." + data.toString());
+    return data;
+  }
+}
+
+class ProductAttribute {
+  String variableAttributeId;
+  String productId;
+  String attributeId;
+  String variationId;
+  String productPrice;
+  String productRegularPrice;
+  String productDistributorPrice;
+  String name;
+
+  ProductAttribute(
+      {this.variableAttributeId,
+      this.productId,
+      this.attributeId,
+      this.variationId,
+      this.productPrice,
+      this.productRegularPrice,
+      this.productDistributorPrice,
+      this.name});
+
+  ProductAttribute.fromJson(Map<String, dynamic> json) {
+    variableAttributeId = json['variable_attribute_id'];
+    productId = json['product_id'];
+    attributeId = json['attribute_id'];
+    variationId = json['variation_id'];
+    productPrice = json['product_price'];
+    productRegularPrice = json['product_regular_price'];
+    productDistributorPrice = json['product_distributor_price'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['variable_attribute_id'] = this.variableAttributeId;
+    data['product_id'] = this.productId;
+    data['attribute_id'] = this.attributeId;
+    data['variation_id'] = this.variationId;
+    data['product_price'] = this.productPrice;
+    data['product_regular_price'] = this.productRegularPrice;
+    data['product_distributor_price'] = this.productDistributorPrice;
+    data['name'] = this.name;
     return data;
   }
 }

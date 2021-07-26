@@ -94,6 +94,7 @@ class _SearchScreenState extends State<Search> {
   Future<SearchModel> _getProducts(String _searchKey) async {
     print("getProducts search key..." + _searchKey.toString());
     print("getProducts called");
+    //List<Productdata> mList = [];
     String catID = "";
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userID = prefs.getString('user_id');
@@ -134,11 +135,11 @@ class _SearchScreenState extends State<Search> {
       );
 
       debugPrint("URl ${Uri.parse(Consts.PRODUCT_LIST + requestParam)}");
-      //print("response DAta..statuscode." + response.statusCode.toString());
+      print("response DAta..statuscode." + response.statusCode.toString());
       if (response.statusCode == 200) {
         var responseData = jsonDecode(response.body);
         //print("response DAta..length." + responseData.length.toString());
-        //print("response DAta..length." + responseData.toString());
+        print("response DAta..length." + responseData.toString());
         var serverMessage = responseData['message'];
         var productData = responseData['productdata'];
         if (responseData['status'] == "success") {
@@ -654,6 +655,7 @@ class SearchList extends StatelessWidget {
                   //scrollDirection: Axis.vertical,
                   itemBuilder: (context, int index) {
                     Productdata categoryData = categories[index];
+                    print("uu..." + categoryData.toString());
                     return Padding(
                       padding: const EdgeInsets.only(right: 12.0),
                       child: SearchItemProduct(

@@ -235,6 +235,8 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                 product.productPrice = productAttr["product_price"];
                 product.productRegularPrice =
                     productAttr["product_regular_price"];
+                product.productDistributorPrice =
+                    productAttr["product_distributor_price"];
                 product.variationId = productAttr["variation_id"];
                 product.variableAttributeId =
                     productAttr["variable_attribute_id"];
@@ -578,7 +580,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                                         child: FreshItem(
                                           deviceId: deviceID,
                                           itemProduct: item,
-                                          item1:item.productAttribute,
+                                          item1: item.productAttribute,
                                           isAgent: isAgent,
                                           notifyCart: _updateCart,
                                         ),
