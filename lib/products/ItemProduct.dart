@@ -187,6 +187,8 @@ class _ItemProductState extends State<ItemProduct> {
 
   @override
   Widget build(BuildContext context) {
+    print("itemProduct..0." + itemProduct.productType.toString());
+    print("itemProduct..0." + itemProduct.brandDetails.length.toString());
     return InkWell(
       onTap: () {
         _gotoDetail();
@@ -284,7 +286,7 @@ class _ItemProductState extends State<ItemProduct> {
                             Row(
                               children: [
                                 Text(
-                                  "\u20B9 ${isAgent ? itemProduct.productDistributorPrice : itemProduct.productPrice}",
+                                  "\u20B9 ${isAgent ? (itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productDistributorPrice : itemProduct.productDistributorPrice) : (itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productPrice : itemProduct.productPrice)}",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
@@ -295,7 +297,7 @@ class _ItemProductState extends State<ItemProduct> {
                                   width: 10,
                                 ),
                                 Text(
-                                  "\u20B9 ${itemProduct.productRegularPrice}",
+                                  "\u20B9 ${(itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productRegularPrice : itemProduct.productRegularPrice)}",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
@@ -308,15 +310,15 @@ class _ItemProductState extends State<ItemProduct> {
                             SizedBox(
                               height: 7,
                             ),
-                            Text(
-                              "${itemProduct.brandName}",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0XFF0D0D0D),
-                              ),
-                              softWrap: true,
-                            ),
+                            // Text(
+                            //   "${itemProduct.brandName}",
+                            //   style: TextStyle(
+                            //     fontSize: 14,
+                            //     fontWeight: FontWeight.w700,
+                            //     color: Color(0XFF0D0D0D),
+                            //   ),
+                            //   softWrap: true,
+                            // ),
                             Container(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,

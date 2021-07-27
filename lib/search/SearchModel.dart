@@ -41,6 +41,7 @@ class Productdata {
   String productCode;
   String uniqueKey;
   String productTitle;
+  String productKeyword;
   String productDescription;
   String categoryId;
   String brandId;
@@ -76,6 +77,7 @@ class Productdata {
       this.brandDescription,
       this.productId,
       this.productType,
+      this.productKeyword,
       this.productCode,
       this.uniqueKey,
       this.productTitle,
@@ -126,6 +128,7 @@ class Productdata {
     productDistributorPrice = json['product_distributor_price'];
     productUnit = json['product_unit'];
     productBatchNo = json['product_batch_no'];
+    productKeyword = json['product_keywords'];
     productQuantityInfo = json['product_quantity_info'];
     productImage = json['product_image'];
     stockCount = json['stock_count'];
@@ -162,6 +165,7 @@ class Productdata {
     data['product_code'] = this.productCode;
     data['unique_key'] = this.uniqueKey;
     data['product_title'] = this.productTitle;
+    data['product_keywords'] = this.productKeyword;
     data['product_description'] = this.productDescription;
     data['category_id'] = this.categoryId;
     data['brand_id'] = this.brandId;

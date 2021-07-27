@@ -47,7 +47,6 @@ class _ProductDetails extends State<ProductDetails> {
   List<String> imgList = [];
 
   bool isApiCalling;
-
   bool isAgent;
   bool _isSearch;
   bool isWish;
@@ -66,7 +65,7 @@ class _ProductDetails extends State<ProductDetails> {
   TextEditingController quantityController;
 
   bool isUserLoggedIn;
-
+  bool colorchange;
   @override
   void initState() {
     // TODO: implement initState
@@ -92,8 +91,14 @@ class _ProductDetails extends State<ProductDetails> {
       //     widget.productdata.productAttribute[0].productPrice.length
       //         .toString());
       if (isAgent) {
-        productPrice =
-            double.parse(widget.productdata.productDistributorPrice.toString());
+        if (widget.productdata.productType == "variable") {
+          productPrice = double.parse(widget
+              .productdata.productAttribute[0].productDistributorPrice
+              .toString());
+        } else {
+          productPrice = double.parse(
+              widget.productdata.productDistributorPrice.toString());
+        }
       } else {
         if (widget.productdata.productType == "variable") {
           productPrice = double.parse(
@@ -110,8 +115,14 @@ class _ProductDetails extends State<ProductDetails> {
       print("IsAgent..." + isAgent.toString());
       if (isAgent) {
         isWish = widget.itemProduct.isInWishList == 1 ? true : false;
-        productPrice =
-            double.parse(widget.itemProduct.productDistributorPrice.toString());
+        if (widget.itemProduct.productType == "variable") {
+          productPrice = double.parse(widget
+              .itemProduct.productAttribute[0].productDistributorPrice
+              .toString());
+        } else {
+          productPrice = double.parse(
+              widget.itemProduct.productDistributorPrice.toString());
+        }
       } else {
         if (widget.itemProduct.productType == "variable") {
           productPrice = double.parse(
@@ -1190,8 +1201,117 @@ class _ProductDetails extends State<ProductDetails> {
                                           height: 10,
                                         ),
                                         _isSearch != true
-                                            ? widget.itemProduct.productType ==
-                                                "simple"
+                                            ? ((widget.itemProduct
+                                                        .productType ==
+                                                    "simple")
+                                                ? SizedBox()
+                                                : Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.3,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: ListView.builder(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        itemCount: widget
+                                                            .itemProduct
+                                                            .productAttribute
+                                                            .length,
+                                                        itemBuilder: (context,
+                                                            int index) {
+                                                          colorchange = false;
+                                                          return InkWell(
+                                                            onTap: () {
+                                                              print("Index0..." +
+                                                                  index
+                                                                      .toString());
+                                                              //widget.itemProduct.
+                                                              setState(() {
+                                                                price = double.parse(widget
+                                                                    .itemProduct
+                                                                    .productAttribute[
+                                                                        index]
+                                                                    .productPrice
+                                                                    .toString());
+                                                                // colorchange =
+                                                                //     true;
+                                                              });
+                                                            },
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Container(
+                                                                padding: EdgeInsets.all(
+                                                                    MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.02),
+                                                                decoration: BoxDecoration(
+                                                                    boxShadow: [
+                                                                      BoxShadow(
+                                                                          color: double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) == price
+                                                                              ? Colors.red.withOpacity(0.2)
+                                                                              : Colors.transparent,
+                                                                          blurRadius: 2.0)
+                                                                    ],
+                                                                    border: Border.all(
+                                                                        color: Colors
+                                                                            .grey)),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                        widget
+                                                                            .itemProduct
+                                                                            .productAttribute[
+                                                                                index]
+                                                                            .name
+                                                                            .toString(),
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        )),
+                                                                    // Text("dd"),
+                                                                    Divider(
+                                                                      thickness:
+                                                                          2,
+                                                                      color: Colors
+                                                                          .grey,
+                                                                    ),
+                                                                    Text(
+                                                                      "\u20B9 ${widget.itemProduct.productAttribute[index].productPrice.toString()}",
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              MediaQuery.of(context).size.width * 0.04),
+                                                                    ),
+                                                                    Text(
+                                                                      "\u20B9 ${widget.itemProduct.productAttribute[index].productRegularPrice.toString()}",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .grey,
+                                                                          fontSize: MediaQuery.of(context).size.width *
+                                                                              0.04,
+                                                                          decoration:
+                                                                              TextDecoration.lineThrough),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }),
+                                                  ))
                                             : widget.productdata.productType ==
                                                     "simple"
                                                 ? SizedBox()
@@ -1214,145 +1334,253 @@ class _ProductDetails extends State<ProductDetails> {
                                                                 .productdata
                                                                 .productAttribute
                                                                 .length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    int index) {
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child:
-                                                                    Container(
-                                                                  padding: EdgeInsets.all(
-                                                                      MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
-                                                                          0.02),
-                                                                  // height:
-                                                                  //     MediaQuery.of(context)
-                                                                  //         .size
-                                                                  //         .width,
-                                                                  decoration: BoxDecoration(
-                                                                      border: Border.all(
+                                                            itemBuilder: (context,
+                                                                int index) {
+                                                              return InkWell(
+                                                                onTap: () {
+                                                                  print("Index..." +
+                                                                      index
+                                                                          .toString());
+                                                                  //widget.itemProduct.
+                                                                  setState(() {
+                                                                    price = double.parse(widget
+                                                                        .productdata
+                                                                        .productAttribute[
+                                                                            index]
+                                                                        .productPrice
+                                                                        .toString());
+                                                                    // print("Index...1.." +
+                                                                    //     productPrice
+                                                                    //         .toString());
+                                                                    // colorchange =
+                                                                    //     true;
+                                                                    // print("Index...1.." +
+                                                                    //     colorchange
+                                                                    //         .toString());
+                                                                  });
+                                                                },
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child:
+                                                                      Container(
+                                                                    padding: EdgeInsets.all(MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.02),
+                                                                    // height:
+                                                                    //     MediaQuery.of(context)
+                                                                    //         .size
+                                                                    //         .width,
+                                                                    decoration: BoxDecoration(
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                              color: double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == price ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                                                                              blurRadius: 2.0)
+                                                                        ],
+                                                                        border: Border.all(
+                                                                            color:
+                                                                                Colors.grey)),
+                                                                    child:
+                                                                        Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Text(
+                                                                            widget.productdata.productAttribute[index].name
+                                                                                .toString(),
+                                                                            style:
+                                                                                TextStyle(fontWeight: FontWeight.bold)),
+                                                                        // Text("dd"),
+                                                                        Divider(
+                                                                          thickness:
+                                                                              2,
                                                                           color:
-                                                                              Colors.grey)),
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                          widget
-                                                                              .productdata
-                                                                              .productAttribute[
-                                                                                  index]
-                                                                              .name
-                                                                              .toString(),
-                                                                          style:
-                                                                              TextStyle(fontWeight: FontWeight.bold)),
-                                                                      // Text("dd"),
-                                                                      Divider(
-                                                                        thickness:
-                                                                            2,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                      ),
-                                                                      Text(
-                                                                        "\u20B9 ${widget.productdata.productAttribute[index].productPrice.toString()}",
-                                                                        style: TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize: MediaQuery.of(context).size.width * 0.04),
-                                                                      ),
-                                                                      Text(
-                                                                        "\u20B9 ${widget.productdata.productAttribute[index].productRegularPrice.toString()}",
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .grey,
-                                                                            fontSize: MediaQuery.of(context).size.width *
-                                                                                0.04,
-                                                                            decoration:
-                                                                                TextDecoration.lineThrough),
-                                                                      )
-                                                                    ],
+                                                                              Colors.grey,
+                                                                        ),
+                                                                        Text(
+                                                                          "\u20B9 ${widget.productdata.productAttribute[index].productPrice.toString()}",
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: MediaQuery.of(context).size.width * 0.04),
+                                                                        ),
+                                                                        Text(
+                                                                          "\u20B9 ${widget.productdata.productAttribute[index].productRegularPrice.toString()}",
+                                                                          style: TextStyle(
+                                                                              color: Colors.grey,
+                                                                              fontSize: MediaQuery.of(context).size.width * 0.04,
+                                                                              decoration: TextDecoration.lineThrough),
+                                                                        )
+                                                                      ],
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               );
                                                             })
-                                                        : ListView.builder(
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            itemCount: widget
-                                                                .itemProduct
-                                                                .productAttribute
-                                                                .length,
-                                                            itemBuilder:
-                                                                (context,
+                                                        : widget.itemProduct
+                                                                    .productType ==
+                                                                "variable"
+                                                            ? ListView.builder(
+                                                                scrollDirection: Axis
+                                                                    .horizontal,
+                                                                itemCount: widget
+                                                                    .itemProduct
+                                                                    .productAttribute
+                                                                    .length,
+                                                                itemBuilder: (context,
                                                                     int index) {
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child:
-                                                                    Container(
-                                                                  padding: EdgeInsets.all(
-                                                                      MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
-                                                                          0.02),
-                                                                  // height:
-                                                                  //     MediaQuery.of(context)
-                                                                  //         .size
-                                                                  //         .width,
-                                                                  decoration: BoxDecoration(
-                                                                      border: Border.all(
-                                                                          color:
-                                                                              Colors.grey)),
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                          widget
-                                                                              .itemProduct
-                                                                              .productAttribute[
-                                                                                  index]
-                                                                              .name
-                                                                              .toString(),
-                                                                          style:
-                                                                              TextStyle(fontWeight: FontWeight.bold)),
-                                                                      // Text("dd"),
-                                                                      Divider(
-                                                                        thickness:
-                                                                            2,
-                                                                        color: Colors
-                                                                            .grey,
+                                                                  return InkWell(
+                                                                    onTap: () {
+                                                                      print("Index..." +
+                                                                          index
+                                                                              .toString());
+                                                                      //widget.itemProduct.
+                                                                      setState(
+                                                                          () {
+                                                                        price = double.parse(widget
+                                                                            .itemProduct
+                                                                            .productAttribute[index]
+                                                                            .productPrice
+                                                                            .toString());
+                                                                        // print("Index...1.." +
+                                                                        //     productPrice
+                                                                        //         .toString());
+                                                                        // colorchange =
+                                                                        //     true;
+                                                                        // print("Index...1.." +
+                                                                        //     colorchange
+                                                                        //         .toString());
+                                                                      });
+                                                                    },
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          Container(
+                                                                        padding:
+                                                                            EdgeInsets.all(MediaQuery.of(context).size.width *
+                                                                                0.02),
+                                                                        // height:
+                                                                        //     MediaQuery.of(context)
+                                                                        //         .size
+                                                                        //         .width,
+                                                                        decoration:
+                                                                            BoxDecoration(boxShadow: [
+                                                                          BoxShadow(
+                                                                              color: double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) == price ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                                                                              blurRadius: 2.0)
+                                                                        ], border: Border.all(color: Colors.grey)),
+                                                                        child:
+                                                                            Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(widget.itemProduct.productAttribute[index].name.toString(),
+                                                                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                            // Text("dd"),
+                                                                            Divider(
+                                                                              thickness: 2,
+                                                                              color: Colors.grey,
+                                                                            ),
+                                                                            Text(
+                                                                              "\u20B9 ${widget.itemProduct.productAttribute[index].productPrice.toString()}",
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.04),
+                                                                            ),
+                                                                            Text(
+                                                                              "\u20B9 ${widget.itemProduct.productAttribute[index].productRegularPrice.toString()}",
+                                                                              style: TextStyle(color: Colors.grey, fontSize: MediaQuery.of(context).size.width * 0.04, decoration: TextDecoration.lineThrough),
+                                                                            )
+                                                                          ],
+                                                                        ),
                                                                       ),
-                                                                      Text(
-                                                                        "\u20B9 ${widget.itemProduct.productAttribute[index].productPrice.toString()}",
-                                                                        style: TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize: MediaQuery.of(context).size.width * 0.04),
+                                                                    ),
+                                                                  );
+                                                                })
+                                                            : ListView.builder(
+                                                                scrollDirection:
+                                                                    Axis
+                                                                        .horizontal,
+                                                                itemCount: widget
+                                                                    .productdata
+                                                                    .productAttribute
+                                                                    .length,
+                                                                itemBuilder:
+                                                                    (context,
+                                                                        int index) {
+                                                                  return InkWell(
+                                                                    onTap: () {
+                                                                      print("Index..." +
+                                                                          index
+                                                                              .toString());
+                                                                      //widget.itemProduct.
+                                                                      setState(
+                                                                          () {
+                                                                        price = double.parse(widget
+                                                                            .productdata
+                                                                            .productAttribute[index]
+                                                                            .productPrice
+                                                                            .toString());
+                                                                        // print("Index...1.." +
+                                                                        //     productPrice
+                                                                        //         .toString());
+                                                                        // colorchange =
+                                                                        //     true;
+                                                                        // print("Index...1.." +
+                                                                        //     colorchange
+                                                                        //         .toString());
+                                                                      });
+                                                                    },
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          Container(
+                                                                        padding:
+                                                                            EdgeInsets.all(MediaQuery.of(context).size.width *
+                                                                                0.02),
+                                                                        // height:
+                                                                        //     MediaQuery.of(context)
+                                                                        //         .size
+                                                                        //         .width,
+                                                                        decoration:
+                                                                            BoxDecoration(boxShadow: [
+                                                                          BoxShadow(
+                                                                              color: double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == price ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                                                                              blurRadius: 2.0)
+                                                                        ], border: Border.all(color: Colors.grey)),
+                                                                        child:
+                                                                            Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(widget.productdata.productAttribute[index].name.toString(),
+                                                                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                            // Text("dd"),
+                                                                            Divider(
+                                                                              thickness: 2,
+                                                                              color: Colors.grey,
+                                                                            ),
+                                                                            Text(
+                                                                              "\u20B9 ${widget.productdata.productAttribute[index].productPrice.toString()}",
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.04),
+                                                                            ),
+                                                                            Text(
+                                                                              "\u20B9 ${widget.productdata.productAttribute[index].productRegularPrice.toString()}",
+                                                                              style: TextStyle(color: Colors.grey, fontSize: MediaQuery.of(context).size.width * 0.04, decoration: TextDecoration.lineThrough),
+                                                                            )
+                                                                          ],
+                                                                        ),
                                                                       ),
-                                                                      Text(
-                                                                        "\u20B9 ${widget.itemProduct.productAttribute[index].productRegularPrice.toString()}",
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .grey,
-                                                                            fontSize: MediaQuery.of(context).size.width *
-                                                                                0.04,
-                                                                            decoration:
-                                                                                TextDecoration.lineThrough),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            }),
+                                                                    ),
+                                                                  );
+                                                                }),
                                                   ),
                                         SizedBox(
                                           height: 10,

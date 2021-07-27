@@ -175,22 +175,23 @@ class _ProductListScreenState extends State<ProductListScreen> {
             item.categoryId = itemData['categoryID'];
             //item.categoryName = itemData['category_name'];
 
-            // var brandDDetails = itemData['brand_details'];
-            // List<BrandDetails> brandDetails = [];
-            // if (brandDetails.length > 0) {
-            //   for (int bd = 0; bd < brandDDetails.length; bd++) {
-            //     var bdDetails = brandDDetails[bd];
-            //     BrandDetails brand = BrandDetails();
-            //     brand.brandId = bdDetails["brand_id"];
-            //     brand.brandName = bdDetails["brand_name"];
-            //     brand.brandDescription = bdDetails["brand_description"];
-            //     brandDetails.add(brand);
-            //   }
-            //   item.brandDetails = brandDetails;
-            // } else {
-            //   item.brandDetails = brandDetails;
-            // }
-            // print("item...1.." + item.toString());
+            var brandDDetails = itemData['brand_details'];
+            List<BrandDetails> brandDetails = [];
+            if (brandDetails.length > 0) {
+              for (int bd = 0; bd < brandDDetails.length; bd++) {
+                var bdDetails = brandDDetails[bd];
+                BrandDetails brand = BrandDetails();
+                brand.brandId = bdDetails["brand_id"];
+                brand.brandName = bdDetails["brand_name"];
+                brand.brandDescription = bdDetails["brand_description"];
+                brandDetails.add(brand);
+              }
+              item.brandDetails = brandDetails;
+              print("brandDetails..." + item.brandDetails.toString());
+            } else {
+              item.brandDetails = brandDetails;
+            }
+            print("item...1.." + item.toString());
             // var catDetails = itemData["cat_details"];
             // List<CatDetails> catDetails1 = [];
             // if (catDetails.length > 0) {

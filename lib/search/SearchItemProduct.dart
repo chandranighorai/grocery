@@ -40,7 +40,6 @@ class _ItemProductState extends State<SearchItemProduct> {
   @override
   initState() {
     deviceID = '';
-
     initPlatformState();
     print("item brand.0.." + widget.productdata.productType.toString());
     // print("item brand.0p.." +
@@ -186,6 +185,7 @@ class _ItemProductState extends State<SearchItemProduct> {
     print("hjhj" + itemProduct.toString());
     print("hjhj..." + itemProduct.productTitle.toString());
     print("hjhj0.." + itemProduct.productAttribute.toString());
+    print("cd..." + itemProduct.productKeyword.toString());
     // productAttr = widget.productdata.productAttribute;
     // print("ppp...." + productAttr[0].name.toString());
     return InkWell(
@@ -288,7 +288,7 @@ class _ItemProductState extends State<SearchItemProduct> {
                             Row(
                               children: [
                                 Text(
-                                  "\u20B9 ${isAgent ? (itemProduct.productDistributorPrice) : itemProduct.productPrice}",
+                                  "\u20B9 ${isAgent ? (itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productDistributorPrice : itemProduct.productDistributorPrice) : (itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productPrice : itemProduct.productPrice)}",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
@@ -299,7 +299,7 @@ class _ItemProductState extends State<SearchItemProduct> {
                                   width: 10,
                                 ),
                                 Text(
-                                  "\u20B9 ${itemProduct.productRegularPrice}",
+                                  "\u20B9 ${(itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productRegularPrice : itemProduct.productRegularPrice)}",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,

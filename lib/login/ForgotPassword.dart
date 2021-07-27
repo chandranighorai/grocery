@@ -27,6 +27,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     }
     FocusScope.of(context).unfocus();
     var requestParam = "?email=" + forgotEmail.trim();
+    print("request param...0" + requestParam.toString());
     final http.Response response = await http.get(
       Uri.parse(Consts.FORGOT_PASSWORD + requestParam),
     );
