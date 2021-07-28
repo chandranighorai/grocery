@@ -138,24 +138,31 @@ class _ItemProductState extends State<SearchItemProduct> {
     requestParam += "&price=" + itemProduct.productPrice;
     requestParam += "&quantity=1";
     print(Uri.parse(Consts.ADD_CART + requestParam));
+    print("requestParam.11.." + requestParam.toString());
     final http.Response response = await http.get(
       Uri.parse(Consts.ADD_CART + requestParam),
     );
 
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
+      print("requestParam.11.." + responseData.toString());
       var serverCode = responseData['code'];
+      var serverMessage = responseData['message'];
       if (serverCode == "200") {
+        showCustomToast(serverMessage);
         if (user_id == '') {
           prefs.setString("user_id", responseData['user_id'].toString());
           prefs.setString("usertype", responseData['user_type'].toString());
         }
         widget.notifyCart();
       }
-
-      var serverMessage = responseData['message'];
-      showCustomToast(serverMessage);
-    } else {}
+      //var serverMessage = responseData['message'];
+      //showCustomToast(serverMessage);
+    } else {
+      // var responseData = jsonDecode(response.body);
+      // var serverMessage = responseData['message'];
+      // showCustomToast(serverMessage);
+    }
   }
 
   _gotoDetail() async {
@@ -165,7 +172,8 @@ class _ItemProductState extends State<SearchItemProduct> {
       context,
       MaterialPageRoute(
         builder: (context) => ProductDetails(
-          productdata: itemProduct,
+          //productdata: itemProduct,
+          productdata: widget.productdata,
           isAgent: isAgent,
           isSearch: true,
         ),
@@ -226,7 +234,7 @@ class _ItemProductState extends State<SearchItemProduct> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30.0),
                         child: Image.network(
-                          itemProduct.galleryImages[0],
+                          widget.productdata.galleryImages[0],
                           height: 100.0,
                           width: 100.0,
                           errorBuilder: (BuildContext context, Object exception,
@@ -274,7 +282,8 @@ class _ItemProductState extends State<SearchItemProduct> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              itemProduct.productTitle,
+                              widget.productdata.productTitle,
+                              //itemProduct.productTitle,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
@@ -288,7 +297,8 @@ class _ItemProductState extends State<SearchItemProduct> {
                             Row(
                               children: [
                                 Text(
-                                  "\u20B9 ${isAgent ? (itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productDistributorPrice : itemProduct.productDistributorPrice) : (itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productPrice : itemProduct.productPrice)}",
+                                  // "\u20B9 ${isAgent ? (itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productDistributorPrice : itemProduct.productDistributorPrice) : (itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productPrice : itemProduct.productPrice)}",
+                                  "\u20B9 ${isAgent ? (widget.productdata.productType == "variable" ? widget.productdata.productAttribute[0].productDistributorPrice : widget.productdata.productDistributorPrice) : (widget.productdata.productType == "variable" ? widget.productdata.productAttribute[0].productPrice : widget.productdata.productPrice)}",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
@@ -299,7 +309,9 @@ class _ItemProductState extends State<SearchItemProduct> {
                                   width: 10,
                                 ),
                                 Text(
-                                  "\u20B9 ${(itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productRegularPrice : itemProduct.productRegularPrice)}",
+                                  //"\u20B9 ${(itemProduct.productType == "variable" ? itemProduct.productAttribute[0].productRegularPrice : itemProduct.productRegularPrice)}",
+                                  "\u20B9 ${(widget.productdata.productType == "variable" ? widget.productdata.productAttribute[0].productRegularPrice : widget.productdata.productRegularPrice)}",
+
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
@@ -313,7 +325,8 @@ class _ItemProductState extends State<SearchItemProduct> {
                               height: 7,
                             ),
                             Text(
-                              "${itemProduct.brandName}",
+                              //"${itemProduct.brandName}",
+                              "${widget.productdata.brandName}",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -334,11 +347,12 @@ class _ItemProductState extends State<SearchItemProduct> {
                                           isWish = !isWish;
                                         },
                                       ),
-                                      wishAdd(isWish, itemProduct),
-
+                                      // wishAdd(isWish, itemProduct),
+                                      wishAdd(isWish, widget.productdata),
                                       // wishAdd(),
                                     },
-                                    child: itemProduct.isInWishlist == 1
+                                    child: widget.productdata.isInWishlist == 1
+                                        //itemProduct.isInWishlist == 1
                                         ? Image.asset(
                                             "images/ic_wishlistActive.png",
                                             height: 25,
@@ -352,7 +366,9 @@ class _ItemProductState extends State<SearchItemProduct> {
                                     width: 10,
                                   ),
                                   InkWell(
-                                    onTap: () => {_handleAddCart(itemProduct)},
+                                    onTap: () =>
+                                        {_handleAddCart(widget.productdata)},
+                                    //{_handleAddCart(itemProduct)},
                                     child: Image.asset(
                                       "images/busket.png",
                                       height: 25,

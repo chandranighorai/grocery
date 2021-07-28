@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:groceryapp/login/LoginScreen.dart';
 import 'package:groceryapp/orders/MyOrdersScreen.dart';
 import 'package:groceryapp/products/BrandDetails.dart';
 import 'package:groceryapp/products/CatDetails.dart';
@@ -50,6 +51,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   bool isAgent;
   int quantity;
   String deviceID;
+
   //AsyncMemoizer _memoizer;
 
   Future<CategoryModel> _getCategories() async {
@@ -295,16 +297,23 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   }
 
   _gotoShoppinCartScreen() async {
-    var openCart = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ShoppingCartScreen(),
-      ),
-    );
-    if (openCart != null && openCart == "refresh cart") {
-      debugPrint("Returned data $openCart");
-      _handleFetchCart();
-      setState(() {});
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    var user_id = sharedPreference.getString('user_id');
+    if (user_id == null) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } else {
+      var openCart = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ShoppingCartScreen(),
+        ),
+      );
+      if (openCart != null && openCart == "refresh cart") {
+        debugPrint("Returned data $openCart");
+        _handleFetchCart();
+        setState(() {});
+      }
     }
   }
 
@@ -878,6 +887,8 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
           ),
           onTap: () {
             // _handleAddCart(itemProduct);
+            print("cart click");
+            // if()
             _gotoShoppinCartScreen();
           },
         ),

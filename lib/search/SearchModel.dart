@@ -77,10 +77,10 @@ class Productdata {
       this.brandDescription,
       this.productId,
       this.productType,
-      this.productKeyword,
       this.productCode,
       this.uniqueKey,
       this.productTitle,
+      this.productKeyword,
       this.productDescription,
       this.categoryId,
       this.brandId,
@@ -119,6 +119,7 @@ class Productdata {
     productCode = json['product_code'];
     uniqueKey = json['unique_key'];
     productTitle = json['product_title'];
+    productKeyword = json['product_keywords'];
     productDescription = json['product_description'];
     categoryId = json['category_id'];
     brandId = json['brand_id'];
@@ -128,7 +129,6 @@ class Productdata {
     productDistributorPrice = json['product_distributor_price'];
     productUnit = json['product_unit'];
     productBatchNo = json['product_batch_no'];
-    productKeyword = json['product_keywords'];
     productQuantityInfo = json['product_quantity_info'];
     productImage = json['product_image'];
     stockCount = json['stock_count'];

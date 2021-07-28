@@ -92,7 +92,7 @@ class _SearchScreenState extends State<Search> {
   }
 
   Future<SearchModel> _getProducts(String _searchKey) async {
-    print("getProducts search key..." + _searchKey.toString());
+    print("getProducts search key..0." + _searchKey.toString());
     print("getProducts called");
     //List<Productdata> mList = [];
     String catID = "";
@@ -114,7 +114,7 @@ class _SearchScreenState extends State<Search> {
 
       http.Response response;
       if (_searchKey != null && _searchKey != "") {
-        requestParam = "?keyword=" + _searchKey;
+        requestParam = "?keyword=" + _searchKey.trim();
         if (userID != null && int.parse(userID) > 0) {
           requestParam += "&user_id=" + userID;
         }
@@ -135,19 +135,26 @@ class _SearchScreenState extends State<Search> {
       );
 
       debugPrint("URl ${Uri.parse(Consts.PRODUCT_LIST + requestParam)}");
-      print("response DAta..statuscode." + response.body.toString());
+      print("response DAta..statuscode...0" + response.body.length.toString());
+      print("response DAta..statuscode...1" + response.body.toString());
       if (response.statusCode == 200) {
         var responseData = jsonDecode(response.body);
         //print("response DAta..length." + responseData.length.toString());
         print("response DAta..length." + responseData.toString());
         var serverMessage = responseData['message'];
         var productData = responseData['productdata'];
+        print("hjh..." +
+            responseData['productdata'][0]["product_title"].toString());
         if (responseData['status'] == "success") {
           if (productData.length > 0) {
             return SearchModel.fromJson(responseData);
           }
-          _showLoder = true;
-          isApiCalling = true;
+          setState(() {
+            _showLoder = true;
+            isApiCalling = true;
+          });
+          // _showLoder = true;
+          // isApiCalling = true;
         } else {
           setState(() {
             isAvailable = false;
@@ -225,7 +232,7 @@ class _SearchScreenState extends State<Search> {
       _pageTitle = value;
     });
     _categoryID = "";
-    _productList = _getProducts(value);
+    _productList = _getProducts(value.trim());
     debugPrint("_productList _productList search${_productList}");
   }
 
@@ -487,16 +494,16 @@ class _SearchScreenState extends State<Search> {
           autofocus: true,
           focusNode: myFocusNode,
           onChanged: (value) => {
-            searchitem(value)
+            searchitem(value),
             // setState(
             //   () {
             //     _searchKey = value;
             //   },
             // ),
           },
-          //onSubmitted: (value) {
-          //searchitem(value);
-          //},
+          // onSubmitted: (value) {
+          //   searchitem(value);
+          // },
           textInputAction: TextInputAction.done,
           style: TextStyle(
             fontSize: 14.0,
@@ -652,7 +659,7 @@ class SearchList extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: categories.length,
                   //scrollDirection: Axis.horizontal,
-                  //scrollDirection: Axis.vertical,
+                  scrollDirection: Axis.vertical,
                   itemBuilder: (context, int index) {
                     Productdata categoryData = categories[index];
                     print("uu..." + categoryData.toString());
