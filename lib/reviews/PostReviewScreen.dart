@@ -90,6 +90,7 @@ class _PostReviewScreenState extends State<PostReviewScreen> {
           MaterialPageRoute(
               builder: (context) => ReviewScreen(
                     productId: productId,
+                    productTitle:productTitle
                   )),
         );
       },

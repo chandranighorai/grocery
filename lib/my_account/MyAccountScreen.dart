@@ -421,13 +421,12 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
             size: 35,
           ),
           onPressed: () {
-            
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Search(),
-                ),
-              );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Search(),
+              ),
+            );
           },
         ),
 
@@ -475,6 +474,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
     String email = prefs.getString("email");
     String fname = prefs.getString("fname");
     String lname = prefs.getString("lname");
+    //print("Email..." + email.toString());
     if (email == null) return null;
     userData.putIfAbsent("userEmail", () => email);
     userData.putIfAbsent("userName", () => fname + ' ' + lname);

@@ -598,6 +598,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             primaryColorDark: Colors.red,
           ),
           child: new TextField(
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -619,7 +620,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             onChanged: (value) => {
               setState(
                 () {
-                  userMobile = value;
+                  if (value.length == 10) {
+                    FocusScope.of(context).unfocus();
+                    userMobile = value;
+                  } else {
+                    //showCustomToast("Please enter 10 digit");
+                  }
                 },
               )
             },
@@ -634,6 +640,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             primaryColorDark: Colors.red,
           ),
           child: new TextField(
+            keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -691,13 +698,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             suffixIconEnabled: true,
             autoFocus: true,
-            onSubmit: (value) => {
-              print("password..." + value.toString()),
+            // onChanged: (value) {
+            //   print("password..." + value.toString());
+            //   setState(
+            //     () {
+            //       userPassword = value;
+            //     },
+            //   );
+            // }
+            onSubmit: (value) {
+              print("password..." + value.toString());
               setState(
                 () {
                   userPassword = value;
                 },
-              )
+              );
             },
           ),
           // new TextField(

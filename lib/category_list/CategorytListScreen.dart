@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -51,7 +52,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   bool isAgent;
   int quantity;
   String deviceID;
-
+  Timer cartVal;
   //AsyncMemoizer _memoizer;
 
   Future<CategoryModel> _getCategories() async {
@@ -341,6 +342,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
         if (arrCartProducts.length > 0) {
           setState(() {
             quantity = Variables.itemCount;
+            //Variables.itemCount = arrCartProducts.length;
           });
           Variables.itemCount = arrCartProducts.length;
         }
@@ -463,6 +465,12 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    cartVal = Timer(new Duration(seconds: 2), () {
+      _updateCart();
+    });
+    if (cartVal.tick == 2) {
+      cartVal.cancel();
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: Navigation(),

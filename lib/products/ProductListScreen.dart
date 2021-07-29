@@ -26,13 +26,15 @@ class ProductListScreen extends StatefulWidget {
   final String categoryName;
   final bool myFav;
   final bool isAgent;
+  final Function() notify;
   const ProductListScreen(
       {Key key,
       this.searchKeyword,
       this.categoryID,
       this.categoryName,
       this.myFav,
-      this.isAgent})
+      this.isAgent,
+      this.notify})
       : super(key: key);
 
   @override
@@ -271,6 +273,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   //======== Fetch Cart ======
   _handleFetchCart() async {
+    print("notify.." + widget.notify.toString());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var user_id = prefs.getString('user_id');
     if (user_id == null) {
@@ -291,11 +294,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
       if (serverCode == "200") {
         var arrCartProducts = responseData["productdata"];
         if (arrCartProducts.length > 0) {
+          print("cart length..." + arrCartProducts.length.toString());
+
           Variables.itemCount = arrCartProducts.length;
           setState(() {
             quantity = Variables.itemCount;
           });
         }
+        widget.notify();
       } else {
         print("Else part");
         setState(() {
