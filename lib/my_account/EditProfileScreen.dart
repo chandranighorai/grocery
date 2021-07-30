@@ -208,7 +208,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               SizedBox(
                                 height: 20,
                               ),
-                              TextFormField(
+                              TextField(
                                 keyboardType: TextInputType.name,
                                 // textInputAction: TextInputAction.done,
                                 style: TextStyle(color: Colors.black),
@@ -232,25 +232,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   ),
                                 ),
                                 controller: firstNameController,
-                                onChanged: (value) {
+                                onSubmitted: (value) {
                                   setState(() {
-                                    //print("HintText0..." + hintText.toString());
-                                    print("HintText0..." + value.toString());
-                                    //if (hintText == "First Name") {
                                     firstNameController.text = value;
-                                    // firstNameController.selection = TextSelection.fromPosition(
-                                    //     TextPosition(offset: firstNameController.text.length));
-                                    // } else if (hintText == "Last Name") {
-                                    //   lastNamController.text = value;
-                                    //   lastNamController.selection = TextSelection.fromPosition(
-                                    //       TextPosition(offset: lastNamController.text.length));
-                                    // } else if (hintText == "Mobile Number") {
-                                    //   mobileNumberController.text = value;
-                                    //   mobileNumberController.selection = TextSelection.fromPosition(
-                                    //       TextPosition(offset: mobileNumberController.text.length));
-                                    // }
                                   });
+                                  print("firstName..." + value.toString());
                                 },
+                                // onChanged: (value) {
+                                //   setState(() {
+                                //     //print("HintText0..." + hintText.toString());
+                                //     print("HintText0..." + value.toString());
+                                //     //if (hintText == "First Name") {
+                                //     firstNameController.text = value;
+                                //     // firstNameController.selection = TextSelection.fromPosition(
+                                //     //     TextPosition(offset: firstNameController.text.length));
+                                //     // } else if (hintText == "Last Name") {
+                                //     //   lastNamController.text = value;
+                                //     //   lastNamController.selection = TextSelection.fromPosition(
+                                //     //       TextPosition(offset: lastNamController.text.length));
+                                //     // } else if (hintText == "Mobile Number") {
+                                //     //   mobileNumberController.text = value;
+                                //     //   mobileNumberController.selection = TextSelection.fromPosition(
+                                //     //       TextPosition(offset: mobileNumberController.text.length));
+                                //     // }
+                                //   });
+                                // },
                               ),
                               //buildTextField("First Name"),
                               SizedBox(
@@ -259,7 +265,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               SizedBox(
                                 height: 20,
                               ),
-                              TextFormField(
+                              TextField(
                                 // textInputAction: TextInputAction.done,
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
@@ -282,31 +288,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   ),
                                 ),
                                 controller: lastNamController,
-                                onChanged: (value) {
+                                onSubmitted: (value) {
                                   setState(() {
-                                    //print("HintText0..." + hintText.toString());
-                                    print("HintText0..." + value.toString());
-                                    //if (hintText == "First Name") {
                                     lastNamController.text = value;
-                                    // firstNameController.selection = TextSelection.fromPosition(
-                                    //     TextPosition(offset: firstNameController.text.length));
-                                    // } else if (hintText == "Last Name") {
-                                    //   lastNamController.text = value;
-                                    //   lastNamController.selection = TextSelection.fromPosition(
-                                    //       TextPosition(offset: lastNamController.text.length));
-                                    // } else if (hintText == "Mobile Number") {
-                                    //   mobileNumberController.text = value;
-                                    //   mobileNumberController.selection = TextSelection.fromPosition(
-                                    //       TextPosition(offset: mobileNumberController.text.length));
-                                    // }
                                   });
+                                  print("lastName..." + value.toString());
                                 },
+                                // onChanged: (value) {
+                                //   setState(() {
+                                //     //print("HintText0..." + hintText.toString());
+                                //     print("HintText0..." + value.toString());
+                                //     //if (hintText == "First Name") {
+                                //     lastNamController.text = value;
+                                //     // firstNameController.selection = TextSelection.fromPosition(
+                                //     //     TextPosition(offset: firstNameController.text.length));
+                                //     // } else if (hintText == "Last Name") {
+                                //     //   lastNamController.text = value;
+                                //     //   lastNamController.selection = TextSelection.fromPosition(
+                                //     //       TextPosition(offset: lastNamController.text.length));
+                                //     // } else if (hintText == "Mobile Number") {
+                                //     //   mobileNumberController.text = value;
+                                //     //   mobileNumberController.selection = TextSelection.fromPosition(
+                                //     //       TextPosition(offset: mobileNumberController.text.length));
+                                //     // }
+                                //   });
+                                // },
                               ),
                               // buildTextField("Last Name"),
                               SizedBox(
                                 height: 20,
                               ),
-                              TextFormField(
+                              TextField(
                                 // textInputAction: TextInputAction.done,
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
@@ -329,25 +341,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   ),
                                 ),
                                 controller: mobileNumberController,
-                                onChanged: (value) {
+                                onSubmitted: (value) {
                                   setState(() {
-                                    //print("HintText0..." + hintText.toString());
                                     print("HintText0..." + value.toString());
-                                    //if (hintText == "First Name") {
                                     mobileNumberController.text = value;
-                                    // firstNameController.selection = TextSelection.fromPosition(
-                                    //     TextPosition(offset: firstNameController.text.length));
-                                    // } else if (hintText == "Last Name") {
-                                    //   lastNamController.text = value;
-                                    //   lastNamController.selection = TextSelection.fromPosition(
-                                    //       TextPosition(offset: lastNamController.text.length));
-                                    // } else if (hintText == "Mobile Number") {
-                                    //   mobileNumberController.text = value;
-                                    //   mobileNumberController.selection = TextSelection.fromPosition(
-                                    //       TextPosition(offset: mobileNumberController.text.length));
-                                    // }
                                   });
                                 },
+                                // onChanged: (value) {
+                                //   setState(() {
+                                //     //print("HintText0..." + hintText.toString());
+                                //     print("HintText0..." + value.toString());
+                                //     //if (hintText == "First Name") {
+                                //     mobileNumberController.text = value;
+                                //     // firstNameController.selection = TextSelection.fromPosition(
+                                //     //     TextPosition(offset: firstNameController.text.length));
+                                //     // } else if (hintText == "Last Name") {
+                                //     //   lastNamController.text = value;
+                                //     //   lastNamController.selection = TextSelection.fromPosition(
+                                //     //       TextPosition(offset: lastNamController.text.length));
+                                //     // } else if (hintText == "Mobile Number") {
+                                //     //   mobileNumberController.text = value;
+                                //     //   mobileNumberController.selection = TextSelection.fromPosition(
+                                //     //       TextPosition(offset: mobileNumberController.text.length));
+                                //     // }
+                                //   });
+                                // },
                               ),
                               //buildTextField("Mobile Number"),
                               SizedBox(

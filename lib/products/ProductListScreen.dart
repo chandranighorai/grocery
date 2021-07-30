@@ -324,7 +324,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     // print(_searchKey);
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: Navigation(),
+      //drawer: Navigation(),
       appBar: CustomAppbar(),
       body: SafeArea(
         child: Container(

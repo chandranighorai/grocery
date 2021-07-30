@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:groceryapp/category_list/CategorytListScreen.dart';
+import 'package:groceryapp/util/Util.dart';
 import 'package:groceryapp/util/Variables.dart';
 
 import '../offer/ApplyPromoScreen.dart';
@@ -998,6 +999,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         paymentMethod = result['payment_method'];
         totalAmount = totalAmount - promoAmount;
       });
-    } else {}
+    } else {
+      showCustomToast("Offer Applicable from Total Rs. 999");
+    }
   }
 }

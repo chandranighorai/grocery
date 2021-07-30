@@ -56,6 +56,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   //AsyncMemoizer _memoizer;
 
   Future<CategoryModel> _getCategories() async {
+    // print("getCategories...");
     var url = Uri.parse(Consts.CATEGORY_LIST);
     debugPrint("$url");
     var response = await http.get(
@@ -465,12 +466,12 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    cartVal = Timer(new Duration(seconds: 2), () {
-      _updateCart();
-    });
-    if (cartVal.tick == 2) {
-      cartVal.cancel();
-    }
+    // cartVal = Timer(new Duration(seconds: 2), () {
+    //   _updateCart();
+    // });
+    // if (cartVal.tick == 2) {
+    //   cartVal.cancel();
+    // }
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: Navigation(),
@@ -951,6 +952,7 @@ class CategoryList extends StatelessWidget {
                   addAutomaticKeepAlives: false,
                   itemBuilder: (context, int index) {
                     CategoryData categoryData = categories[index];
+                    print("CatData..." + categoryData.toString());
                     return Padding(
                       padding: const EdgeInsets.only(right: 12.0),
                       child: CategoryItem(

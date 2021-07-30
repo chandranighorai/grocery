@@ -341,7 +341,6 @@ class _ProductDetails extends State<ProductDetails> {
 
   _addtocartBtnPressed() {
     debugPrint("_addtocartBtnPressed pressed");
-
     if (_isAddedToCart) {
       if (_isSearch == true) {
         if (_itemCount == 0) {
@@ -358,11 +357,27 @@ class _ProductDetails extends State<ProductDetails> {
       }
     } else {
       if (_isSearch) {
-        _handleAddCart(widget.productdata.productId,
-            widget.productdata.productTitle, widget.productdata.productPrice);
+        print("_search..." + _isSearch.toString());
+        //newly try....when does not take the click on variable data
+        if (widget.productdata.productType == "variable") {
+          print("_search..." + price.toString());
+          _handleAddCart(widget.productdata.productId,
+              widget.productdata.productTitle, price.toString());
+        } else {
+          _handleAddCart(widget.productdata.productId,
+              widget.productdata.productTitle, widget.productdata.productPrice);
+        }
       } else {
-        _handleAddCart(widget.itemProduct.productId,
-            widget.itemProduct.productTitle, widget.itemProduct.productPrice);
+        print("_search..." + _isSearch.toString());
+        print("_search..." + widget.itemProduct.toString());
+        //newly try....when does not take the click on variable data
+        if (widget.itemProduct.productType == "variable") {
+          _handleAddCart(widget.itemProduct.productId,
+              widget.itemProduct.productTitle, price.toString());
+        } else {
+          _handleAddCart(widget.itemProduct.productId,
+              widget.itemProduct.productTitle, widget.itemProduct.productPrice);
+        }
       }
     }
   }
@@ -1320,7 +1335,12 @@ class _ProductDetails extends State<ProductDetails> {
                                                         MediaQuery.of(context)
                                                                 .size
                                                                 .width *
-                                                            0.3,
+                                                            0.35,
+                                                    // padding: EdgeInsets.only(
+                                                    //     left: 8,
+                                                    //     right: 8,
+                                                    //     top: 2,
+                                                    //     bottom: 2),
                                                     width:
                                                         MediaQuery.of(context)
                                                             .size
@@ -1895,6 +1915,7 @@ class _ProductDetails extends State<ProductDetails> {
                                   )
                                 : InkWell(
                                     onTap: () {
+                                      print("Add to Cart");
                                       _addtocartBtnPressed();
                                     },
                                     child: Container(

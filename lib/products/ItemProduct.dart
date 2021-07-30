@@ -187,8 +187,9 @@ class _ItemProductState extends State<ItemProduct> {
 
   @override
   Widget build(BuildContext context) {
-    print("itemProduct..0." + itemProduct.productType.toString());
-    print("itemProduct..0." + itemProduct.brandDetails.length.toString());
+    print("itemProduct..0." + itemProduct.productTitle.toString());
+    // print("itemProduct..0." + itemProduct.productType.toString());
+    // print("itemProduct..0." + itemProduct.brandDetails.length.toString());
     return InkWell(
       onTap: () {
         _gotoDetail();

@@ -16,6 +16,7 @@ class _CategoryItemState extends State<CategoryItem> {
   Widget build(BuildContext context) {
     double containerWidth = 100;
     CategoryData categoryData = widget.categoryData;
+    print("klkl" + widget.categoryData.name);
     return InkWell(
       onTap: () {
         print("catId.." + categoryData.catId.toString());

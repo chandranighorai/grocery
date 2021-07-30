@@ -89,9 +89,7 @@ class _PostReviewScreenState extends State<PostReviewScreen> {
           context,
           MaterialPageRoute(
               builder: (context) => ReviewScreen(
-                    productId: productId,
-                    productTitle:productTitle
-                  )),
+                  productId: productId, productTitle: productTitle)),
         );
       },
       child: Scaffold(
@@ -242,37 +240,44 @@ class _PostReviewScreenState extends State<PostReviewScreen> {
 
   Widget buildTextField(String hintText) {
     return TextField(
-      keyboardType: TextInputType.multiline,
-      maxLines: 3,
-      style: TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color(0XFFD4DFE8),
-            width: 2,
+        keyboardType: TextInputType.multiline,
+        maxLines: 3,
+        style: TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0XFFD4DFE8),
+              width: 2,
+            ),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0XFFD4DFE8),
+              width: 2,
+            ),
+          ),
+          hintText: hintText,
+          hintStyle: TextStyle(
+            color: Colors.black,
           ),
         ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: Color(0XFFD4DFE8),
-            width: 2,
-          ),
-        ),
-        hintText: hintText,
-        hintStyle: TextStyle(
-          color: Colors.black,
-        ),
-      ),
-      controller: hintText == "Message" ? reviewMessageController : null,
-      onChanged: (value) => {
-        setState(() {
-          if (hintText == "Message") {
-            reviewMessageController.text = value;
-            reviewMessageController.selection = TextSelection.fromPosition(
-                TextPosition(offset: reviewMessageController.text.length));
-          }
-        }),
-      },
-    );
+        controller: hintText == "Message" ? reviewMessageController : null,
+        onSubmitted: (value) {
+          setState(() {
+            if (hintText == "Message") {
+              reviewMessageController.text = value;
+            }
+          });
+        }
+        // onChanged: (value) => {
+        //   setState(() {
+        //     if (hintText == "Message") {
+        //       reviewMessageController.text = value;
+        //       reviewMessageController.selection = TextSelection.fromPosition(
+        //           TextPosition(offset: reviewMessageController.text.length));
+        //     }
+        //   }),
+        // },
+        );
   }
 }
