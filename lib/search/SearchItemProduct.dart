@@ -190,10 +190,11 @@ class _ItemProductState extends State<SearchItemProduct> {
   @override
   Widget build(BuildContext context) {
     // double containerWidth = 100;
-    print("hjhj" + itemProduct.toString());
-    print("hjhj..." + itemProduct.productTitle.toString());
-    print("hjhj0.." + itemProduct.productAttribute.toString());
-    print("cd..." + itemProduct.productKeyword.toString());
+    //print("hjhj" + itemProduct.toString());
+    print("hjhj..." + itemProduct.productId.toString());
+    // print("hjhj..." + itemProduct.productTitle.toString());
+    // print("hjhj0.." + itemProduct.productAttribute.toString());
+    // print("cd..." + itemProduct.productKeyword.toString());
     // productAttr = widget.productdata.productAttribute;
     // print("ppp...." + productAttr[0].name.toString());
     return InkWell(

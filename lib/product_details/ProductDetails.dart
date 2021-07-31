@@ -531,7 +531,8 @@ class _ProductDetails extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     ProductModel itemProduct = widget.itemProduct;
-    print("product_id..." + widget.itemProduct.productId.toString());
+    //print("product_id..." + widget.itemProduct.productId.toString());
+    //print("product_id..." + widget.productdata.productId.toString());
     //Productdata pro = widget.productdata;
     //print("isInWishList...in pd" + widget.itemProduct.isInWishList.toString());
     //print("isInWishList...in pd" + pro.isInWishlist.toString());
@@ -1470,7 +1471,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                                     decoration: BoxDecoration(
                                                                         boxShadow: [
                                                                           BoxShadow(
-                                                                              color: double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == price ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                                                                              color: double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == colorchange ? Colors.red.withOpacity(0.2) : Colors.transparent,
                                                                               blurRadius: 2.0)
                                                                         ],
                                                                         border: Border.all(
@@ -1590,7 +1591,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                                         decoration:
                                                                             BoxDecoration(boxShadow: [
                                                                           BoxShadow(
-                                                                              color: double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) == price ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                                                                              color: double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) == colorchange ? Colors.red.withOpacity(0.2) : Colors.transparent,
                                                                               blurRadius: 2.0)
                                                                         ], border: Border.all(color: Colors.grey)),
                                                                         child:
@@ -1693,7 +1694,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                                         decoration:
                                                                             BoxDecoration(boxShadow: [
                                                                           BoxShadow(
-                                                                              color: double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == price ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                                                                              color: double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == colorchange ? Colors.red.withOpacity(0.2) : Colors.transparent,
                                                                               blurRadius: 2.0)
                                                                         ], border: Border.all(color: Colors.grey)),
                                                                         child:

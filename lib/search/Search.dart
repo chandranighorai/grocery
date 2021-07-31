@@ -239,6 +239,7 @@ class _SearchScreenState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     double shapeHeight = 150;
+    _updateCart();
     // print(_searchKey);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -667,6 +668,7 @@ class SearchList extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 12.0),
                       child: SearchItemProduct(
                         productdata: categoryData,
+                        //notifyCart:_updateCart,
                       ),
                     );
                   });
