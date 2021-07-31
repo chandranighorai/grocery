@@ -65,7 +65,7 @@ class _ProductDetails extends State<ProductDetails> {
   TextEditingController quantityController;
 
   bool isUserLoggedIn;
-  bool colorchange;
+  double colorchange;
   @override
   void initState() {
     // TODO: implement initState
@@ -95,17 +95,21 @@ class _ProductDetails extends State<ProductDetails> {
           productPrice = double.parse(widget
               .productdata.productAttribute[0].productDistributorPrice
               .toString());
+          colorchange = productPrice;
         } else {
           productPrice = double.parse(
               widget.productdata.productDistributorPrice.toString());
+          colorchange = productPrice;
         }
       } else {
         if (widget.productdata.productType == "variable") {
           productPrice = double.parse(
               widget.productdata.productAttribute[0].productPrice.toString());
+          colorchange = productPrice;
         } else {
           productPrice =
               double.parse(widget.productdata.productPrice.toString());
+          colorchange = productPrice;
         }
       }
     } else {
@@ -119,17 +123,21 @@ class _ProductDetails extends State<ProductDetails> {
           productPrice = double.parse(widget
               .itemProduct.productAttribute[0].productDistributorPrice
               .toString());
+          colorchange = productPrice;
         } else {
           productPrice = double.parse(
               widget.itemProduct.productDistributorPrice.toString());
+          colorchange = productPrice;
         }
       } else {
         if (widget.itemProduct.productType == "variable") {
           productPrice = double.parse(
               widget.itemProduct.productAttribute[0].productPrice.toString());
+          colorchange = productPrice;
         } else {
           productPrice =
               double.parse(widget.itemProduct.productPrice.toString());
+          colorchange = productPrice;
         }
       }
     }
@@ -523,6 +531,7 @@ class _ProductDetails extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     ProductModel itemProduct = widget.itemProduct;
+    print("product_id..." + widget.itemProduct.productId.toString());
     //Productdata pro = widget.productdata;
     //print("isInWishList...in pd" + widget.itemProduct.isInWishList.toString());
     //print("isInWishList...in pd" + pro.isInWishlist.toString());
@@ -1239,15 +1248,47 @@ class _ProductDetails extends State<ProductDetails> {
                                                             .length,
                                                         itemBuilder: (context,
                                                             int index) {
-                                                          colorchange = false;
+                                                          //colorchange = false;
                                                           return InkWell(
                                                             onTap: () {
                                                               print("Index0..." +
                                                                   index
                                                                       .toString());
+                                                              print("qnt..." +
+                                                                  quantityController
+                                                                      .text
+                                                                      .toString());
                                                               //widget.itemProduct.
                                                               setState(() {
-                                                                price = double.parse(widget
+                                                                if (quantityController
+                                                                        .text
+                                                                        .toString() ==
+                                                                    "0") {
+                                                                  price = double.parse(widget
+                                                                      .itemProduct
+                                                                      .productAttribute[
+                                                                          index]
+                                                                      .productPrice
+                                                                      .toString());
+                                                                } else {
+                                                                  price = double.parse(widget
+                                                                          .itemProduct
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .productPrice
+                                                                          .toString()) *
+                                                                      int.parse(
+                                                                          quantityController
+                                                                              .text);
+                                                                }
+
+                                                                productPrice = double.parse(widget
+                                                                    .itemProduct
+                                                                    .productAttribute[
+                                                                        index]
+                                                                    .productPrice
+                                                                    .toString());
+                                                                colorchange = double.parse(widget
                                                                     .itemProduct
                                                                     .productAttribute[
                                                                         index]
@@ -1270,7 +1311,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                                 decoration: BoxDecoration(
                                                                     boxShadow: [
                                                                       BoxShadow(
-                                                                          color: double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) == price
+                                                                          color: double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) == colorchange
                                                                               ? Colors.red.withOpacity(0.2)
                                                                               : Colors.transparent,
                                                                           blurRadius: 2.0)
@@ -1361,17 +1402,49 @@ class _ProductDetails extends State<ProductDetails> {
                                                                   print("Index..." +
                                                                       index
                                                                           .toString());
+                                                                  print("qnt..." +
+                                                                      quantityController
+                                                                          .text
+                                                                          .toString());
                                                                   //widget.itemProduct.
                                                                   setState(() {
-                                                                    price = double.parse(widget
+                                                                    if (quantityController
+                                                                            .text
+                                                                            .toString() ==
+                                                                        "0") {
+                                                                      price = double.parse(widget
+                                                                          .productdata
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .productPrice
+                                                                          .toString());
+                                                                    } else {
+                                                                      price = double.parse(widget
+                                                                              .productdata
+                                                                              .productAttribute[index]
+                                                                              .productPrice
+                                                                              .toString()) *
+                                                                          int.parse(quantityController.text);
+                                                                    }
+
+                                                                    print("Index...1.." +
+                                                                        price
+                                                                            .toString());
+                                                                    productPrice = double.parse(widget
                                                                         .productdata
                                                                         .productAttribute[
                                                                             index]
                                                                         .productPrice
                                                                         .toString());
-                                                                    // print("Index...1.." +
-                                                                    //     productPrice
-                                                                    //         .toString());
+                                                                    colorchange = double.parse(widget
+                                                                        .productdata
+                                                                        .productAttribute[
+                                                                            index]
+                                                                        .productPrice
+                                                                        .toString());
+                                                                    print("Index...1.." +
+                                                                        productPrice
+                                                                            .toString());
                                                                     // colorchange =
                                                                     //     true;
                                                                     // print("Index...1.." +
@@ -1454,20 +1527,45 @@ class _ProductDetails extends State<ProductDetails> {
                                                                     int index) {
                                                                   return InkWell(
                                                                     onTap: () {
-                                                                      print("Index..." +
+                                                                      print("Index0..itemporo." +
                                                                           index
                                                                               .toString());
+                                                                      print("qnt..." +
+                                                                          quantityController
+                                                                              .text
+                                                                              .toString());
+                                                                      // print("Index00..." +
+                                                                      //     (double.parse(widget.productdata.productAttribute[index].productPrice.toString())
+                                                                      //         .toString()));
                                                                       //widget.itemProduct.
                                                                       setState(
                                                                           () {
-                                                                        price = double.parse(widget
+                                                                        if (quantityController.text.toString() ==
+                                                                            "0") {
+                                                                          price = double.parse(widget
+                                                                              .itemProduct
+                                                                              .productAttribute[index]
+                                                                              .productPrice
+                                                                              .toString());
+                                                                        } else {
+                                                                          price =
+                                                                              double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
+                                                                        }
+
+                                                                        // productPrice =
+                                                                        //     price;
+                                                                        productPrice = double.parse(widget
                                                                             .itemProduct
                                                                             .productAttribute[index]
                                                                             .productPrice
                                                                             .toString());
-                                                                        // print("Index...1.." +
-                                                                        //     productPrice
-                                                                        //         .toString());
+                                                                        colorchange = double.parse(widget
+                                                                            .itemProduct
+                                                                            .productAttribute[index]
+                                                                            .productPrice
+                                                                            .toString());
+                                                                        print("Index...1.." +
+                                                                            productPrice.toString());
                                                                         // colorchange =
                                                                         //     true;
                                                                         // print("Index...1.." +
@@ -1537,17 +1635,40 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       print("Index..." +
                                                                           index
                                                                               .toString());
+                                                                      print("qnt..." +
+                                                                          quantityController
+                                                                              .text
+                                                                              .toString());
+
                                                                       //widget.itemProduct.
                                                                       setState(
                                                                           () {
-                                                                        price = double.parse(widget
+                                                                        if (quantityController.text.toString() ==
+                                                                            "0") {
+                                                                          price = double.parse(widget
+                                                                              .productdata
+                                                                              .productAttribute[index]
+                                                                              .productPrice
+                                                                              .toString());
+                                                                        } else {
+                                                                          price =
+                                                                              double.parse(widget.productdata.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
+                                                                        }
+
+                                                                        // productPrice =
+                                                                        //     price;
+                                                                        productPrice = double.parse(widget
                                                                             .productdata
                                                                             .productAttribute[index]
                                                                             .productPrice
                                                                             .toString());
-                                                                        // print("Index...1.." +
-                                                                        //     productPrice
-                                                                        //         .toString());
+                                                                        colorchange = double.parse(widget
+                                                                            .productdata
+                                                                            .productAttribute[index]
+                                                                            .productPrice
+                                                                            .toString());
+                                                                        print("Index...1.." +
+                                                                            productPrice.toString());
                                                                         // colorchange =
                                                                         //     true;
                                                                         // print("Index...1.." +
@@ -1847,6 +1968,8 @@ class _ProductDetails extends State<ProductDetails> {
                                                   }
                                                 },
                                                 onChanged: (value) {
+                                                  // print("Price..." +
+                                                  //     value.toString());
                                                   if (value != "") {
                                                     setState(() {
                                                       _itemCount =
@@ -1886,6 +2009,13 @@ class _ProductDetails extends State<ProductDetails> {
                                               icon: Image.asset(
                                                   'images/ic_plus.png'),
                                               onPressed: () {
+                                                // print("klkl..." +
+                                                //     price.toString());
+                                                // setState(() {
+                                                //   // productPrice = price;
+                                                //   // print("productPrice..." +
+                                                //   //     productPrice.toString());
+                                                // });
                                                 IncrBtn();
                                               },
                                             ),
@@ -1947,9 +2077,12 @@ class _ProductDetails extends State<ProductDetails> {
   IncrBtn() {
     // setState(() => _itemCount++);
     // priceCart=price*_itemCount;
+    // print("Product_price..." + productPrice.toString());
+    print("Product_price1..." + productPrice.toString());
     setState(() {
       _itemCount++;
       quantityController.text = "$_itemCount";
+      //price = price * _itemCount;
       price = productPrice * _itemCount;
 
       quantityController.selection = TextSelection.fromPosition(

@@ -18,13 +18,20 @@ import '../shopping_cart/ItemShoppingCart.dart';
 import '../util/AppColors.dart';
 import '../util/Consts.dart';
 import 'package:groceryapp/search/SearchModel.dart';
+
 class ReviewScreen extends StatefulWidget {
   final String productId;
   final String productTitle;
   final Productdata productdata;
   final bool isUserLoggedIn;
 
-  const ReviewScreen({Key key, this.productId,this.productdata,this.productTitle, this.isUserLoggedIn}) : super(key: key);
+  const ReviewScreen(
+      {Key key,
+      this.productId,
+      this.productdata,
+      this.productTitle,
+      this.isUserLoggedIn})
+      : super(key: key);
   @override
   _ReviewScreenState createState() => _ReviewScreenState();
 }
@@ -34,8 +41,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
   String _offers;
   bool hasItemsInCart;
   bool isApiCalled;
-String productId;
-String productTitle;
+  String productId;
+  String productTitle;
   Future<List<ReviewsModel>> _productList;
   List<ReviewsModel> mProductList;
 
@@ -61,9 +68,10 @@ String productTitle;
   @override
   void initState() {
     // TODO: implement initState
-    isUserLoggedIn = widget.isUserLoggedIn !=null ? widget.isUserLoggedIn : false;
+    isUserLoggedIn =
+        widget.isUserLoggedIn != null ? widget.isUserLoggedIn : false;
     productId = widget.productId;
-    productTitle=widget.productTitle;
+    productTitle = widget.productTitle;
     _offers = "Test";
     hasItemsInCart = false;
     _searchKey = "";
@@ -116,8 +124,7 @@ String productTitle;
             mList.add(item);
           }
         }
-      }
-      else {
+      } else {
         showCustomToast(serverMessage);
       }
 
@@ -195,7 +202,9 @@ String productTitle;
                                           ReviewsModel item =
                                               mProductList[index];
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 6,),
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 6,
+                                            ),
                                             child: ItemReview(
                                               itemReview: item,
                                             ),
@@ -203,9 +212,12 @@ String productTitle;
                                         },
                                       );
                                     } else {
-                                      return isApiCalled ? Center(
-                                        child: CircularProgressIndicator(),
-                                      ):Container();
+                                      return isApiCalled
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : Container();
                                     }
                                   },
                                 ),
@@ -220,33 +232,34 @@ String productTitle;
                     ),
                   ),
                 ),
-                isUserLoggedIn ? InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostReviewScreen(
-                          productId: productId,
-                          productTitle:productTitle,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 70,
-                    width: double.infinity,
-                    color: Color(0XFFc80718),
-                    child: Center(
-                      child: Text(
-                        "Post Review",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  )
-                ):Container(),
+                isUserLoggedIn
+                    ? InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PostReviewScreen(
+                                productId: productId,
+                                productTitle: productTitle,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 70,
+                          width: double.infinity,
+                          color: Color(0XFFc80718),
+                          child: Center(
+                            child: Text(
+                              "Post Review",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ))
+                    : Container(),
               ],
             ),
           ),

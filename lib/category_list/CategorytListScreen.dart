@@ -466,12 +466,12 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // cartVal = Timer(new Duration(seconds: 2), () {
-    //   _updateCart();
-    // });
-    // if (cartVal.tick == 2) {
-    //   cartVal.cancel();
-    // }
+    cartVal = Timer(new Duration(seconds: 2), () {
+      _updateCart();
+    });
+    if (cartVal.tick == 2) {
+      cartVal.cancel();
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: Navigation(),
