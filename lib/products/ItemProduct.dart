@@ -122,6 +122,13 @@ class _ItemProductState extends State<ItemProduct> {
   }
 
   _handleAddCart(ProductModel itemProduct) async {
+    // print("cart click in itemProduct" + itemProduct.productId.toString());
+    // print("cart click in itemProduct" + itemProduct.productTitle.toString());
+    // print("cart click in itemProduct" +
+    //     itemProduct.productAttribute[0].productPrice.toString());
+    // print("cart click in itemProduct" +
+    //     itemProduct.productAttribute[0].productRegularPrice.toString());
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var user_id = prefs.getString('user_id');
 
@@ -129,22 +136,32 @@ class _ItemProductState extends State<ItemProduct> {
       // user_id = '';
 
       print('user_id' + user_id);
+      var productPrice = (itemProduct.productType == "variable")
+          ? itemProduct.productAttribute[0].productPrice
+          : itemProduct.productPrice;
+
+      var regularPrice = (itemProduct.productType == "variable")
+          ? itemProduct.productAttribute[0].productRegularPrice
+          : itemProduct.productRegularPrice;
 
       var requestParam = "?";
       requestParam += "user_id=" + user_id;
       // requestParam += "&device_id=" + deviceID.toString();
       requestParam += "&product_id=" + itemProduct.productId;
       requestParam += "&name=" + itemProduct.productTitle.trim();
-      requestParam += "&price=" + itemProduct.productPrice;
-      requestParam += "&regular_price=" + itemProduct.productRegularPrice;
+      requestParam += "&price=" + productPrice;
+      //print('requestParam' + requestParam.toString());
+      requestParam += "&regular_price=" + regularPrice;
       requestParam += "&quantity=1";
+      //print('requestParam' + requestParam.toString());
       print(Uri.parse(Consts.ADD_CART + requestParam));
       final http.Response response = await http.get(
         Uri.parse(Consts.ADD_CART + requestParam),
       );
-
+      //print("cart click in itemProduct..." + response.statusCode.toString());
       if (response.statusCode == 200) {
         var responseData = jsonDecode(response.body);
+
         var serverCode = responseData['code'];
         if (serverCode == "200") {
           if (user_id == '') {

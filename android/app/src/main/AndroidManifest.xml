@@ -2,7 +2,7 @@
     package="com.vedic.groceryapp">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="groceryapp"
+        android:label="Vedic Grocery"
         android:icon="@drawable/app_icon">
         <activity
             android:name=".MainActivity"
