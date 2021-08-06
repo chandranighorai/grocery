@@ -111,7 +111,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final http.Response response = await http.get(
       Uri.parse(Consts.GET_CREDIT_LIMIT + requestParam),
     );
-    print(Consts.GET_CREDIT_LIMIT + requestParam);
+    //print(Consts.GET_CREDIT_LIMIT + requestParam);
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
       var serverStatus = responseData['status'];
@@ -221,17 +221,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final http.Response response = await http.get(
       Uri.parse(Consts.USER_ADDRESSES_LIST + requestParam),
     );
-    print(Consts.USER_ADDRESSES_LIST + requestParam);
+    //print(Consts.USER_ADDRESSES_LIST + requestParam);
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
       var serverMessage = responseData['message'];
       var arrAddress = responseData["userdata"];
-      print(responseData);
+      //print(responseData);
       if (responseData['status'] == "success") {
         if (arrAddress.length > 0) {
           for (int i = 0; i < arrAddress.length; i++) {
             var itemData = arrAddress[i];
-            print(itemData);
+            //print(itemData);
             if (itemData['default_billing'] == "1") {
               AddressModel item = AddressModel();
               // var productDetails =itemData['productdata'];

@@ -132,7 +132,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
     if (userID != null && int.parse(userID) > 0) {
       requestParam += "?user_id=" + userID;
     }
-    print("requestParam...1.." + requestParam.toString());
+    //print("requestParam...1.." + requestParam.toString());
     debugPrint("URl ${Uri.parse(Consts.GET_FRESH_ITEMS + requestParam)}");
     response = await http.get(
       Uri.parse(Consts.GET_FRESH_ITEMS + requestParam),
@@ -142,7 +142,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
       var responseData = jsonDecode(response.body);
       var serverMessage = responseData['message'];
       var productData = responseData['productdata'];
-      print("item..." + productData.toString());
+      //print("item..." + productData.toString());
       if (responseData['status'] == "success") {
         if (productData.length > 0) {
           debugPrint("success ${productData.length}");
@@ -208,7 +208,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
               item.brandDetails = brandDetails;
               //mList.add(item);
             }
-            print("item...1.." + item.toString());
+            //print("item...1.." + item.toString());
             var catDetails = itemData["cat_details"];
             List<CatDetails> catDetails1 = [];
             if (catDetails.length > 0) {
@@ -225,7 +225,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
               item.catDetails = catDetails1;
               //mList.add(item);
             }
-            print("item...0.." + item.toString());
+            //print("item...0.." + item.toString());
             var productAttribute = itemData["product_attribute"];
             List<ProductAttribute> pattribute = [];
             if (productAttribute.length > 0) {
@@ -251,9 +251,9 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
               item.productAttribute = pattribute;
               //mList.add(item);
             }
-            print("item...4.." + item.toString());
+            //print("item...4.." + item.toString());
             mList.add(item);
-            print("Mlist..." + mList.toString());
+            //print("Mlist..." + mList.toString());
           }
         }
       } else {
@@ -328,12 +328,12 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
     }
     var requestParam = "?";
     requestParam += "user_id=" + user_id;
-    print(requestParam);
+    //print(requestParam);
     final http.Response response = await http.get(
       Uri.parse(Consts.VIEW_CART + requestParam),
     );
-    print(Consts.VIEW_CART + requestParam);
-    print(response.body);
+    // print(Consts.VIEW_CART + requestParam);
+    // print(response.body);
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
       var serverCode = responseData['code'];

@@ -115,8 +115,8 @@ class _ProductDetails extends State<ProductDetails> {
     } else {
       imgList = widget.itemProduct.galleryImages;
       debugPrint('imgList');
-      print("imageList..." + imgList.length.toString());
-      print("IsAgent..." + isAgent.toString());
+      // print("imageList..." + imgList.length.toString());
+      // print("IsAgent..." + isAgent.toString());
       if (isAgent) {
         isWish = widget.itemProduct.isInWishList == 1 ? true : false;
         if (widget.itemProduct.productType == "variable") {
@@ -170,7 +170,7 @@ class _ProductDetails extends State<ProductDetails> {
 
     setState(() {
       deviceID = deviceId;
-      print("deviceId->$deviceID");
+      //print("deviceId->$deviceID");
     });
   }
 
@@ -188,7 +188,7 @@ class _ProductDetails extends State<ProductDetails> {
         ),
       );
     } else {
-      print(user_id);
+      //print(user_id);
 
       var requestParam = "?";
       requestParam += "user_id=" + user_id;
@@ -197,7 +197,7 @@ class _ProductDetails extends State<ProductDetails> {
       requestParam += "&name=" + productTitle.trim();
       requestParam += "&price=" + productPrice;
       requestParam += "&quantity=" + _itemCount.toString();
-      print(Uri.parse(Consts.ADD_CART + requestParam));
+      //print(Uri.parse(Consts.ADD_CART + requestParam));
 
       setState(() {
         _callingUpdateApi = true;
@@ -208,7 +208,7 @@ class _ProductDetails extends State<ProductDetails> {
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
+        //print(response.body);
         var responseData = jsonDecode(response.body);
         var serverCode = responseData['code'];
         if (serverCode == "200") {
@@ -248,13 +248,13 @@ class _ProductDetails extends State<ProductDetails> {
     });
     var requestParam = "?";
     requestParam += "user_id=" + user_id;
-    print(requestParam);
+    //print(requestParam);
     final http.Response response = await http.get(
       Uri.parse(Consts.VIEW_CART + requestParam),
     );
 
-    print(Consts.VIEW_CART + requestParam);
-    print(response.body);
+    // print(Consts.VIEW_CART + requestParam);
+    // print(response.body);
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
       var serverCode = responseData['code'];
@@ -290,7 +290,7 @@ class _ProductDetails extends State<ProductDetails> {
           });
         }
       } else {
-        print("Else part");
+        //print("Else part");
         setState(() {
           quantity = 0;
           _itemCount = 1;
@@ -316,7 +316,7 @@ class _ProductDetails extends State<ProductDetails> {
     final http.Response response = await http.get(
       Uri.parse(Consts.UPDATE_CART + requestParam),
     );
-    print(Consts.UPDATE_CART + requestParam);
+    //print(Consts.UPDATE_CART + requestParam);
     if (response.statusCode == 200) {
       print(response.body);
       setState(() {
@@ -365,10 +365,10 @@ class _ProductDetails extends State<ProductDetails> {
       }
     } else {
       if (_isSearch) {
-        print("_search..." + _isSearch.toString());
+        //print("_search..." + _isSearch.toString());
         //newly try....when does not take the click on variable data
         if (widget.productdata.productType == "variable") {
-          print("_search..." + price.toString());
+          //print("_search..." + price.toString());
           _handleAddCart(widget.productdata.productId,
               widget.productdata.productTitle, price.toString());
         } else {
@@ -376,8 +376,8 @@ class _ProductDetails extends State<ProductDetails> {
               widget.productdata.productTitle, widget.productdata.productPrice);
         }
       } else {
-        print("_search..." + _isSearch.toString());
-        print("_search..." + widget.itemProduct.toString());
+        // print("_search..." + _isSearch.toString());
+        // print("_search..." + widget.itemProduct.toString());
         //newly try....when does not take the click on variable data
         if (widget.itemProduct.productType == "variable") {
           _handleAddCart(widget.itemProduct.productId,
@@ -400,7 +400,7 @@ class _ProductDetails extends State<ProductDetails> {
     var requestParam = "?";
     requestParam += "user_id=" + user_id;
     requestParam += "&product_id=" + productId;
-    print(Uri.parse(Consts.DELETE_CART_FROM_DETAILS + requestParam));
+    //print(Uri.parse(Consts.DELETE_CART_FROM_DETAILS + requestParam));
     final http.Response response = await http.get(
       Uri.parse(Consts.DELETE_CART_FROM_DETAILS + requestParam),
     );
@@ -425,7 +425,7 @@ class _ProductDetails extends State<ProductDetails> {
   }
 
   wishAdd(bool isWish, ProductModel itemProduct) async {
-    print(isWish);
+    //print(isWish);
     var addwis = "";
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var user_id = prefs.getString('user_id');
@@ -448,12 +448,12 @@ class _ProductDetails extends State<ProductDetails> {
       requestParam += "&device_id=" + deviceID.toString();
       requestParam += "&product_id=" + itemProduct.productId;
       requestParam += "&action=" + addwis;
-      print(Consts.ADD_TO_WISHLIST + requestParam);
+      //print(Consts.ADD_TO_WISHLIST + requestParam);
       final http.Response response = await http.get(
         Uri.parse(Consts.ADD_TO_WISHLIST + requestParam),
       );
 
-      print(response.statusCode);
+      //print(response.statusCode);
       if (response.statusCode == 200) {
         var responseData = jsonDecode(response.body);
         var serverCode = responseData['code'];
@@ -477,7 +477,7 @@ class _ProductDetails extends State<ProductDetails> {
   }
 
   wishAddsearch(bool isWish, Productdata itemProduct) async {
-    print(isWish);
+    //print(isWish);
     var addwis = "";
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var user_id = prefs.getString('user_id');
@@ -500,12 +500,12 @@ class _ProductDetails extends State<ProductDetails> {
       requestParam += "&device_id=" + deviceID.toString();
       requestParam += "&product_id=" + widget.productdata.productId;
       requestParam += "&action=" + addwis;
-      print(Consts.ADD_TO_WISHLIST + requestParam);
+      //print(Consts.ADD_TO_WISHLIST + requestParam);
       final http.Response response = await http.get(
         Uri.parse(Consts.ADD_TO_WISHLIST + requestParam),
       );
 
-      print(response.statusCode);
+      //print(response.statusCode);
       if (response.statusCode == 200) {
         var responseData = jsonDecode(response.body);
         var serverCode = responseData['code'];

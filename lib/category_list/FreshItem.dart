@@ -70,7 +70,7 @@ class _FreshItemState extends State<FreshItem> {
     requestParam += "&name=" + itemProduct.productTitle.trim();
     requestParam += "&price=" + itemProduct.productPrice;
     requestParam += "&quantity=1";
-    print(Uri.parse(Consts.ADD_CART + requestParam));
+    //print(Uri.parse(Consts.ADD_CART + requestParam));
     final http.Response response = await http.get(
       Uri.parse(Consts.ADD_CART + requestParam),
     );
@@ -113,10 +113,10 @@ class _FreshItemState extends State<FreshItem> {
   Widget build(BuildContext context) {
     // var size=MediaQuery.of(context).size.width/2 -50;
     // print(size);
-    print("Fresh..1." + widget.itemProduct.productType.toString());
-    print("Fresh..11." + widget.itemProduct.productAttribute.toString());
+    // print("Fresh..1." + widget.itemProduct.productType.toString());
+    // print("Fresh..11." + widget.itemProduct.productAttribute.toString());
     var productAt = widget.itemProduct.productAttribute;
-    print("ff.." + productAt.length.toString());
+    //print("ff.." + productAt.length.toString());
     //List<ProductAttribute> productAttr = [];
     if (productAt.length > 0) {
       //ProductAttribute pr = ProductAttribute();
@@ -149,7 +149,7 @@ class _FreshItemState extends State<FreshItem> {
     }
     return InkWell(
       onTap: () {
-        print("Iteam in fresh..." + item.productTitle.toString());
+        //print("Iteam in fresh..." + item.productTitle.toString());
         //print("Iteam in fresh..." + item.toString());
         gotoDetails();
       },

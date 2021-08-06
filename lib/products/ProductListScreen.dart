@@ -122,7 +122,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         requestParam += "&user_id=" + userID;
       }
     }
-    print("request param..." + requestParam.toString());
+    //print("request param..." + requestParam.toString());
     response = await http.get(
       Uri.parse(Consts.PRODUCT_LIST + requestParam),
     );
@@ -133,7 +133,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       var responseData = jsonDecode(response.body);
       var serverMessage = responseData['message'];
       var productData = responseData['productdata'];
-      print(response.body);
+      //print(response.body);
       if (responseData['status'] == "success") {
         if (productData.length > 0) {
           debugPrint("success ${productData.length}");
@@ -189,11 +189,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 brandDetails.add(brand);
               }
               item.brandDetails = brandDetails;
-              print("brandDetails..." + item.brandDetails.toString());
+              //print("brandDetails..." + item.brandDetails.toString());
             } else {
               item.brandDetails = brandDetails;
             }
-            print("item...1.." + item.toString());
+            //print("item...1.." + item.toString());
             // var catDetails = itemData["cat_details"];
             // List<CatDetails> catDetails1 = [];
             // if (catDetails.length > 0) {
@@ -236,12 +236,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
               item.productAttribute = pattribute;
               //mList.add(item);
             }
-            print("item...4.." + item.toString());
+            //print("item...4.." + item.toString());
             // item.brandId = itemData['brand_id'];
             // item.brandName = itemData['brand_name'];
             // item.brandDesc = itemData['brand_description'];
             mList.add(item);
-            print("mList00..." + mList.toString());
+            //print("mList00..." + mList.toString());
           }
         }
       } else {
@@ -273,7 +273,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   //======== Fetch Cart ======
   _handleFetchCart() async {
-    print("notify.." + widget.notify.toString());
+    //print("notify.." + widget.notify.toString());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var user_id = prefs.getString('user_id');
     if (user_id == null) {
@@ -281,12 +281,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
     }
     var requestParam = "?";
     requestParam += "user_id=" + user_id;
-    print(requestParam);
+    //print(requestParam);
     final http.Response response = await http.get(
       Uri.parse(Consts.VIEW_CART + requestParam),
     );
-    print(Consts.VIEW_CART + requestParam);
-    print(response.body);
+    // print(Consts.VIEW_CART + requestParam);
+    // print(response.body);
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
       var serverCode = responseData['code'];
@@ -294,7 +294,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       if (serverCode == "200") {
         var arrCartProducts = responseData["productdata"];
         if (arrCartProducts.length > 0) {
-          print("cart length..." + arrCartProducts.length.toString());
+          //print("cart length..." + arrCartProducts.length.toString());
 
           Variables.itemCount = arrCartProducts.length;
           setState(() {
@@ -303,7 +303,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         }
         widget.notify();
       } else {
-        print("Else part");
+        //print("Else part");
         setState(() {
           quantity = 0;
         });
@@ -318,8 +318,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("categoryItem");
-    print("detals.." + widget.categoryID.toString());
+    // print("categoryItem");
+    // print("detals.." + widget.categoryID.toString());
     double shapeHeight = 150;
     // print(_searchKey);
     return Scaffold(
