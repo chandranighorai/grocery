@@ -63,6 +63,9 @@ class _ProductDetails extends State<ProductDetails> {
   String deviceID;
   var requestParam;
   TextEditingController quantityController;
+  int weightIndex = 0;
+  var arrCartProducts;
+  var productSize;
 
   bool isUserLoggedIn;
   double colorchange;
@@ -174,9 +177,10 @@ class _ProductDetails extends State<ProductDetails> {
     });
   }
 
-  Future<Null> _handleAddCart(
-      String productId, String productTitle, String productPrice) async {
+  Future<Null> _handleAddCart(String productId, String productTitle,
+      String productPrice, String productQty) async {
     prefs = await SharedPreferences.getInstance();
+    print("isSearch...add cart Click...");
     var user_id = prefs.getString('user_id');
 
     if (user_id == null) {
@@ -189,7 +193,9 @@ class _ProductDetails extends State<ProductDetails> {
       );
     } else {
       //print(user_id);
-
+      print("isSearch...weightIndex..." + weightIndex.toString());
+      print("isSearch...productQty..." + productQty.toString());
+      print("isSearch...productQty..." + _itemCount.toString());
       var requestParam = "?";
       requestParam += "user_id=" + user_id;
       // requestParam += "&device_id=" + deviceID.toString();
@@ -197,7 +203,9 @@ class _ProductDetails extends State<ProductDetails> {
       requestParam += "&name=" + productTitle.trim();
       requestParam += "&price=" + productPrice;
       requestParam += "&quantity=" + _itemCount.toString();
-      //print(Uri.parse(Consts.ADD_CART + requestParam));
+      requestParam += "&size=" + productQty.toString();
+      print(
+          "add cart.." + Uri.parse(Consts.ADD_CART + requestParam).toString());
 
       setState(() {
         _callingUpdateApi = true;
@@ -248,36 +256,52 @@ class _ProductDetails extends State<ProductDetails> {
     });
     var requestParam = "?";
     requestParam += "user_id=" + user_id;
-    //print(requestParam);
+    print("cart requestParam...." + requestParam);
     final http.Response response = await http.get(
       Uri.parse(Consts.VIEW_CART + requestParam),
     );
-
-    // print(Consts.VIEW_CART + requestParam);
+    print(
+        "viewCart..." + Uri.parse(Consts.VIEW_CART + requestParam).toString());
     // print(response.body);
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
       var serverCode = responseData['code'];
       var serverMessage = responseData['message'];
       if (serverCode == "200") {
-        var arrCartProducts = responseData["productdata"];
+        setState(() {
+          arrCartProducts = responseData["productdata"];
+        });
         if (arrCartProducts.length > 0) {
           for (int i = 0; i < arrCartProducts.length; i++) {
             if (_isSearch) {
               productId = widget.productdata.productId;
+              if (widget.productdata.productType == "variable") {
+                productSize =
+                    widget.productdata.productAttribute[weightIndex].name;
+              } else {
+                productSize = widget.productdata.productQuantityInfo;
+              }
             } else {
               productId = widget.itemProduct.productId;
+              if (widget.itemProduct.productType == "variable") {
+                productSize =
+                    widget.itemProduct.productAttribute[weightIndex].name;
+              } else {
+                productSize = widget.itemProduct.productQuantityInfo;
+              }
             }
             if (productId == arrCartProducts[i]['product_id'].toString()) {
-              setState(() {
-                _isAddedToCart = true;
-                rowId = int.parse(arrCartProducts[i]['row_id'].toString());
-                _itemCount = int.parse(arrCartProducts[i]['qty'].toString());
-
-                quantityController.text = "$_itemCount";
-
-                price = productPrice * _itemCount;
-              });
+              print("productId..." + productId.toString());
+              print("productId..." + productSize.toString());
+              if (productSize == arrCartProducts[i]['size'].toString()) {
+                setState(() {
+                  _isAddedToCart = true;
+                  rowId = int.parse(arrCartProducts[i]['row_id'].toString());
+                  _itemCount = int.parse(arrCartProducts[i]['qty'].toString());
+                  quantityController.text = "$_itemCount";
+                  price = productPrice * _itemCount;
+                });
+              }
             }
           }
           setState(() {
@@ -316,7 +340,7 @@ class _ProductDetails extends State<ProductDetails> {
     final http.Response response = await http.get(
       Uri.parse(Consts.UPDATE_CART + requestParam),
     );
-    //print(Consts.UPDATE_CART + requestParam);
+    print("updateCart///" + Consts.UPDATE_CART + requestParam);
     if (response.statusCode == 200) {
       print(response.body);
       setState(() {
@@ -349,6 +373,8 @@ class _ProductDetails extends State<ProductDetails> {
 
   _addtocartBtnPressed() {
     debugPrint("_addtocartBtnPressed pressed");
+    // print(
+    //     "product size..." + widget.itemProduct.productQuantityInfo.toString());
     if (_isAddedToCart) {
       if (_isSearch == true) {
         if (_itemCount == 0) {
@@ -357,6 +383,7 @@ class _ProductDetails extends State<ProductDetails> {
           _updateCart(widget.productdata.productId, _itemCount);
         }
       } else {
+        print("Row in remove..." + _itemCount.toString());
         if (_itemCount == 0) {
           _handleRemove(widget.itemProduct.productId);
         } else {
@@ -364,33 +391,49 @@ class _ProductDetails extends State<ProductDetails> {
         }
       }
     } else {
+      print("isSearch...clicked");
+      print("isSearch..." + _isSearch.toString());
       if (_isSearch) {
         //print("_search..." + _isSearch.toString());
         //newly try....when does not take the click on variable data
         if (widget.productdata.productType == "variable") {
           //print("_search..." + price.toString());
-          _handleAddCart(widget.productdata.productId,
-              widget.productdata.productTitle, price.toString());
+          _handleAddCart(
+              widget.productdata.productId,
+              widget.productdata.productTitle,
+              price.toString(),
+              widget.productdata.productAttribute[weightIndex].name.toString());
         } else {
-          _handleAddCart(widget.productdata.productId,
-              widget.productdata.productTitle, widget.productdata.productPrice);
+          _handleAddCart(
+              widget.productdata.productId,
+              widget.productdata.productTitle,
+              widget.productdata.productPrice,
+              widget.productdata.productQuantityInfo.toString());
         }
       } else {
         // print("_search..." + _isSearch.toString());
         // print("_search..." + widget.itemProduct.toString());
         //newly try....when does not take the click on variable data
         if (widget.itemProduct.productType == "variable") {
-          _handleAddCart(widget.itemProduct.productId,
-              widget.itemProduct.productTitle, price.toString());
+          _handleAddCart(
+              widget.itemProduct.productId,
+              widget.itemProduct.productTitle,
+              price.toString(),
+              widget.itemProduct.productAttribute[weightIndex].name.toString());
         } else {
-          _handleAddCart(widget.itemProduct.productId,
-              widget.itemProduct.productTitle, widget.itemProduct.productPrice);
+          _handleAddCart(
+              widget.itemProduct.productId,
+              widget.itemProduct.productTitle,
+              widget.itemProduct.productPrice,
+              widget.itemProduct.productQuantityInfo.toString());
         }
       }
     }
   }
 
   _handleRemove(String productId) async {
+    print("Row in remove...");
+    print("Row in remove..." + rowId.toString());
     prefs = await SharedPreferences.getInstance();
     var user_id = prefs.getString('user_id');
 
@@ -400,10 +443,16 @@ class _ProductDetails extends State<ProductDetails> {
     var requestParam = "?";
     requestParam += "user_id=" + user_id;
     requestParam += "&product_id=" + productId;
-    //print(Uri.parse(Consts.DELETE_CART_FROM_DETAILS + requestParam));
+    requestParam += "&row_id=" + rowId.toString();
+
     final http.Response response = await http.get(
-      Uri.parse(Consts.DELETE_CART_FROM_DETAILS + requestParam),
+      Uri.parse(Consts.DELETE_CART + requestParam),
     );
+    // final http.Response response = await http.get(
+    //   Uri.parse(Consts.DELETE_CART_FROM_DETAILS + requestParam),
+    // );
+    print("remove api..." +
+        Uri.parse(Consts.DELETE_CART_FROM_DETAILS + requestParam).toString());
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
       var serverCode = responseData['status'];
@@ -1235,7 +1284,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                         MediaQuery.of(context)
                                                                 .size
                                                                 .width *
-                                                            0.3,
+                                                            0.35,
                                                     width:
                                                         MediaQuery.of(context)
                                                             .size
@@ -1243,6 +1292,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                     child: ListView.builder(
                                                         scrollDirection:
                                                             Axis.horizontal,
+                                                        shrinkWrap: true,
                                                         itemCount: widget
                                                             .itemProduct
                                                             .productAttribute
@@ -1260,7 +1310,17 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       .text
                                                                       .toString());
                                                               //widget.itemProduct.
+
                                                               setState(() {
+                                                                showAddToCArt(
+                                                                    widget
+                                                                        .itemProduct
+                                                                        .productAttribute[
+                                                                            index]
+                                                                        .name
+                                                                        .toString(),
+                                                                    index);
+                                                                //_handleFetchCart();
                                                                 if (quantityController
                                                                         .text
                                                                         .toString() ==
@@ -1289,12 +1349,21 @@ class _ProductDetails extends State<ProductDetails> {
                                                                         index]
                                                                     .productPrice
                                                                     .toString());
+                                                                print('Price...' +
+                                                                    price
+                                                                        .toString());
+                                                                print('product Price...' +
+                                                                    productPrice
+                                                                        .toString());
                                                                 colorchange = double.parse(widget
                                                                     .itemProduct
                                                                     .productAttribute[
                                                                         index]
                                                                     .productPrice
                                                                     .toString());
+                                                                // print("ColorChange..." +
+                                                                //     colorchange
+                                                                //         .toString());
                                                                 // colorchange =
                                                                 //     true;
                                                               });
@@ -1392,12 +1461,14 @@ class _ProductDetails extends State<ProductDetails> {
                                                         ? ListView.builder(
                                                             scrollDirection:
                                                                 Axis.horizontal,
+                                                            shrinkWrap: true,
                                                             itemCount: widget
                                                                 .productdata
                                                                 .productAttribute
                                                                 .length,
-                                                            itemBuilder: (context,
-                                                                int index) {
+                                                            itemBuilder:
+                                                                (context,
+                                                                    int index) {
                                                               return InkWell(
                                                                 onTap: () {
                                                                   print("Index..." +
@@ -1407,6 +1478,14 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       quantityController
                                                                           .text
                                                                           .toString());
+                                                                  showAddToCArt(
+                                                                      widget
+                                                                          .productdata
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .name
+                                                                          .toString(),
+                                                                      index);
                                                                   //widget.itemProduct.
                                                                   setState(() {
                                                                     if (quantityController
@@ -1431,6 +1510,8 @@ class _ProductDetails extends State<ProductDetails> {
                                                                     print("Index...1.." +
                                                                         price
                                                                             .toString());
+                                                                    weightIndex =
+                                                                        index;
                                                                     productPrice = double.parse(widget
                                                                         .productdata
                                                                         .productAttribute[
@@ -1443,6 +1524,9 @@ class _ProductDetails extends State<ProductDetails> {
                                                                             index]
                                                                         .productPrice
                                                                         .toString());
+                                                                    // print("ColorChange..." +
+                                                                    //     colorchange
+                                                                    //         .toString());
                                                                     print("Index...1.." +
                                                                         productPrice
                                                                             .toString());
@@ -1520,6 +1604,8 @@ class _ProductDetails extends State<ProductDetails> {
                                                             ? ListView.builder(
                                                                 scrollDirection: Axis
                                                                     .horizontal,
+                                                                shrinkWrap:
+                                                                    true,
                                                                 itemCount: widget
                                                                     .itemProduct
                                                                     .productAttribute
@@ -1539,6 +1625,13 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       //     (double.parse(widget.productdata.productAttribute[index].productPrice.toString())
                                                                       //         .toString()));
                                                                       //widget.itemProduct.
+                                                                      showAddToCArt(
+                                                                          widget
+                                                                              .itemProduct
+                                                                              .productAttribute[index]
+                                                                              .name
+                                                                              .toString(),
+                                                                          index);
                                                                       setState(
                                                                           () {
                                                                         if (quantityController.text.toString() ==
@@ -1552,7 +1645,8 @@ class _ProductDetails extends State<ProductDetails> {
                                                                           price =
                                                                               double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
                                                                         }
-
+                                                                        weightIndex =
+                                                                            index;
                                                                         // productPrice =
                                                                         //     price;
                                                                         productPrice = double.parse(widget
@@ -1565,6 +1659,9 @@ class _ProductDetails extends State<ProductDetails> {
                                                                             .productAttribute[index]
                                                                             .productPrice
                                                                             .toString());
+                                                                        // print("ColorChange..." +
+                                                                        //     colorchange.toString());
+
                                                                         print("Index...1.." +
                                                                             productPrice.toString());
                                                                         // colorchange =
@@ -1621,9 +1718,10 @@ class _ProductDetails extends State<ProductDetails> {
                                                                   );
                                                                 })
                                                             : ListView.builder(
-                                                                scrollDirection:
-                                                                    Axis
-                                                                        .horizontal,
+                                                                scrollDirection: Axis
+                                                                    .horizontal,
+                                                                shrinkWrap:
+                                                                    true,
                                                                 itemCount: widget
                                                                     .productdata
                                                                     .productAttribute
@@ -1642,6 +1740,13 @@ class _ProductDetails extends State<ProductDetails> {
                                                                               .toString());
 
                                                                       //widget.itemProduct.
+                                                                      showAddToCArt(
+                                                                          widget
+                                                                              .productdata
+                                                                              .productAttribute[index]
+                                                                              .name
+                                                                              .toString(),
+                                                                          index);
                                                                       setState(
                                                                           () {
                                                                         if (quantityController.text.toString() ==
@@ -1655,7 +1760,8 @@ class _ProductDetails extends State<ProductDetails> {
                                                                           price =
                                                                               double.parse(widget.productdata.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
                                                                         }
-
+                                                                        weightIndex =
+                                                                            index;
                                                                         // productPrice =
                                                                         //     price;
                                                                         productPrice = double.parse(widget
@@ -1668,6 +1774,8 @@ class _ProductDetails extends State<ProductDetails> {
                                                                             .productAttribute[index]
                                                                             .productPrice
                                                                             .toString());
+                                                                        print("ColorChange..." +
+                                                                            colorchange.toString());
                                                                         print("Index...1.." +
                                                                             productPrice.toString());
                                                                         // colorchange =
@@ -2110,5 +2218,96 @@ class _ProductDetails extends State<ProductDetails> {
   setQuantity() {
     showCustomToast("${quantityController.text}");
     setState(() {});
+  }
+
+  void showAddToCArt(String size, int index) {
+    print("list price...");
+    print("list price..." + size.toString());
+    print("list price..." + arrCartProducts.length.toString());
+    var productId1;
+    if (arrCartProducts.length > 0) {
+      for (int i = 0; i < arrCartProducts.length; i++) {
+        if (_isSearch) {
+          productId1 = widget.productdata.productId;
+          print("list price..serach." + productId1.toString());
+        } else {
+          productId1 = widget.itemProduct.productId;
+          print("list price..." + productId1.toString());
+          //print("list price..." + arrCartProducts[i].toString());
+        }
+        if (productId1 == arrCartProducts[i]['product_id'].toString()) {
+          print("list price...00.." + arrCartProducts[i]['size'].toString());
+          if (size == arrCartProducts[i]['size'].toString()) {
+            print("list price...0." + arrCartProducts[i]['size'].toString());
+
+            setState(() {
+              _isAddedToCart = true;
+              rowId = int.parse(arrCartProducts[i]['row_id'].toString());
+              print("row id list price...0." +
+                  arrCartProducts[i]['row_id'].toString());
+              _itemCount = int.parse(arrCartProducts[i]['qty'].toString());
+              quantityController.text = "$_itemCount";
+              price = productPrice * _itemCount;
+              weightIndex = index;
+              //_handleFetchCart();
+
+              if (quantityController.text.toString() == "0") {
+                price = double.parse(widget
+                    .itemProduct.productAttribute[index].productPrice
+                    .toString());
+              } else {
+                price = double.parse(widget
+                        .itemProduct.productAttribute[index].productPrice
+                        .toString()) *
+                    int.parse(quantityController.text);
+              }
+
+              productPrice = double.parse(widget
+                  .itemProduct.productAttribute[index].productPrice
+                  .toString());
+              print("price..." + price.toString());
+              print("product price..." + productPrice.toString());
+              _handleFetchCart();
+            });
+          } else {
+            print("price..." + _isAddedToCart.toString());
+            setState(() {
+              _isAddedToCart = false;
+              weightIndex = index;
+              quantity = 1;
+              _itemCount = quantity;
+              quantityController.text = "$_itemCount";
+              //_handleFetchCart();
+
+              if (quantityController.text.toString() == "0") {
+                price = double.parse(widget
+                    .itemProduct.productAttribute[index].productPrice
+                    .toString());
+              } else {
+                price = double.parse(widget
+                        .itemProduct.productAttribute[index].productPrice
+                        .toString()) *
+                    int.parse(quantityController.text);
+              }
+
+              productPrice = double.parse(widget
+                  .itemProduct.productAttribute[index].productPrice
+                  .toString());
+              print("price..." + price.toString());
+              print("product price..." + productPrice.toString());
+              _handleFetchCart();
+            });
+          }
+        }
+      }
+      setState(() {
+        quantity = arrCartProducts.length;
+      });
+      Variables.itemCount = quantity;
+    } else {
+      setState(() {
+        quantityController.text = "$_itemCount";
+      });
+    }
   }
 }
