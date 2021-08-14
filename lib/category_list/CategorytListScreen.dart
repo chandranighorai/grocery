@@ -52,7 +52,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   bool isAgent;
   int quantity;
   String deviceID;
-  Timer cartVal;
+  //Timer cartVal;
   //AsyncMemoizer _memoizer;
 
   Future<CategoryModel> _getCategories() async {
@@ -299,6 +299,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   }
 
   _gotoShoppinCartScreen() async {
+    print("OpenCart......");
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     var user_id = sharedPreference.getString('user_id');
     if (user_id == null) {
@@ -311,10 +312,12 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
           builder: (context) => ShoppingCartScreen(),
         ),
       );
+      print("OpenCart..." + openCart.toString());
       if (openCart != null && openCart == "refresh cart") {
         debugPrint("Returned data $openCart");
-        _handleFetchCart();
-        setState(() {});
+        setState(() {
+          _handleFetchCart();
+        });
       }
     }
   }
@@ -343,16 +346,17 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
         if (arrCartProducts.length > 0) {
           setState(() {
             quantity = Variables.itemCount;
+            Variables.itemCount = arrCartProducts.length;
             //Variables.itemCount = arrCartProducts.length;
           });
-          Variables.itemCount = arrCartProducts.length;
         }
       } else {
         print("Else part");
         setState(() {
           quantity = 0;
+          Variables.itemCount = 0;
         });
-        Variables.itemCount = 0;
+        // Variables.itemCount = 0;
       }
     }
   }
@@ -466,12 +470,12 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    cartVal = Timer(new Duration(seconds: 2), () {
-      _updateCart();
-    });
-    if (cartVal.tick == 2) {
-      cartVal.cancel();
-    }
+    // cartVal = Timer(new Duration(seconds: 2), () {
+    //   _updateCart();
+    // });
+    // if (cartVal.tick == 2) {
+    //   cartVal.cancel();
+    // }
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: Navigation(),
@@ -538,7 +542,48 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                           ),
                         ),
                       ),
-                      CategoryList(arrCategories: _arrCategories),
+                      Container(
+                        height: 150,
+                        child: FutureBuilder(
+                            initialData: null,
+                            future: _arrCategories,
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                var categories = snapshot.data.categorydata;
+                                return ListView.separated(
+                                    //key: PageStorageKey(key),
+                                    shrinkWrap: true,
+                                    itemCount: categories.length,
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return Divider(height: 0);
+                                    },
+                                    scrollDirection: Axis.horizontal,
+                                    addAutomaticKeepAlives: false,
+                                    itemBuilder: (context, int index) {
+                                      CategoryData categoryData =
+                                          categories[index];
+                                      print("CatData..." +
+                                          categoryData.toString());
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 12.0),
+                                        child: CategoryItem(
+                                            categoryData: categoryData,
+                                            notifyCart: _updateCart),
+                                      );
+                                    });
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            }),
+                      ),
+                      // CategoryList(
+                      //     arrCategories: _arrCategories,
+                      //     notifyCart: _updateCart),
                       SizedBox(
                         height: 4,
                       ),
@@ -908,12 +953,18 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
             size: 35,
           ),
           onPressed: () {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => Search(),
+            //   ),
+            // );
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => Search(),
               ),
-            );
+            ).then((value) => _updateCart());
           },
         )
       ],
@@ -921,54 +972,54 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   }
 }
 
-class CategoryList extends StatelessWidget {
-  const CategoryList({
-    Key key,
-    @required Future<CategoryModel> arrCategories,
-  })  : _arrCategories = arrCategories,
-        super(key: key);
+// class CategoryList extends StatelessWidget {
+//   CategoryList(
+//       {Key key, @required Future<CategoryModel> arrCategories, notifyCart})
+//       : _arrCategories = arrCategories,
+//         super(key: key);
 
-  final Future<CategoryModel> _arrCategories;
+//   final Future<CategoryModel> _arrCategories;
+//   Function notifyCart;
 
-  @override
-  Widget build(BuildContext context) {
-    print("arrCategories..." + _arrCategories.toString());
-    return Container(
-      height: 150,
-      child: FutureBuilder(
-          initialData: null,
-          future: _arrCategories,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              var categories = snapshot.data.categorydata;
-              return ListView.separated(
-                  key: PageStorageKey(key),
-                  shrinkWrap: true,
-                  itemCount: categories.length,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Divider(height: 0);
-                  },
-                  scrollDirection: Axis.horizontal,
-                  addAutomaticKeepAlives: false,
-                  itemBuilder: (context, int index) {
-                    CategoryData categoryData = categories[index];
-                    print("CatData..." + categoryData.toString());
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: CategoryItem(
-                        categoryData: categoryData,
-                      ),
-                    );
-                  });
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     print("arrCategories..." + _arrCategories.toString());
+//     return Container(
+//       height: 150,
+//       child: FutureBuilder(
+//           initialData: null,
+//           future: _arrCategories,
+//           builder: (BuildContext context, AsyncSnapshot snapshot) {
+//             if (snapshot.hasData) {
+//               var categories = snapshot.data.categorydata;
+//               return ListView.separated(
+//                   key: PageStorageKey(key),
+//                   shrinkWrap: true,
+//                   itemCount: categories.length,
+//                   separatorBuilder: (BuildContext context, int index) {
+//                     return Divider(height: 0);
+//                   },
+//                   scrollDirection: Axis.horizontal,
+//                   addAutomaticKeepAlives: false,
+//                   itemBuilder: (context, int index) {
+//                     CategoryData categoryData = categories[index];
+//                     print("CatData..." + categoryData.toString());
+//                     return Padding(
+//                       padding: const EdgeInsets.only(right: 12.0),
+//                       child: CategoryItem(
+//                           categoryData: categoryData,
+//                           notifyCart: this.notifyCart),
+//                     );
+//                   });
+//             } else {
+//               return Center(
+//                 child: CircularProgressIndicator(),
+//               );
+//             }
+//           }),
+//     );
+//   }
+// }
 
 // class FreshNewItem extends StatelessWidget {
 //    FreshNewItem(

@@ -5,8 +5,10 @@ import '../products/ProductListScreen.dart';
 
 class CategoryItem extends StatefulWidget {
   final CategoryData categoryData;
+  final Function notifyCart;
 
-  const CategoryItem({Key key, this.categoryData}) : super(key: key);
+  const CategoryItem({Key key, this.categoryData, this.notifyCart})
+      : super(key: key);
   @override
   _CategoryItemState createState() => _CategoryItemState();
 }
@@ -20,6 +22,7 @@ class _CategoryItemState extends State<CategoryItem> {
     return InkWell(
       onTap: () {
         print("catId.." + categoryData.catId.toString());
+
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -28,9 +31,11 @@ class _CategoryItemState extends State<CategoryItem> {
               categoryName: categoryData.name,
               searchKeyword: "",
               // isAgent:isAgent,
+              notify: widget.notifyCart,
             ),
           ),
         );
+        //widget.notifyCart();
       },
       child: Column(
         children: [

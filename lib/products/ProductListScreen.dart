@@ -269,6 +269,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
         builder: (context) => ShoppingCartScreen(),
       ),
     );
+    if (openCart != null && openCart == "refresh cart") {
+      debugPrint("Returned data $openCart");
+      setState(() {
+        _handleFetchCart();
+      });
+    }
   }
 
   //======== Fetch Cart ======

@@ -34,6 +34,7 @@ class _ItemShoppingCartState extends State<ItemShoppingCart> {
   var strImageURL =
       "https://cdn.britannica.com/17/196817-050-6A15DAC3/vegetables.jpg";
   bool _callingUpdateApi;
+  bool _deleteRow = false;
 
   @override
   void initState() {
@@ -240,7 +241,10 @@ class _ItemShoppingCartState extends State<ItemShoppingCart> {
                                               icon: Image.asset(
                                                   'images/ic_minus.png'),
                                               onPressed: () {
-                                                DcrBtn();
+                                                DcrBtn(
+                                                    widget
+                                                        .itemShopingCart.row_id,
+                                                    widget.itemIndex);
                                               },
                                             ),
                                           ),
@@ -299,11 +303,17 @@ class _ItemShoppingCartState extends State<ItemShoppingCart> {
     });
   }
 
-  DcrBtn() {
+  DcrBtn(String rowId, int index) {
+    print("Itemcount..." + _itemCount.toString());
     setState(() {
-      _itemCount <= 1 ? _itemCount = 1 : _itemCount--;
-      _productTotal = (double.parse(item.price) * _itemCount);
-      _updateCart(item.product_id, _itemCount);
+      if (_itemCount == 1) {
+        _handleRemove(rowId, index);
+      } else {
+        //_itemCount == 1 ? _itemCount = 1 : _itemCount--;
+        _itemCount--;
+        _productTotal = (double.parse(item.price) * _itemCount);
+        _updateCart(item.product_id, _itemCount);
+      }
     });
   }
   // Widget customerView(){
@@ -311,24 +321,38 @@ class _ItemShoppingCartState extends State<ItemShoppingCart> {
   // }
 
   _handleRemove(String rowId, int index) async {
+    print("rowId..." + rowId.toString());
+    print("rowId..." + index.toString());
+    setState(() {
+      _deleteRow = true;
+    });
     var requestParam = "?";
     requestParam += "row_id=" + rowId;
-    final http.Response response = await http.get(
+    http.Response response = await http.get(
       Uri.parse(Consts.DELETE_CART + requestParam),
     );
+    print("rowId..." + response.statusCode.toString());
+    print("rowId..." + response.body.toString());
+
     if (response.statusCode == 200) {
-      setState(() {
-        _callingUpdateApi = false;
-      });
       var responseData = jsonDecode(response.body);
       var serverCode = responseData['code'];
       if (serverCode == "200") {
         debugPrint("delete $index");
-        widget.delItem(widget.itemIndex, rowId);
+        var serverMessage = responseData['message'];
+        //Toast.
+        showCustomToast(serverMessage);
+        widget.delItem(index, rowId);
+        setState(() {
+          _callingUpdateApi = false;
+          _deleteRow = false;
+        });
+        //widget.delItem(widget.itemIndex, rowId);
       }
-
-      var serverMessage = responseData['message'];
-      showCustomToast(serverMessage);
-    } else {}
+    } else {
+      setState(() {
+        _callingUpdateApi = true;
+      });
+    }
   }
 }

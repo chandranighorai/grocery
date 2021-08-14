@@ -676,7 +676,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             primaryColor: Colors.redAccent,
             primaryColorDark: Colors.red,
           ),
-          child: new PasswordField(
+          child: PasswordField(
             color: Colors.deepPurple,
             hasFloatingPlaceholder: false,
             // border: OutlineInputBorder(
@@ -705,7 +705,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             //       userPassword = value;
             //     },
             //   );
-            // }
+            // },
             onSubmit: (value) {
               print("password..." + value.toString());
               setState(
@@ -756,7 +756,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: TextButton(
             onPressed: () {
               loginUser(context);
-              ;
+              //;
             },
             child: Text(
               "Submit",

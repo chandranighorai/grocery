@@ -952,7 +952,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     _handleFetchCart();
   }
 
-  deleteItemFromList(int index, String rowID) async {
+  deleteItemFromList(int index, String rowID) {
     debugPrint("deletedd $index called ${mProductList[index].name}");
 
     // mProductList.removeAt(index);

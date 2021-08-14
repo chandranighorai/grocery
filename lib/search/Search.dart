@@ -135,7 +135,7 @@ class _SearchScreenState extends State<Search> {
       );
 
       debugPrint("URl ${Uri.parse(Consts.PRODUCT_LIST + requestParam)}");
-      print("response DAta..statuscode...0" + response.body.length.toString());
+      //print("response DAta..statuscode...0" + response.body.length.toString());
       print("response DAta..statuscode...1" + response.body.toString());
       if (response.statusCode == 200) {
         var responseData = jsonDecode(response.body);

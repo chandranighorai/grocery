@@ -177,10 +177,21 @@ class _ProductDetails extends State<ProductDetails> {
     });
   }
 
-  Future<Null> _handleAddCart(String productId, String productTitle,
-      String productPrice, String productQty) async {
+  Future<Null> _handleAddCart(
+      String productId,
+      String productTitle,
+      String productPrice,
+      String productQty,
+      String productRegularPrice) async {
     prefs = await SharedPreferences.getInstance();
     print("isSearch...add cart Click...");
+    print("ID..." + productId.toString());
+    print("ID..." + productTitle.toString());
+    print("ID..." + productPrice.toString());
+    print("ID..." + productQty.toString());
+    print("ID..." + productRegularPrice.toString());
+
+    //print("isSearch...add cart Click..."+_itemCount.toString());
     var user_id = prefs.getString('user_id');
 
     if (user_id == null) {
@@ -204,6 +215,8 @@ class _ProductDetails extends State<ProductDetails> {
       requestParam += "&price=" + productPrice;
       requestParam += "&quantity=" + _itemCount.toString();
       requestParam += "&size=" + productQty.toString();
+      requestParam += "&regular_price=" + productRegularPrice.toString();
+
       print(
           "add cart.." + Uri.parse(Consts.ADD_CART + requestParam).toString());
 
@@ -228,8 +241,8 @@ class _ProductDetails extends State<ProductDetails> {
             _isAddedToCart = true;
             quantity += 1;
             rowId = int.parse(responseData['row_id'].toString());
+            Variables.itemCount = quantity;
           });
-          Variables.itemCount = quantity;
         }
 
         var serverMessage = responseData['message'];
@@ -240,6 +253,7 @@ class _ProductDetails extends State<ProductDetails> {
         _callingUpdateApi = false;
       });
     }
+    _handleFetchCart();
   }
 
   Future<Null> _handleFetchCart() async {
@@ -284,10 +298,15 @@ class _ProductDetails extends State<ProductDetails> {
             } else {
               productId = widget.itemProduct.productId;
               if (widget.itemProduct.productType == "variable") {
-                productSize =
-                    widget.itemProduct.productAttribute[weightIndex].name;
+                setState(() {
+                  productSize =
+                      widget.itemProduct.productAttribute[weightIndex].name;
+                  print("productSize...000" + productSize.toString());
+                });
               } else {
-                productSize = widget.itemProduct.productQuantityInfo;
+                setState(() {
+                  productSize = widget.itemProduct.productQuantityInfo;
+                });
               }
             }
             if (productId == arrCartProducts[i]['product_id'].toString()) {
@@ -306,8 +325,9 @@ class _ProductDetails extends State<ProductDetails> {
           }
           setState(() {
             quantity = arrCartProducts.length;
+            Variables.itemCount = quantity;
           });
-          Variables.itemCount = quantity;
+          //Variables.itemCount = quantity;
         } else {
           setState(() {
             quantityController.text = "$_itemCount";
@@ -321,15 +341,16 @@ class _ProductDetails extends State<ProductDetails> {
           _isAddedToCart = false;
           price = productPrice * _itemCount;
           _callingUpdateApi = false;
-
           quantityController.text = "$_itemCount";
+          Variables.itemCount = quantity;
         });
-        Variables.itemCount = quantity;
+        //Variables.itemCount = quantity;
       }
     }
   }
 
   _updateCart(String productId, int quantity) async {
+    print("Quantity..." + quantity.toString());
     if (quantity <= 0) {}
     setState(() {
       _callingUpdateApi = true;
@@ -402,13 +423,17 @@ class _ProductDetails extends State<ProductDetails> {
               widget.productdata.productId,
               widget.productdata.productTitle,
               price.toString(),
-              widget.productdata.productAttribute[weightIndex].name.toString());
+              widget.productdata.productAttribute[weightIndex].name.toString(),
+              widget
+                  .productdata.productAttribute[weightIndex].productRegularPrice
+                  .toString());
         } else {
           _handleAddCart(
               widget.productdata.productId,
               widget.productdata.productTitle,
               widget.productdata.productPrice,
-              widget.productdata.productQuantityInfo.toString());
+              widget.productdata.productQuantityInfo.toString(),
+              widget.productdata.productRegularPrice.toString());
         }
       } else {
         // print("_search..." + _isSearch.toString());
@@ -416,16 +441,20 @@ class _ProductDetails extends State<ProductDetails> {
         //newly try....when does not take the click on variable data
         if (widget.itemProduct.productType == "variable") {
           _handleAddCart(
-              widget.itemProduct.productId,
-              widget.itemProduct.productTitle,
-              price.toString(),
-              widget.itemProduct.productAttribute[weightIndex].name.toString());
+            widget.itemProduct.productId,
+            widget.itemProduct.productTitle,
+            price.toString(),
+            widget.itemProduct.productAttribute[weightIndex].name.toString(),
+            widget.itemProduct.productAttribute[weightIndex].productRegularPrice
+                .toString(),
+          );
         } else {
           _handleAddCart(
               widget.itemProduct.productId,
               widget.itemProduct.productTitle,
               widget.itemProduct.productPrice,
-              widget.itemProduct.productQuantityInfo.toString());
+              widget.itemProduct.productQuantityInfo.toString(),
+              widget.itemProduct.productRegularPrice.toString());
         }
       }
     }
@@ -1309,17 +1338,23 @@ class _ProductDetails extends State<ProductDetails> {
                                                                   quantityController
                                                                       .text
                                                                       .toString());
+                                                              showAddToCArt(
+                                                                  widget
+                                                                      .itemProduct
+                                                                      .productAttribute[
+                                                                          index]
+                                                                      .name
+                                                                      .toString(),
+                                                                  index,
+                                                                  double.parse(widget
+                                                                      .itemProduct
+                                                                      .productAttribute[
+                                                                          index]
+                                                                      .productPrice
+                                                                      .toString()));
                                                               //widget.itemProduct.
 
                                                               setState(() {
-                                                                showAddToCArt(
-                                                                    widget
-                                                                        .itemProduct
-                                                                        .productAttribute[
-                                                                            index]
-                                                                        .name
-                                                                        .toString(),
-                                                                    index);
                                                                 //_handleFetchCart();
                                                                 if (quantityController
                                                                         .text
@@ -1485,7 +1520,13 @@ class _ProductDetails extends State<ProductDetails> {
                                                                               index]
                                                                           .name
                                                                           .toString(),
-                                                                      index);
+                                                                      index,
+                                                                      double.parse(widget
+                                                                          .productdata
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .productPrice
+                                                                          .toString()));
                                                                   //widget.itemProduct.
                                                                   setState(() {
                                                                     if (quantityController
@@ -1628,10 +1669,16 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       showAddToCArt(
                                                                           widget
                                                                               .itemProduct
-                                                                              .productAttribute[index]
+                                                                              .productAttribute[
+                                                                                  index]
                                                                               .name
                                                                               .toString(),
-                                                                          index);
+                                                                          index,
+                                                                          double.parse(widget
+                                                                              .itemProduct
+                                                                              .productAttribute[index]
+                                                                              .productPrice
+                                                                              .toString()));
                                                                       setState(
                                                                           () {
                                                                         if (quantityController.text.toString() ==
@@ -1743,10 +1790,16 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       showAddToCArt(
                                                                           widget
                                                                               .productdata
-                                                                              .productAttribute[index]
+                                                                              .productAttribute[
+                                                                                  index]
                                                                               .name
                                                                               .toString(),
-                                                                          index);
+                                                                          index,
+                                                                          double.parse(widget
+                                                                              .productdata
+                                                                              .productAttribute[index]
+                                                                              .productPrice
+                                                                              .toString()));
                                                                       setState(
                                                                           () {
                                                                         if (quantityController.text.toString() ==
@@ -2220,94 +2273,146 @@ class _ProductDetails extends State<ProductDetails> {
     setState(() {});
   }
 
-  void showAddToCArt(String size, int index) {
-    print("list price...");
-    print("list price..." + size.toString());
-    print("list price..." + arrCartProducts.length.toString());
-    var productId1;
-    if (arrCartProducts.length > 0) {
-      for (int i = 0; i < arrCartProducts.length; i++) {
-        if (_isSearch) {
-          productId1 = widget.productdata.productId;
-          print("list price..serach." + productId1.toString());
-        } else {
-          productId1 = widget.itemProduct.productId;
-          print("list price..." + productId1.toString());
-          //print("list price..." + arrCartProducts[i].toString());
-        }
-        if (productId1 == arrCartProducts[i]['product_id'].toString()) {
-          print("list price...00.." + arrCartProducts[i]['size'].toString());
-          if (size == arrCartProducts[i]['size'].toString()) {
-            print("list price...0." + arrCartProducts[i]['size'].toString());
-
-            setState(() {
-              _isAddedToCart = true;
-              rowId = int.parse(arrCartProducts[i]['row_id'].toString());
-              print("row id list price...0." +
-                  arrCartProducts[i]['row_id'].toString());
-              _itemCount = int.parse(arrCartProducts[i]['qty'].toString());
-              quantityController.text = "$_itemCount";
-              price = productPrice * _itemCount;
-              weightIndex = index;
-              //_handleFetchCart();
-
-              if (quantityController.text.toString() == "0") {
-                price = double.parse(widget
-                    .itemProduct.productAttribute[index].productPrice
-                    .toString());
-              } else {
-                price = double.parse(widget
-                        .itemProduct.productAttribute[index].productPrice
-                        .toString()) *
-                    int.parse(quantityController.text);
-              }
-
-              productPrice = double.parse(widget
-                  .itemProduct.productAttribute[index].productPrice
-                  .toString());
-              print("price..." + price.toString());
-              print("product price..." + productPrice.toString());
-              _handleFetchCart();
-            });
+  void showAddToCArt(String size, int index, double productProce) {
+    // print("list price...");
+    print("productSize..." + size.toString());
+    print("productSize..." + productProce.toString());
+    print("productSize...0" + Variables.itemCount.toString());
+    // print("list price..." + arrCartProducts.length.toString());
+    String proId;
+    if (_isSearch) {
+      proId = widget.productdata.productId;
+    } else {
+      proId = widget.itemProduct.productId;
+    }
+    if (Variables.itemCount == 0) {
+      print("productSizee..." + productProce.toString());
+      setState(() {
+        weightIndex = index;
+        price = productProce;
+        colorchange = productProce;
+        _handleFetchCart();
+      });
+    } else {
+      if (arrCartProducts.length > 0) {
+        for (int i = 0; i < arrCartProducts.length; i++) {
+          if (proId == arrCartProducts[i]['product_id'].toString()) {
+            if (size == arrCartProducts[i]['size'].toString()) {
+              setState(() {
+                quantityController.text = arrCartProducts[i]['qty'];
+              });
+            } else {
+              setState(() {
+                setState(() {
+                  quantityController.text = "1";
+                });
+              });
+            }
           } else {
-            print("price..." + _isAddedToCart.toString());
             setState(() {
-              _isAddedToCart = false;
-              weightIndex = index;
-              quantity = 1;
-              _itemCount = quantity;
-              quantityController.text = "$_itemCount";
-              //_handleFetchCart();
-
-              if (quantityController.text.toString() == "0") {
-                price = double.parse(widget
-                    .itemProduct.productAttribute[index].productPrice
-                    .toString());
-              } else {
-                price = double.parse(widget
-                        .itemProduct.productAttribute[index].productPrice
-                        .toString()) *
-                    int.parse(quantityController.text);
-              }
-
-              productPrice = double.parse(widget
-                  .itemProduct.productAttribute[index].productPrice
-                  .toString());
-              print("price..." + price.toString());
-              print("product price..." + productPrice.toString());
-              _handleFetchCart();
+              quantityController.text = "1";
             });
           }
         }
       }
+      // else {
+      //   print("opopop.....");
+      //   print("productSize...0" + size.toString());
+      //   setState(() {
+      //     price = productProce;
+      //     colorchange = productProce;
+      //   });
+      // }
       setState(() {
-        quantity = arrCartProducts.length;
-      });
-      Variables.itemCount = quantity;
-    } else {
-      setState(() {
-        quantityController.text = "$_itemCount";
+        weightIndex = index;
+        _handleFetchCart();
       });
     }
+
+    // var productId1;
+    // if (arrCartProducts.length > 0) {
+    //   for (int i = 0; i < arrCartProducts.length; i++) {
+    //     if (_isSearch) {
+    //       productId1 = widget.productdata.productId;
+    //       print("list price..serach." + productId1.toString());
+    //     } else {
+    //       productId1 = widget.itemProduct.productId;
+    //       print("list price..." + productId1.toString());
+    //       //print("list price..." + arrCartProducts[i].toString());
+    //     }
+    //     if (productId1 == arrCartProducts[i]['product_id'].toString()) {
+    //       print("list price...00.." + arrCartProducts[i]['size'].toString());
+    //       if (size == arrCartProducts[i]['size'].toString()) {
+    //         print("list price...0." + arrCartProducts[i]['size'].toString());
+
+    //         setState(() {
+    //           _isAddedToCart = true;
+    //           rowId = int.parse(arrCartProducts[i]['row_id'].toString());
+    //           print("row id list price...0." +
+    //               arrCartProducts[i]['row_id'].toString());
+    //           _itemCount = int.parse(arrCartProducts[i]['qty'].toString());
+    //           quantityController.text = "$_itemCount";
+    //           price = productPrice * _itemCount;
+    //           weightIndex = index;
+    //           //_handleFetchCart();
+
+    //           if (quantityController.text.toString() == "0") {
+    //             price = double.parse(widget
+    //                 .itemProduct.productAttribute[index].productPrice
+    //                 .toString());
+    //           } else {
+    //             price = double.parse(widget
+    //                     .itemProduct.productAttribute[index].productPrice
+    //                     .toString()) *
+    //                 int.parse(quantityController.text);
+    //           }
+
+    //           productPrice = double.parse(widget
+    //               .itemProduct.productAttribute[index].productPrice
+    //               .toString());
+    //           print("price..." + price.toString());
+    //           print("product price..." + productPrice.toString());
+    //           _handleFetchCart();
+    //         });
+    //       } else {
+    //         print("price..." + _isAddedToCart.toString());
+    //         setState(() {
+    //           _isAddedToCart = false;
+    //           weightIndex = index;
+    //           quantity = 1;
+    //           _itemCount = quantity;
+    //           quantityController.text = "$_itemCount";
+    //           //_handleFetchCart();
+
+    //           if (quantityController.text.toString() == "0") {
+    //             price = double.parse(widget
+    //                 .itemProduct.productAttribute[index].productPrice
+    //                 .toString());
+    //           } else {
+    //             price = double.parse(widget
+    //                     .itemProduct.productAttribute[index].productPrice
+    //                     .toString()) *
+    //                 int.parse(quantityController.text);
+    //           }
+
+    //           productPrice = double.parse(widget
+    //               .itemProduct.productAttribute[index].productPrice
+    //               .toString());
+    //           print("price..." + price.toString());
+    //           print("product price..." + productPrice.toString());
+    //           _handleFetchCart();
+    //         });
+    //       }
+    //     }
+    //   }
+    //   setState(() {
+    //     quantity = arrCartProducts.length;
+    //     Variables.itemCount = quantity;
+    //   });
+    // } else {
+    //   setState(() {
+    //     quantityController.text = "$_itemCount";
+    //   });
+    // }
   }
 }

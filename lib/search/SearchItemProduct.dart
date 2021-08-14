@@ -131,10 +131,19 @@ class _ItemProductState extends State<SearchItemProduct> {
         ? itemProduct.productAttribute[0].productPrice
         : itemProduct.productPrice;
 
+    var regularPrice = (itemProduct.productType == "variable")
+        ? itemProduct.productAttribute[0].productRegularPrice
+        : itemProduct.productRegularPrice;
+
     // var regularPrice = (itemProduct.productType == "variable")
     //     ? itemProduct.productAttribute[0].productRegularPrice
     //     : itemProduct.productRegularPrice;
     print(user_id);
+    print("user_id..." + user_id.toString());
+    print("user_id..." + deviceID.toString());
+    print("user_id..." + itemProduct.productId.toString());
+    print("user_id..." + itemProduct.productTitle.trim().toString());
+    print("user_id..." + productPrice.toString());
 
     var requestParam = "?";
     requestParam += "user_id=" + user_id;
@@ -142,6 +151,7 @@ class _ItemProductState extends State<SearchItemProduct> {
     requestParam += "&product_id=" + itemProduct.productId;
     requestParam += "&name=" + itemProduct.productTitle.trim();
     requestParam += "&price=" + productPrice;
+    requestParam += "&regular_price=" + regularPrice;
     requestParam += "&quantity=1";
     print(Uri.parse(Consts.ADD_CART + requestParam));
     print("requestParam.11.." + requestParam.toString());
