@@ -13,13 +13,15 @@ class ItemShoppingCart extends StatefulWidget {
   final Function() notifyParent;
   final Function(int index, String rowId) delItem;
   final int itemIndex;
+  final Function(bool rl) rowLoad;
 
   const ItemShoppingCart(
       {Key key,
       this.itemShopingCart,
       this.notifyParent,
       this.delItem,
-      this.itemIndex})
+      this.itemIndex,
+      this.rowLoad})
       : super(key: key);
   @override
   _ItemShoppingCartState createState() => _ItemShoppingCartState();
@@ -203,7 +205,7 @@ class _ItemShoppingCartState extends State<ItemShoppingCart> {
                                             ),
                                           ),
                                           Text(
-                                            "$_productTotal",
+                                            "${_productTotal.toStringAsFixed(4)}",
                                             // item.price,
                                             style: TextStyle(
                                               fontSize: 16,
@@ -321,11 +323,13 @@ class _ItemShoppingCartState extends State<ItemShoppingCart> {
   // }
 
   _handleRemove(String rowId, int index) async {
+    var serverMessage;
     print("rowId..." + rowId.toString());
     print("rowId..." + index.toString());
     setState(() {
       _deleteRow = true;
     });
+    widget.rowLoad(_deleteRow);
     var requestParam = "?";
     requestParam += "row_id=" + rowId;
     http.Response response = await http.get(
@@ -338,20 +342,26 @@ class _ItemShoppingCartState extends State<ItemShoppingCart> {
       var responseData = jsonDecode(response.body);
       var serverCode = responseData['code'];
       if (serverCode == "200") {
+        widget.delItem(index, rowId);
         debugPrint("delete $index");
-        var serverMessage = responseData['message'];
+        serverMessage = responseData['message'];
         //Toast.
         showCustomToast(serverMessage);
-        widget.delItem(index, rowId);
+        // widget.delItem(index, rowId);
+        widget.rowLoad(false);
         setState(() {
           _callingUpdateApi = false;
           _deleteRow = false;
+          //widget.rowLoad(false);
         });
+
         //widget.delItem(widget.itemIndex, rowId);
       }
     } else {
       setState(() {
         _callingUpdateApi = true;
+        widget.rowLoad(false);
+        showCustomToast(serverMessage);
       });
     }
   }

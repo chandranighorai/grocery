@@ -31,6 +31,7 @@ import '../util/Consts.dart';
 import '../util/Util.dart';
 import 'OfferSliderModel.dart';
 import '../search/Search.dart';
+//import 'package:pull_to_refresh/pull_to_refresh.dart';
 //import 'package:async/async.dart';
 
 class CategorytListScreen extends StatefulWidget {
@@ -489,192 +490,212 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: <Widget>[
-                    // The containers in the background
-                    shapeComponet(context, Consts.shapeHeight),
-                    // The card widget with top padding,
-                    // incase if you wanted bottom padding to work,
-                    // set the `alignment` of container to Alignment.bottomCenter
-                    new Container(
-                      alignment: Alignment.topCenter,
-                      padding: new EdgeInsets.only(
-                        top: Consts.shapeHeight * .65,
-                        right: 0.0,
-                        left: 0.0,
-                      ),
+          child: RefreshIndicator(
+            // ignore: missing_return
+            onRefresh: () {
+              print("refresh indicator");
+              return Future.delayed(Duration(seconds: 1), () {
+                setState(() {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      new MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              new CategorytListScreen()),
+                      (Route<dynamic> route) => false);
 
-                      child: imgList.length > 0
-                          ? offerSlider()
-                          : Container(
-                              height: 100,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
-                      // ),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 18.0,
-                    right: 8.0,
-                    top: 10,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 12,
+                  //_getCategories();
+                  //_freshProductList = _getFreshProducts();
+                  //Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (BuildContext context)=> CategorytListScreen()),(Route<dynamic> route)=>false); (route) => false)
+                });
+              });
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: <Widget>[
+                      // The containers in the background
+                      shapeComponet(context, Consts.shapeHeight),
+                      // The card widget with top padding,
+                      // incase if you wanted bottom padding to work,
+                      // set the `alignment` of container to Alignment.bottomCenter
+                      new Container(
+                        alignment: Alignment.topCenter,
+                        padding: new EdgeInsets.only(
+                          top: Consts.shapeHeight * .65,
+                          right: 0.0,
+                          left: 0.0,
                         ),
-                        child: Text(
-                          "Categories",
-                          style: TextStyle(
-                            color: AppColors.categoryTextColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 150,
-                        child: FutureBuilder(
-                            initialData: null,
-                            future: _arrCategories,
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasData) {
-                                var categories = snapshot.data.categorydata;
-                                return ListView.separated(
-                                    //key: PageStorageKey(key),
-                                    shrinkWrap: true,
-                                    itemCount: categories.length,
-                                    separatorBuilder:
-                                        (BuildContext context, int index) {
-                                      return Divider(height: 0);
-                                    },
-                                    scrollDirection: Axis.horizontal,
-                                    addAutomaticKeepAlives: false,
-                                    itemBuilder: (context, int index) {
-                                      CategoryData categoryData =
-                                          categories[index];
-                                      print("CatData..." +
-                                          categoryData.toString());
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 12.0),
-                                        child: CategoryItem(
-                                            categoryData: categoryData,
-                                            notifyCart: _updateCart),
-                                      );
-                                    });
-                              } else {
-                                return Center(
+
+                        child: imgList.length > 0
+                            ? offerSlider()
+                            : Container(
+                                height: 100,
+                                child: Center(
                                   child: CircularProgressIndicator(),
-                                );
-                              }
-                            }),
-                      ),
-                      // CategoryList(
-                      //     arrCategories: _arrCategories,
-                      //     notifyCart: _updateCart),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Fresh New Items",
-                              style: TextStyle(
-                                color: AppColors.categoryTextColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                            // Text(
-                            //   "More",
-                            //   style: TextStyle(
-                            //     color: AppColors.categoryTextColor,
-                            //     fontSize: 16,
-                            //     fontWeight: FontWeight.w700,
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                      // FreshNewItem(
-                      //     freshCategories: _freshProductList,
-                      //     deviceId: deviceID,
-                      //     isAgent: isAgent,
-                      //     notifyCart: _updateCart()),
-                      Container(
-                        height: 280,
-                        // padding: EdgeInsets.only(
-                        //     top: MediaQuery.of(context).size.width * 0.04),
-                        child: FutureBuilder(
-                            initialData: null,
-                            future: _freshProductList,
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasData) {
-                                var freshItems = snapshot.data;
-                                print("fresh..." + freshItems.toString());
-                                return ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: freshItems.length,
-                                    scrollDirection: Axis.horizontal,
-                                    addAutomaticKeepAlives: false,
-                                    itemBuilder: (context, int index) {
-                                      ProductModel item = freshItems[index];
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 8.0, top: 20.0),
-                                        child: FreshItem(
-                                          deviceId: deviceID,
-                                          itemProduct: item,
-                                          item1: item.productAttribute,
-                                          isAgent: isAgent,
-                                          notifyCart: _updateCart,
-                                        ),
-                                      );
-                                    });
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            }),
-                        // child: ListView.builder(
-                        //   shrinkWrap: true,
-                        //   itemCount: 6,
-                        //   scrollDirection: Axis.horizontal,
-                        //   itemBuilder: (context, int index) {
-                        //     return Padding(
-                        //       padding: const EdgeInsets.only(right: 8.0),
-                        //       child: FreshItem(),
-                        //     );
-                        //   },
                         // ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
+                      )
                     ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 18.0,
+                      right: 8.0,
+                      top: 10,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 12,
+                          ),
+                          child: Text(
+                            "Categories",
+                            style: TextStyle(
+                              color: AppColors.categoryTextColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 150,
+                          child: FutureBuilder(
+                              initialData: null,
+                              future: _arrCategories,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  var categories = snapshot.data.categorydata;
+                                  return ListView.separated(
+                                      //key: PageStorageKey(key),
+                                      shrinkWrap: true,
+                                      itemCount: categories.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return Divider(height: 0);
+                                      },
+                                      scrollDirection: Axis.horizontal,
+                                      addAutomaticKeepAlives: false,
+                                      itemBuilder: (context, int index) {
+                                        CategoryData categoryData =
+                                            categories[index];
+                                        print("CatData..." +
+                                            categoryData.toString());
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 12.0),
+                                          child: CategoryItem(
+                                              categoryData: categoryData,
+                                              notifyCart: _updateCart),
+                                        );
+                                      });
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              }),
+                        ),
+                        // CategoryList(
+                        //     arrCategories: _arrCategories,
+                        //     notifyCart: _updateCart),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Fresh New Items",
+                                style: TextStyle(
+                                  color: AppColors.categoryTextColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              // Text(
+                              //   "More",
+                              //   style: TextStyle(
+                              //     color: AppColors.categoryTextColor,
+                              //     fontSize: 16,
+                              //     fontWeight: FontWeight.w700,
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                        // FreshNewItem(
+                        //     freshCategories: _freshProductList,
+                        //     deviceId: deviceID,
+                        //     isAgent: isAgent,
+                        //     notifyCart: _updateCart()),
+                        Container(
+                          height: 280,
+                          // padding: EdgeInsets.only(
+                          //     top: MediaQuery.of(context).size.width * 0.04),
+                          child: FutureBuilder(
+                              initialData: null,
+                              //future: _freshProductList,
+                              future: _getFreshProducts(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  var freshItems = snapshot.data;
+                                  print("fresh..." + freshItems.toString());
+                                  return ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: freshItems.length,
+                                      scrollDirection: Axis.horizontal,
+                                      addAutomaticKeepAlives: false,
+                                      itemBuilder: (context, int index) {
+                                        ProductModel item = freshItems[index];
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 8.0, top: 20.0),
+                                          child: FreshItem(
+                                            deviceId: deviceID,
+                                            itemProduct: item,
+                                            item1: item.productAttribute,
+                                            isAgent: isAgent,
+                                            notifyCart: _updateCart,
+                                          ),
+                                        );
+                                      });
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              }),
+                          // child: ListView.builder(
+                          //   shrinkWrap: true,
+                          //   itemCount: 6,
+                          //   scrollDirection: Axis.horizontal,
+                          //   itemBuilder: (context, int index) {
+                          //     return Padding(
+                          //       padding: const EdgeInsets.only(right: 8.0),
+                          //       child: FreshItem(),
+                          //     );
+                          //   },
+                          // ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

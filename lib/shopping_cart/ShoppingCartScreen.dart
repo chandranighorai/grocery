@@ -45,6 +45,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   String promoApplied;
   String paymentMethod;
   int couponId;
+  bool _rowLoad = false;
 
   TextStyle headingtextStyle = TextStyle(
     fontSize: 18,
@@ -294,24 +295,29 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             children: [
                               Container(
                                 child: mProductList.length > 0
-                                    ? ListView.builder(
-                                        padding: EdgeInsets.all(0),
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: mProductList.length,
-                                        scrollDirection: Axis.vertical,
-                                        itemBuilder: (context, int index) {
-                                          ShoppingCartModel item =
-                                              mProductList[index];
-                                          return ItemShoppingCart(
-                                            key: UniqueKey(),
-                                            itemShopingCart: item,
-                                            notifyParent: refresh,
-                                            delItem: deleteItemFromList,
-                                            itemIndex: index,
-                                          );
-                                        },
-                                      )
+                                    ? _rowLoad == true
+                                        ? Center(
+                                            child: CircularProgressIndicator())
+                                        : ListView.builder(
+                                            padding: EdgeInsets.all(0),
+                                            shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemCount: mProductList.length,
+                                            scrollDirection: Axis.vertical,
+                                            itemBuilder: (context, int index) {
+                                              ShoppingCartModel item =
+                                                  mProductList[index];
+                                              return ItemShoppingCart(
+                                                key: UniqueKey(),
+                                                itemShopingCart: item,
+                                                notifyParent: refresh,
+                                                delItem: deleteItemFromList,
+                                                itemIndex: index,
+                                                rowLoad: rowLoad,
+                                              );
+                                            },
+                                          )
                                     : Container(),
                                 // FutureBuilder(
                                 //   initialData: null,
@@ -965,6 +971,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     debugPrint("_handleFetchCart called");
     setState(() {});
     _handleFetchCart();
+  }
+
+  rowLoad(bool rl) {
+    setState(() {
+      _rowLoad = rl;
+    });
   }
 
   _applyPromo() async {

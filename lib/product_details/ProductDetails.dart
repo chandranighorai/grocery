@@ -378,18 +378,42 @@ class _ProductDetails extends State<ProductDetails> {
   }
 
   _gotoShoppinCartScreen() async {
-    var openCart = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ShoppingCartScreen(),
-      ),
-    );
+    var user_id = prefs.getString('user_id');
 
-    if (openCart != null && openCart == "refresh cart") {
-      debugPrint("Returned data $openCart");
-      _handleFetchCart();
-      setState(() {});
+    if (user_id == null) {
+      user_id = '';
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      );
+    } else {
+      var openCart = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ShoppingCartScreen(),
+        ),
+      );
+
+      if (openCart != null && openCart == "refresh cart") {
+        debugPrint("Returned data $openCart");
+        _handleFetchCart();
+        setState(() {});
+      }
     }
+    // var openCart = await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => ShoppingCartScreen(),
+    //   ),
+    // );
+
+    // if (openCart != null && openCart == "refresh cart") {
+    //   debugPrint("Returned data $openCart");
+    //   _handleFetchCart();
+    //   setState(() {});
+    // }
   }
 
   _addtocartBtnPressed() {
@@ -1338,70 +1362,148 @@ class _ProductDetails extends State<ProductDetails> {
                                                                   quantityController
                                                                       .text
                                                                       .toString());
-                                                              showAddToCArt(
-                                                                  widget
-                                                                      .itemProduct
-                                                                      .productAttribute[
-                                                                          index]
-                                                                      .name
-                                                                      .toString(),
-                                                                  index,
-                                                                  double.parse(widget
-                                                                      .itemProduct
-                                                                      .productAttribute[
-                                                                          index]
-                                                                      .productPrice
-                                                                      .toString()));
-                                                              //widget.itemProduct.
+                                                              var user_id = prefs
+                                                                  .getString(
+                                                                      'user_id');
 
-                                                              setState(() {
-                                                                //_handleFetchCart();
-                                                                if (quantityController
-                                                                        .text
-                                                                        .toString() ==
-                                                                    "0") {
-                                                                  price = double.parse(widget
+                                                              if (user_id ==
+                                                                  null) {
+                                                                user_id = '';
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            LoginScreen(),
+                                                                  ),
+                                                                );
+                                                              } else {
+                                                                showAddToCArt(
+                                                                    widget
+                                                                        .itemProduct
+                                                                        .productAttribute[
+                                                                            index]
+                                                                        .name
+                                                                        .toString(),
+                                                                    index,
+                                                                    double.parse(widget
+                                                                        .itemProduct
+                                                                        .productAttribute[
+                                                                            index]
+                                                                        .productPrice
+                                                                        .toString()));
+                                                                setState(() {
+                                                                  //_handleFetchCart();
+                                                                  if (quantityController
+                                                                          .text
+                                                                          .toString() ==
+                                                                      "0") {
+                                                                    price = double.parse(widget
+                                                                        .itemProduct
+                                                                        .productAttribute[
+                                                                            index]
+                                                                        .productPrice
+                                                                        .toString());
+                                                                  } else {
+                                                                    price = double.parse(widget
+                                                                            .itemProduct
+                                                                            .productAttribute[
+                                                                                index]
+                                                                            .productPrice
+                                                                            .toString()) *
+                                                                        int.parse(
+                                                                            quantityController.text);
+                                                                  }
+
+                                                                  productPrice = double.parse(widget
                                                                       .itemProduct
                                                                       .productAttribute[
                                                                           index]
                                                                       .productPrice
                                                                       .toString());
-                                                                } else {
-                                                                  price = double.parse(widget
-                                                                          .itemProduct
-                                                                          .productAttribute[
-                                                                              index]
-                                                                          .productPrice
-                                                                          .toString()) *
-                                                                      int.parse(
-                                                                          quantityController
-                                                                              .text);
-                                                                }
+                                                                  print('Price...' +
+                                                                      price
+                                                                          .toString());
+                                                                  print('product Price...' +
+                                                                      productPrice
+                                                                          .toString());
+                                                                  colorchange = double.parse(widget
+                                                                      .itemProduct
+                                                                      .productAttribute[
+                                                                          index]
+                                                                      .productPrice
+                                                                      .toString());
+                                                                  // print("ColorChange..." +
+                                                                  //     colorchange
+                                                                  //         .toString());
+                                                                  // colorchange =
+                                                                  //     true;
+                                                                });
+                                                              }
+                                                              // showAddToCArt(
+                                                              //     widget
+                                                              //         .itemProduct
+                                                              //         .productAttribute[
+                                                              //             index]
+                                                              //         .name
+                                                              //         .toString(),
+                                                              //     index,
+                                                              //     double.parse(widget
+                                                              //         .itemProduct
+                                                              //         .productAttribute[
+                                                              //             index]
+                                                              //         .productPrice
+                                                              //         .toString()));
+                                                              //widget.itemProduct.
 
-                                                                productPrice = double.parse(widget
-                                                                    .itemProduct
-                                                                    .productAttribute[
-                                                                        index]
-                                                                    .productPrice
-                                                                    .toString());
-                                                                print('Price...' +
-                                                                    price
-                                                                        .toString());
-                                                                print('product Price...' +
-                                                                    productPrice
-                                                                        .toString());
-                                                                colorchange = double.parse(widget
-                                                                    .itemProduct
-                                                                    .productAttribute[
-                                                                        index]
-                                                                    .productPrice
-                                                                    .toString());
-                                                                // print("ColorChange..." +
-                                                                //     colorchange
-                                                                //         .toString());
-                                                                // colorchange =
-                                                                //     true;
-                                                              });
+                                                              // setState(() {
+                                                              //   //_handleFetchCart();
+                                                              //   if (quantityController
+                                                              //           .text
+                                                              //           .toString() ==
+                                                              //       "0") {
+                                                              //     price = double.parse(widget
+                                                              //         .itemProduct
+                                                              //         .productAttribute[
+                                                              //             index]
+                                                              //         .productPrice
+                                                              //         .toString());
+                                                              //   } else {
+                                                              //     price = double.parse(widget
+                                                              //             .itemProduct
+                                                              //             .productAttribute[
+                                                              //                 index]
+                                                              //             .productPrice
+                                                              //             .toString()) *
+                                                              //         int.parse(
+                                                              //             quantityController
+                                                              //                 .text);
+                                                              //   }
+
+                                                              //   productPrice = double.parse(widget
+                                                              //       .itemProduct
+                                                              //       .productAttribute[
+                                                              //           index]
+                                                              //       .productPrice
+                                                              //       .toString());
+                                                              //   print('Price...' +
+                                                              //       price
+                                                              //           .toString());
+                                                              //   print('product Price...' +
+                                                              //       productPrice
+                                                              //           .toString());
+                                                              //   colorchange = double.parse(widget
+                                                              //       .itemProduct
+                                                              //       .productAttribute[
+                                                              //           index]
+                                                              //       .productPrice
+                                                              //       .toString());
+                                                              //   // print("ColorChange..." +
+                                                              //   //     colorchange
+                                                              //   //         .toString());
+                                                              //   // colorchange =
+                                                              //   //     true;
+                                                              // });
                                                             },
                                                             child: Padding(
                                                               padding:
@@ -1513,70 +1615,147 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       quantityController
                                                                           .text
                                                                           .toString());
-                                                                  showAddToCArt(
-                                                                      widget
-                                                                          .productdata
-                                                                          .productAttribute[
-                                                                              index]
-                                                                          .name
-                                                                          .toString(),
-                                                                      index,
-                                                                      double.parse(widget
-                                                                          .productdata
-                                                                          .productAttribute[
-                                                                              index]
-                                                                          .productPrice
-                                                                          .toString()));
-                                                                  //widget.itemProduct.
-                                                                  setState(() {
-                                                                    if (quantityController
-                                                                            .text
-                                                                            .toString() ==
-                                                                        "0") {
-                                                                      price = double.parse(widget
+                                                                  var user_id =
+                                                                      prefs.getString(
+                                                                          'user_id');
+
+                                                                  if (user_id ==
+                                                                      null) {
+                                                                    user_id =
+                                                                        '';
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                LoginScreen(),
+                                                                      ),
+                                                                    );
+                                                                  } else {
+                                                                    showAddToCArt(
+                                                                        widget
+                                                                            .productdata
+                                                                            .productAttribute[
+                                                                                index]
+                                                                            .name
+                                                                            .toString(),
+                                                                        index,
+                                                                        double.parse(widget
+                                                                            .productdata
+                                                                            .productAttribute[index]
+                                                                            .productPrice
+                                                                            .toString()));
+                                                                    setState(
+                                                                        () {
+                                                                      if (quantityController
+                                                                              .text
+                                                                              .toString() ==
+                                                                          "0") {
+                                                                        price = double.parse(widget
+                                                                            .productdata
+                                                                            .productAttribute[index]
+                                                                            .productPrice
+                                                                            .toString());
+                                                                      } else {
+                                                                        price = double.parse(widget.productdata.productAttribute[index].productPrice.toString()) *
+                                                                            int.parse(quantityController.text);
+                                                                      }
+
+                                                                      print("Index...1.." +
+                                                                          price
+                                                                              .toString());
+                                                                      weightIndex =
+                                                                          index;
+                                                                      productPrice = double.parse(widget
                                                                           .productdata
                                                                           .productAttribute[
                                                                               index]
                                                                           .productPrice
                                                                           .toString());
-                                                                    } else {
-                                                                      price = double.parse(widget
-                                                                              .productdata
-                                                                              .productAttribute[index]
-                                                                              .productPrice
-                                                                              .toString()) *
-                                                                          int.parse(quantityController.text);
-                                                                    }
+                                                                      colorchange = double.parse(widget
+                                                                          .productdata
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .productPrice
+                                                                          .toString());
+                                                                      // print("ColorChange..." +
+                                                                      //     colorchange
+                                                                      //         .toString());
+                                                                      print("Index...1.." +
+                                                                          productPrice
+                                                                              .toString());
+                                                                      // colorchange =
+                                                                      //     true;
+                                                                      // print("Index...1.." +
+                                                                      //     colorchange
+                                                                      //         .toString());
+                                                                    });
+                                                                  }
+                                                                  // showAddToCArt(
+                                                                  //     widget
+                                                                  //         .productdata
+                                                                  //         .productAttribute[
+                                                                  //             index]
+                                                                  //         .name
+                                                                  //         .toString(),
+                                                                  //     index,
+                                                                  //     double.parse(widget
+                                                                  //         .productdata
+                                                                  //         .productAttribute[
+                                                                  //             index]
+                                                                  //         .productPrice
+                                                                  //         .toString()));
+                                                                  //widget.itemProduct.
+                                                                  // setState(() {
+                                                                  //   if (quantityController
+                                                                  //           .text
+                                                                  //           .toString() ==
+                                                                  //       "0") {
+                                                                  //     price = double.parse(widget
+                                                                  //         .productdata
+                                                                  //         .productAttribute[
+                                                                  //             index]
+                                                                  //         .productPrice
+                                                                  //         .toString());
+                                                                  //   } else {
+                                                                  //     price = double.parse(widget
+                                                                  //             .productdata
+                                                                  //             .productAttribute[index]
+                                                                  //             .productPrice
+                                                                  //             .toString()) *
+                                                                  //         int.parse(quantityController.text);
+                                                                  //   }
 
-                                                                    print("Index...1.." +
-                                                                        price
-                                                                            .toString());
-                                                                    weightIndex =
-                                                                        index;
-                                                                    productPrice = double.parse(widget
-                                                                        .productdata
-                                                                        .productAttribute[
-                                                                            index]
-                                                                        .productPrice
-                                                                        .toString());
-                                                                    colorchange = double.parse(widget
-                                                                        .productdata
-                                                                        .productAttribute[
-                                                                            index]
-                                                                        .productPrice
-                                                                        .toString());
-                                                                    // print("ColorChange..." +
-                                                                    //     colorchange
-                                                                    //         .toString());
-                                                                    print("Index...1.." +
-                                                                        productPrice
-                                                                            .toString());
-                                                                    // colorchange =
-                                                                    //     true;
-                                                                    // print("Index...1.." +
-                                                                    //     colorchange
-                                                                    //         .toString());
-                                                                  });
+                                                                  //   print("Index...1.." +
+                                                                  //       price
+                                                                  //           .toString());
+                                                                  //   weightIndex =
+                                                                  //       index;
+                                                                  //   productPrice = double.parse(widget
+                                                                  //       .productdata
+                                                                  //       .productAttribute[
+                                                                  //           index]
+                                                                  //       .productPrice
+                                                                  //       .toString());
+                                                                  //   colorchange = double.parse(widget
+                                                                  //       .productdata
+                                                                  //       .productAttribute[
+                                                                  //           index]
+                                                                  //       .productPrice
+                                                                  //       .toString());
+                                                                  //   // print("ColorChange..." +
+                                                                  //   //     colorchange
+                                                                  //   //         .toString());
+                                                                  //   print("Index...1.." +
+                                                                  //       productPrice
+                                                                  //           .toString());
+                                                                  //   // colorchange =
+                                                                  //   //     true;
+                                                                  //   // print("Index...1.." +
+                                                                  //   //     colorchange
+                                                                  //   //         .toString());
+                                                                  // });
                                                                 },
                                                                 child: Padding(
                                                                   padding:
@@ -1666,57 +1845,103 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       //     (double.parse(widget.productdata.productAttribute[index].productPrice.toString())
                                                                       //         .toString()));
                                                                       //widget.itemProduct.
-                                                                      showAddToCArt(
-                                                                          widget
-                                                                              .itemProduct
-                                                                              .productAttribute[
-                                                                                  index]
-                                                                              .name
-                                                                              .toString(),
-                                                                          index,
-                                                                          double.parse(widget
-                                                                              .itemProduct
-                                                                              .productAttribute[index]
-                                                                              .productPrice
-                                                                              .toString()));
-                                                                      setState(
-                                                                          () {
-                                                                        if (quantityController.text.toString() ==
-                                                                            "0") {
-                                                                          price = double.parse(widget
+                                                                      var user_id =
+                                                                          prefs.getString(
+                                                                              'user_id');
+
+                                                                      if (user_id ==
+                                                                          null) {
+                                                                        user_id =
+                                                                            '';
+                                                                        Navigator
+                                                                            .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                LoginScreen(),
+                                                                          ),
+                                                                        );
+                                                                      } else {
+                                                                        showAddToCArt(
+                                                                            widget.itemProduct.productAttribute[index].name.toString(),
+                                                                            index,
+                                                                            double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()));
+
+                                                                        setState(
+                                                                            () {
+                                                                          if (quantityController.text.toString() ==
+                                                                              "0") {
+                                                                            price =
+                                                                                double.parse(widget.itemProduct.productAttribute[index].productPrice.toString());
+                                                                          } else {
+                                                                            price =
+                                                                                double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
+                                                                          }
+                                                                          weightIndex =
+                                                                              index;
+                                                                          // productPrice =
+                                                                          //     price;
+                                                                          productPrice = double.parse(widget
                                                                               .itemProduct
                                                                               .productAttribute[index]
                                                                               .productPrice
                                                                               .toString());
-                                                                        } else {
-                                                                          price =
-                                                                              double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
-                                                                        }
-                                                                        weightIndex =
-                                                                            index;
-                                                                        // productPrice =
-                                                                        //     price;
-                                                                        productPrice = double.parse(widget
-                                                                            .itemProduct
-                                                                            .productAttribute[index]
-                                                                            .productPrice
-                                                                            .toString());
-                                                                        colorchange = double.parse(widget
-                                                                            .itemProduct
-                                                                            .productAttribute[index]
-                                                                            .productPrice
-                                                                            .toString());
-                                                                        // print("ColorChange..." +
-                                                                        //     colorchange.toString());
+                                                                          colorchange = double.parse(widget
+                                                                              .itemProduct
+                                                                              .productAttribute[index]
+                                                                              .productPrice
+                                                                              .toString());
+                                                                          // print("ColorChange..." +
+                                                                          //     colorchange.toString());
 
-                                                                        print("Index...1.." +
-                                                                            productPrice.toString());
-                                                                        // colorchange =
-                                                                        //     true;
-                                                                        // print("Index...1.." +
-                                                                        //     colorchange
-                                                                        //         .toString());
-                                                                      });
+                                                                          print("Index...1.." +
+                                                                              productPrice.toString());
+                                                                          // colorchange =
+                                                                          //     true;
+                                                                          // print("Index...1.." +
+                                                                          //     colorchange
+                                                                          //         .toString());
+                                                                        });
+                                                                      }
+
+                                                                      // setState(
+                                                                      //     () {
+                                                                      //   if (quantityController.text.toString() ==
+                                                                      //       "0") {
+                                                                      //     price = double.parse(widget
+                                                                      //         .itemProduct
+                                                                      //         .productAttribute[index]
+                                                                      //         .productPrice
+                                                                      //         .toString());
+                                                                      //   } else {
+                                                                      //     price =
+                                                                      //         double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
+                                                                      //   }
+                                                                      //   weightIndex =
+                                                                      //       index;
+                                                                      //   // productPrice =
+                                                                      //   //     price;
+                                                                      //   productPrice = double.parse(widget
+                                                                      //       .itemProduct
+                                                                      //       .productAttribute[index]
+                                                                      //       .productPrice
+                                                                      //       .toString());
+                                                                      //   colorchange = double.parse(widget
+                                                                      //       .itemProduct
+                                                                      //       .productAttribute[index]
+                                                                      //       .productPrice
+                                                                      //       .toString());
+                                                                      //   // print("ColorChange..." +
+                                                                      //   //     colorchange.toString());
+
+                                                                      //   print("Index...1.." +
+                                                                      //       productPrice.toString());
+                                                                      //   // colorchange =
+                                                                      //   //     true;
+                                                                      //   // print("Index...1.." +
+                                                                      //   //     colorchange
+                                                                      //   //         .toString());
+                                                                      // });
                                                                     },
                                                                     child:
                                                                         Padding(
@@ -1787,56 +2012,115 @@ class _ProductDetails extends State<ProductDetails> {
                                                                               .toString());
 
                                                                       //widget.itemProduct.
-                                                                      showAddToCArt(
-                                                                          widget
-                                                                              .productdata
-                                                                              .productAttribute[
-                                                                                  index]
-                                                                              .name
-                                                                              .toString(),
-                                                                          index,
-                                                                          double.parse(widget
-                                                                              .productdata
-                                                                              .productAttribute[index]
-                                                                              .productPrice
-                                                                              .toString()));
-                                                                      setState(
-                                                                          () {
-                                                                        if (quantityController.text.toString() ==
-                                                                            "0") {
-                                                                          price = double.parse(widget
+
+                                                                      var user_id =
+                                                                          prefs.getString(
+                                                                              'user_id');
+
+                                                                      if (user_id ==
+                                                                          null) {
+                                                                        user_id =
+                                                                            '';
+                                                                        Navigator
+                                                                            .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                LoginScreen(),
+                                                                          ),
+                                                                        );
+                                                                      } else {
+                                                                        showAddToCArt(
+                                                                            widget.productdata.productAttribute[index].name.toString(),
+                                                                            index,
+                                                                            double.parse(widget.productdata.productAttribute[index].productPrice.toString()));
+
+                                                                        setState(
+                                                                            () {
+                                                                          if (quantityController.text.toString() ==
+                                                                              "0") {
+                                                                            price =
+                                                                                double.parse(widget.productdata.productAttribute[index].productPrice.toString());
+                                                                          } else {
+                                                                            price =
+                                                                                double.parse(widget.productdata.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
+                                                                          }
+                                                                          weightIndex =
+                                                                              index;
+                                                                          // productPrice =
+                                                                          //     price;
+                                                                          productPrice = double.parse(widget
                                                                               .productdata
                                                                               .productAttribute[index]
                                                                               .productPrice
                                                                               .toString());
-                                                                        } else {
-                                                                          price =
-                                                                              double.parse(widget.productdata.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
-                                                                        }
-                                                                        weightIndex =
-                                                                            index;
-                                                                        // productPrice =
-                                                                        //     price;
-                                                                        productPrice = double.parse(widget
-                                                                            .productdata
-                                                                            .productAttribute[index]
-                                                                            .productPrice
-                                                                            .toString());
-                                                                        colorchange = double.parse(widget
-                                                                            .productdata
-                                                                            .productAttribute[index]
-                                                                            .productPrice
-                                                                            .toString());
-                                                                        print("ColorChange..." +
-                                                                            colorchange.toString());
-                                                                        print("Index...1.." +
-                                                                            productPrice.toString());
-                                                                        // colorchange =
-                                                                        //     true;
-                                                                        // print("Index...1.." +
-                                                                        //     colorchange
-                                                                        //         .toString());
-                                                                      });
+                                                                          colorchange = double.parse(widget
+                                                                              .productdata
+                                                                              .productAttribute[index]
+                                                                              .productPrice
+                                                                              .toString());
+                                                                          print("ColorChange..." +
+                                                                              colorchange.toString());
+                                                                          print("Index...1.." +
+                                                                              productPrice.toString());
+                                                                          // colorchange =
+                                                                          //     true;
+                                                                          // print("Index...1.." +
+                                                                          //     colorchange
+                                                                          //         .toString());
+                                                                        });
+                                                                      }
+
+                                                                      // showAddToCArt(
+                                                                      //     widget
+                                                                      //         .productdata
+                                                                      //         .productAttribute[
+                                                                      //             index]
+                                                                      //         .name
+                                                                      //         .toString(),
+                                                                      //     index,
+                                                                      //     double.parse(widget
+                                                                      //         .productdata
+                                                                      //         .productAttribute[index]
+                                                                      //         .productPrice
+                                                                      //         .toString()));
+                                                                      // setState(
+                                                                      //     () {
+                                                                      //   if (quantityController.text.toString() ==
+                                                                      //       "0") {
+                                                                      //     price = double.parse(widget
+                                                                      //         .productdata
+                                                                      //         .productAttribute[index]
+                                                                      //         .productPrice
+                                                                      //         .toString());
+                                                                      //   } else {
+                                                                      //     price =
+                                                                      //         double.parse(widget.productdata.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
+                                                                      //   }
+                                                                      //   weightIndex =
+                                                                      //       index;
+                                                                      //   // productPrice =
+                                                                      //   //     price;
+                                                                      //   productPrice = double.parse(widget
+                                                                      //       .productdata
+                                                                      //       .productAttribute[index]
+                                                                      //       .productPrice
+                                                                      //       .toString());
+                                                                      //   colorchange = double.parse(widget
+                                                                      //       .productdata
+                                                                      //       .productAttribute[index]
+                                                                      //       .productPrice
+                                                                      //       .toString());
+                                                                      //   print("ColorChange..." +
+                                                                      //       colorchange.toString());
+                                                                      //   print("Index...1.." +
+                                                                      //       productPrice.toString());
+                                                                      //   // colorchange =
+                                                                      //   //     true;
+                                                                      //   // print("Index...1.." +
+                                                                      //   //     colorchange
+                                                                      //   //         .toString());
+                                                                      // });
                                                                     },
                                                                     child:
                                                                         Padding(
