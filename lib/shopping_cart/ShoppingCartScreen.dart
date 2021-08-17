@@ -20,8 +20,10 @@ import 'ShoppingCartModel.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
   final ProductModel itemProduct;
-
-  const ShoppingCartScreen({Key key, this.itemProduct}) : super(key: key);
+  String myCart;
+  ShoppingCartScreen({this.itemProduct, this.myCart});
+  // ShoppingCartScreen({Key key, this.itemProduct, this.myCart})
+  //     : super(key: key);
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }
@@ -221,6 +223,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("myCart..." + widget.myCart.toString());
     return WillPopScope(
       onWillPop: () {
         Navigator.pop(context, "refresh cart");
@@ -791,7 +794,15 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, "refresh cart");
+            if (widget.myCart == "My cart") {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CategorytListScreen()),
+                  (route) => false);
+            } else {
+              Navigator.pop(context, "refresh cart");
+            }
             // Navigator.pop(context);
           }),
       title: openSearch
@@ -975,7 +986,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   rowLoad(bool rl) {
     setState(() {
+      hasItemsInCart = false;
       _rowLoad = rl;
+      isApiCalled = false;
     });
   }
 

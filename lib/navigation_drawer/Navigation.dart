@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:groceryapp/util/Consts.dart';
+import 'package:groceryapp/util/Variables.dart';
 
 import '../shopping_cart/ShoppingCartScreen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +15,8 @@ import '../my_account/MyAccountScreen.dart';
 import '../util/Util.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+
 class Navigation extends StatefulWidget {
   @override
   _Navigation createState() => _Navigation();
@@ -18,8 +24,9 @@ class Navigation extends StatefulWidget {
 
 class _Navigation extends State<Navigation> {
   Future<int> _counter;
+  int quantity;
   var userData = {};
-final GoogleSignIn googleSignIn = GoogleSignIn();
+  final GoogleSignIn googleSignIn = GoogleSignIn();
   Future<Object> _checkUserIsLoggedIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString("user_id");
@@ -60,7 +67,8 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
       },
     );
   }
-Future<void> initPlatformState() async {
+
+  Future<void> initPlatformState() async {
     String phone = "+919830946600";
     String whatsappUrl = "whatsapp://send?phone=$phone&text=" "";
     if (await canLaunch(whatsappUrl)) {
@@ -71,6 +79,7 @@ Future<void> initPlatformState() async {
       print('Could not launch $whatsappUrl');
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -101,7 +110,6 @@ Future<void> initPlatformState() async {
                         image: DecorationImage(
                           image: AssetImage(
                             "images/app_logo.png",
-
                           ),
                           fit: BoxFit.contain,
                         ),
@@ -138,13 +146,11 @@ Future<void> initPlatformState() async {
                                   height: 9,
                                 ),
                                 Text(
-                                  
                                   userObject['userEmail'] == null
                                       ? ""
                                       : "${userObject['userEmail']}",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    
                                   ),
                                   softWrap: true,
                                 ),
@@ -177,8 +183,6 @@ Future<void> initPlatformState() async {
                 padding: EdgeInsets.only(top: 5),
                 itemExtent: 45,
                 children: <Widget>[
-
-
                   ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 15),
                     title: Text(
@@ -274,17 +278,27 @@ Future<void> initPlatformState() async {
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       return ListTile(
                         contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                        onTap: () {
-                          Navigator.pop(context);
+                        onTap: () async {
+                          //Navigator.pop(context);
                           if (snapshot.hasData) {
                             debugPrint("has data");
                             var userObject = snapshot.data;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ShoppingCartScreen(),
+                                builder: (context) =>
+                                    ShoppingCartScreen(myCart: "My cart"),
                               ),
                             );
+                            //Navigator.pop(context);
+                            // print("OpenCart..." + openCart.toString());
+                            // if (openCart != null &&
+                            //     openCart == "refresh cart") {
+                            //   debugPrint("Returned data $openCart");
+                            //   setState(() {
+                            //     _handleFetchCart();
+                            //   });
+                            // }
                           } else {
                             debugPrint("no data");
                             Navigator.push(
@@ -294,6 +308,7 @@ Future<void> initPlatformState() async {
                               ),
                             );
                           }
+                          //Navigator.pop(context);
                         },
                         title: Text(
                           'My Cart',

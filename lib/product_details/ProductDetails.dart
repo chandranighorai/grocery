@@ -120,8 +120,9 @@ class _ProductDetails extends State<ProductDetails> {
       debugPrint('imgList');
       // print("imageList..." + imgList.length.toString());
       // print("IsAgent..." + isAgent.toString());
+      isWish = widget.itemProduct.isInWishList == 1 ? true : false;
       if (isAgent) {
-        isWish = widget.itemProduct.isInWishList == 1 ? true : false;
+        //isWish = widget.itemProduct.isInWishList == 1 ? true : false;
         if (widget.itemProduct.productType == "variable") {
           productPrice = double.parse(widget
               .itemProduct.productAttribute[0].productDistributorPrice
@@ -662,6 +663,7 @@ class _ProductDetails extends State<ProductDetails> {
               children: [
                 InkWell(
                   onTap: () => {
+                    print("wish Click..." + isWish.toString()),
                     // if(isWish==true){
                     setState(
                       () {
