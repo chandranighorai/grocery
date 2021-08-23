@@ -248,45 +248,53 @@ class _ItemProductState extends State<SearchItemProduct> {
                       width: 10,
                     ),
                     Container(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30.0),
-                        child: Image.network(
-                          widget.productdata.galleryImages[0],
-                          height: 100.0,
-                          width: 100.0,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace stackTrace) {
-                            return Container();
-                          },
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Container(
-                              height: 100.0,
-                              width: 100.0,
-                              child: Center(
-                                child: SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                      Colors.grey,
-                                    ),
-                                    strokeWidth: 2,
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes
-                                        : null,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                      height: 100.0,
+                      width: 100.0,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          image: DecorationImage(
+                              image: NetworkImage(widget
+                                  .productdata.galleryImages[0]
+                                  .toString()))),
+                      // child: ClipRRect(
+                      //   borderRadius: BorderRadius.circular(30.0),
+                      //   child: Image.network(
+                      //     widget.productdata.galleryImages[0],
+                      //     height: 100.0,
+                      //     width: 100.0,
+                      //     errorBuilder: (BuildContext context, Object exception,
+                      //         StackTrace stackTrace) {
+                      //       return Container();
+                      //     },
+                      //     loadingBuilder: (BuildContext context, Widget child,
+                      //         ImageChunkEvent loadingProgress) {
+                      //       if (loadingProgress == null) return child;
+                      //       return Container(
+                      //         height: 100.0,
+                      //         width: 100.0,
+                      //         child: Center(
+                      //           child: SizedBox(
+                      //             height: 20,
+                      //             width: 20,
+                      //             child: CircularProgressIndicator(
+                      //               valueColor:
+                      //                   new AlwaysStoppedAnimation<Color>(
+                      //                 Colors.grey,
+                      //               ),
+                      //               strokeWidth: 2,
+                      //               value: loadingProgress.expectedTotalBytes !=
+                      //                       null
+                      //                   ? loadingProgress
+                      //                           .cumulativeBytesLoaded /
+                      //                       loadingProgress.expectedTotalBytes
+                      //                   : null,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
                     ),
                     SizedBox(
                       width: 20,

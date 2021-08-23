@@ -923,21 +923,28 @@ class _ProductDetails extends State<ProductDetails> {
                                                           .size
                                                           .width -
                                                       50,
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            9),
-                                                    child: Image.network(
-                                                      item,
-                                                      //fit: BoxFit.fill,
-                                                      //fit: BoxFit.fill,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width -
-                                                              50,
-                                                    ),
-                                                  ),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              9),
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              item))),
+                                                  // child: ClipRRect(
+                                                  //   // borderRadius:
+                                                  //   //     BorderRadius.circular(
+                                                  //   //         9),
+                                                  //   child: Image.network(
+                                                  //     item,
+                                                  //     //fit: BoxFit.fill,
+                                                  //     //fit: BoxFit.fill,
+                                                  //     width:
+                                                  //         MediaQuery.of(context)
+                                                  //                 .size
+                                                  //                 .width -
+                                                  //             50,
+                                                  //   ),
+                                                  // ),
                                                 ),
                                                 Align(
                                                   alignment:

@@ -39,43 +39,53 @@ class _CategoryItemState extends State<CategoryItem> {
       },
       child: Column(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(9.0),
-            child: Image.network(
-              categoryData.categoryimgstat,
-              height: containerWidth,
-              width: containerWidth,
-              fit: BoxFit.cover,
-              errorBuilder: (BuildContext context, Object exception,
-                  StackTrace stackTrace) {
-                return Container();
-              },
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  height: containerWidth,
-                  width: containerWidth,
-                  child: Center(
-                    child: SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(
-                          Colors.grey,
-                        ),
-                        strokeWidth: 2,
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes
-                            : null,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+          Container(
+            height: containerWidth,
+            width: containerWidth,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(9.0),
+                image: DecorationImage(
+                    image:
+                        NetworkImage(categoryData.categoryimgstat.toString()),
+                    fit: BoxFit.cover)),
           ),
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(9.0),
+          //   child: Image.network(
+          //     categoryData.categoryimgstat,
+          //     height: containerWidth,
+          //     width: containerWidth,
+          //     fit: BoxFit.cover,
+          // errorBuilder: (BuildContext context, Object exception,
+          //     StackTrace stackTrace) {
+          //   return Container();
+          // },
+          // loadingBuilder: (BuildContext context, Widget child,
+          //     ImageChunkEvent loadingProgress) {
+          //   if (loadingProgress == null) return child;
+          //   return Container(
+          //     height: containerWidth,
+          //     width: containerWidth,
+          //     child: Center(
+          //       child: SizedBox(
+          //         height: 20,
+          //         width: 20,
+          //         child: CircularProgressIndicator(
+          //           valueColor: new AlwaysStoppedAnimation<Color>(
+          //             Colors.grey,
+          //           ),
+          //           strokeWidth: 2,
+          //           value: loadingProgress.expectedTotalBytes != null
+          //               ? loadingProgress.cumulativeBytesLoaded /
+          //                   loadingProgress.expectedTotalBytes
+          //               : null,
+          //         ),
+          //       ),
+          //     ),
+          //   );
+          // },
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Container(

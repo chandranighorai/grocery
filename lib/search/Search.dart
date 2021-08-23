@@ -239,7 +239,7 @@ class _SearchScreenState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     double shapeHeight = 150;
-    _updateCart();
+    //_updateCart();
     // print(_searchKey);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -390,7 +390,46 @@ class _SearchScreenState extends State<Search> {
                               child: Container(
                                 // height:
                                 //     MediaQuery.of(context).size.height - 200,
-                                child: SearchList(arrCategories: _productList),
+                                child:
+                                    //SearchList(arrCategories: _productList),
+                                    FutureBuilder(
+                                        initialData: null,
+                                        // key: UniqueKey(),
+                                        future: _productList,
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot snapshot) {
+                                          if (snapshot.hasData) {
+                                            var categories =
+                                                snapshot.data.productdata;
+                                            print("response DAta..show." +
+                                                categories.length.toString());
+                                            return ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: categories.length,
+                                                //scrollDirection: Axis.horizontal,
+                                                scrollDirection: Axis.vertical,
+                                                itemBuilder:
+                                                    (context, int index) {
+                                                  Productdata categoryData =
+                                                      categories[index];
+                                                  print("uu..." +
+                                                      categoryData.toString());
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 12.0),
+                                                    child: SearchItemProduct(
+                                                      productdata: categoryData,
+                                                      notifyCart: _updateCart,
+                                                    ),
+                                                  );
+                                                });
+                                          } else {
+                                            return Center(
+                                                // child: CircularProgressIndicator(),
+                                                );
+                                          }
+                                        }),
 // _showLoder==false ? Container():
                                 // FutureBuilder(
                                 //   initialData: null,
@@ -635,49 +674,49 @@ class _SearchScreenState extends State<Search> {
   }
 }
 
-class SearchList extends StatelessWidget {
-  const SearchList({
-    Key key,
-    @required Future<SearchModel> arrCategories,
-  })  : _arrCategories = arrCategories,
-        super(key: key);
-  final Future<SearchModel> _arrCategories;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      //height: 180,
-      height: MediaQuery.of(context).size.height,
-      //color: Colors.amber,
-      child: FutureBuilder(
-          initialData: null,
-          // key: UniqueKey(),
-          future: _arrCategories,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              var categories = snapshot.data.productdata;
-              print("response DAta..show." + categories.length.toString());
-              return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: categories.length,
-                  //scrollDirection: Axis.horizontal,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, int index) {
-                    Productdata categoryData = categories[index];
-                    print("uu..." + categoryData.toString());
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: SearchItemProduct(
-                        productdata: categoryData,
-                        //notifyCart:_updateCart,
-                      ),
-                    );
-                  });
-            } else {
-              return Center(
-                  // child: CircularProgressIndicator(),
-                  );
-            }
-          }),
-    );
-  }
-}
+// class SearchList extends StatelessWidget {
+//   const SearchList({
+//     Key key,
+//     @required Future<SearchModel> arrCategories,
+//   })  : _arrCategories = arrCategories,
+//         super(key: key);
+//   final Future<SearchModel> _arrCategories;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       //height: 180,
+//       height: MediaQuery.of(context).size.height,
+//       //color: Colors.amber,
+//       child: FutureBuilder(
+//           initialData: null,
+//           // key: UniqueKey(),
+//           future: _arrCategories,
+//           builder: (BuildContext context, AsyncSnapshot snapshot) {
+//             if (snapshot.hasData) {
+//               var categories = snapshot.data.productdata;
+//               print("response DAta..show." + categories.length.toString());
+//               return ListView.builder(
+//                   shrinkWrap: true,
+//                   itemCount: categories.length,
+//                   //scrollDirection: Axis.horizontal,
+//                   scrollDirection: Axis.vertical,
+//                   itemBuilder: (context, int index) {
+//                     Productdata categoryData = categories[index];
+//                     print("uu..." + categoryData.toString());
+//                     return Padding(
+//                       padding: const EdgeInsets.only(right: 12.0),
+//                       child: SearchItemProduct(
+//                         productdata: categoryData,
+//                         notifyCart:_updateCart,
+//                       ),
+//                     );
+//                   });
+//             } else {
+//               return Center(
+//                   // child: CircularProgressIndicator(),
+//                   );
+//             }
+//           }),
+//     );
+//   }
+// }

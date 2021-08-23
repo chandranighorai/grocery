@@ -53,6 +53,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   bool isAgent;
   int quantity;
   String deviceID;
+  ScrollController _scrollController = ScrollController();
   //Timer cartVal;
   //AsyncMemoizer _memoizer;
 
@@ -401,6 +402,10 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
     initPlatformState();
     quantity = 0;
     _handleFetchCart();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {}
+    });
 
     FirebaseMessaging.instance
         .getInitialMessage()
@@ -571,6 +576,8 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                                 if (snapshot.hasData) {
                                   var categories = snapshot.data.categorydata;
                                   return ListView.separated(
+                                      controller: _scrollController,
+                                      cacheExtent: 9999,
                                       //key: PageStorageKey(key),
                                       shrinkWrap: true,
                                       itemCount: categories.length,
@@ -652,6 +659,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                                   var freshItems = snapshot.data;
                                   print("fresh..." + freshItems.toString());
                                   return ListView.builder(
+                                      cacheExtent: 9999,
                                       shrinkWrap: true,
                                       itemCount: freshItems.length,
                                       scrollDirection: Axis.horizontal,
@@ -717,17 +725,18 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
           .map(
             (item) => InkWell(
               onTap: () {
+                print("itemname..." + item.toString());
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProductListScreen(
-                      categoryID:
-                          _listOfferSlider[imgList.indexOf(item)].categoryId,
-                      searchKeyword: "",
-                      categoryName:
-                          _listOfferSlider[imgList.indexOf(item)].name,
-                      isAgent: isAgent,
-                    ),
+                        categoryID:
+                            _listOfferSlider[imgList.indexOf(item)].categoryId,
+                        searchKeyword: "",
+                        categoryName:
+                            _listOfferSlider[imgList.indexOf(item)].name,
+                        isAgent: isAgent,
+                        notify: _updateCart),
                   ),
                 );
               },
@@ -744,13 +753,22 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                   ),
                   child: Stack(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(9),
-                        child: Image.network(
-                          item,
-                          fit: BoxFit.cover,
-                          width: 300,
-                        ),
+                      // ClipRRect(
+                      //   borderRadius: BorderRadius.circular(9),
+                      //   child: Image.network(
+                      //     item,
+                      //     fit: BoxFit.cover,
+                      //     width: 300,
+                      //   ),
+                      // ),
+                      Container(
+                        width: 300,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(9),
+                            image: DecorationImage(
+                              image: NetworkImage(item),
+                              fit: BoxFit.cover,
+                            )),
                       ),
                       Positioned(
                         bottom: 40.0,
