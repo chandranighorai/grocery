@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../product_details/ProductDetails.dart';
 import '../util/Consts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ItemProduct extends StatefulWidget {
   final ProductModel itemProduct;
@@ -239,51 +240,57 @@ class _ItemProductState extends State<ItemProduct> {
                       width: 10,
                     ),
                     Container(
-                      height: 100.0,
-                      width: 100.0,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(itemProduct.productImage))),
-                      // child: ClipRRect(
-                      //   borderRadius: BorderRadius.circular(30.0),
-                      //   child: Image.network(
-                      //     itemProduct.productImage,
-                      //     height: 100.0,
-                      //     width: 100.0,
-                      //     errorBuilder: (BuildContext context, Object exception,
-                      //         StackTrace stackTrace) {
-                      //       return Container();
-                      //     },
-                      //     loadingBuilder: (BuildContext context, Widget child,
-                      //         ImageChunkEvent loadingProgress) {
-                      //       if (loadingProgress == null) return child;
-                      //       return Container(
-                      //         height: 100.0,
-                      //         width: 100.0,
-                      //         child: Center(
-                      //           child: SizedBox(
-                      //             height: 20,
-                      //             width: 20,
-                      //             child: CircularProgressIndicator(
-                      //               valueColor:
-                      //                   new AlwaysStoppedAnimation<Color>(
-                      //                 Colors.grey,
-                      //               ),
-                      //               strokeWidth: 2,
-                      //               value: loadingProgress.expectedTotalBytes !=
-                      //                       null
-                      //                   ? loadingProgress
-                      //                           .cumulativeBytesLoaded /
-                      //                       loadingProgress.expectedTotalBytes
-                      //                   : null,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
-                    ),
+                        height: 100.0,
+                        width: 100.0,
+                        child: Image(
+                          image: CachedNetworkImageProvider(
+                              itemProduct.productImage.toString()),
+                          //fit: BoxFit.cover,
+                        )
+                        // decoration: BoxDecoration(
+                        //     image: DecorationImage(
+                        //         image: NetworkImage(itemProduct.productImage))),
+
+                        // child: ClipRRect(
+                        //   borderRadius: BorderRadius.circular(30.0),
+                        //   child: Image.network(
+                        //     itemProduct.productImage,
+                        //     height: 100.0,
+                        //     width: 100.0,
+                        //     errorBuilder: (BuildContext context, Object exception,
+                        //         StackTrace stackTrace) {
+                        //       return Container();
+                        //     },
+                        //     loadingBuilder: (BuildContext context, Widget child,
+                        //         ImageChunkEvent loadingProgress) {
+                        //       if (loadingProgress == null) return child;
+                        //       return Container(
+                        //         height: 100.0,
+                        //         width: 100.0,
+                        //         child: Center(
+                        //           child: SizedBox(
+                        //             height: 20,
+                        //             width: 20,
+                        //             child: CircularProgressIndicator(
+                        //               valueColor:
+                        //                   new AlwaysStoppedAnimation<Color>(
+                        //                 Colors.grey,
+                        //               ),
+                        //               strokeWidth: 2,
+                        //               value: loadingProgress.expectedTotalBytes !=
+                        //                       null
+                        //                   ? loadingProgress
+                        //                           .cumulativeBytesLoaded /
+                        //                       loadingProgress.expectedTotalBytes
+                        //                   : null,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+                        ),
                     SizedBox(
                       width: 20,
                     ),

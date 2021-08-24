@@ -659,6 +659,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                                   var freshItems = snapshot.data;
                                   print("fresh..." + freshItems.toString());
                                   return ListView.builder(
+                                    controller: _scrollController,
                                       cacheExtent: 9999,
                                       shrinkWrap: true,
                                       itemCount: freshItems.length,

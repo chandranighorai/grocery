@@ -47,6 +47,7 @@ class _SearchScreenState extends State<Search> {
   FocusNode myFocusNode;
   bool isAgent;
   bool showMyFavourite;
+  ScrollController _scrollController = ScrollController();
 
   int quantity;
 
@@ -404,6 +405,7 @@ class _SearchScreenState extends State<Search> {
                                             print("response DAta..show." +
                                                 categories.length.toString());
                                             return ListView.builder(
+                                                controller: _scrollController,
                                                 shrinkWrap: true,
                                                 itemCount: categories.length,
                                                 //scrollDirection: Axis.horizontal,
