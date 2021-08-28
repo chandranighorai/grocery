@@ -89,6 +89,7 @@ class _SearchScreenState extends State<Search> {
   void dispose() {
     _searchController.text = "";
     myFocusNode.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -134,7 +135,8 @@ class _SearchScreenState extends State<Search> {
       response = await http.get(
         Uri.parse(Consts.PRODUCT_LIST + requestParam),
       );
-
+      print(
+          "Uri...." + Uri.parse(Consts.PRODUCT_LIST + requestParam).toString());
       debugPrint("URl ${Uri.parse(Consts.PRODUCT_LIST + requestParam)}");
       //print("response DAta..statuscode...0" + response.body.length.toString());
       print("response DAta..statuscode...1" + response.body.toString());
@@ -405,11 +407,13 @@ class _SearchScreenState extends State<Search> {
                                             print("response DAta..show." +
                                                 categories.length.toString());
                                             return ListView.builder(
-                                                controller: _scrollController,
-                                                shrinkWrap: true,
                                                 itemCount: categories.length,
                                                 //scrollDirection: Axis.horizontal,
                                                 scrollDirection: Axis.vertical,
+                                                controller: _scrollController,
+                                                // physics:
+                                                //     AlwaysScrollableScrollPhysics(),
+                                                shrinkWrap: true,
                                                 itemBuilder:
                                                     (context, int index) {
                                                   Productdata categoryData =

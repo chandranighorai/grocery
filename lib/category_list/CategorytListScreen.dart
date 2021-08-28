@@ -53,7 +53,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   bool isAgent;
   int quantity;
   String deviceID;
-  ScrollController _scrollController = ScrollController();
+  //ScrollController _scrollController = ScrollController();
   //Timer cartVal;
   //AsyncMemoizer _memoizer;
 
@@ -402,10 +402,10 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
     initPlatformState();
     quantity = 0;
     _handleFetchCart();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {}
-    });
+    //_scrollController.addListener(() {
+    //   if (_scrollController.position.pixels ==
+    //       _scrollController.position.maxScrollExtent) {}
+    // });
 
     FirebaseMessaging.instance
         .getInitialMessage()
@@ -471,6 +471,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
   @override
   void dispose() {
     _searchController.text = "";
+    //_scrollController.dispose();
     super.dispose();
   }
 
@@ -576,7 +577,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                                 if (snapshot.hasData) {
                                   var categories = snapshot.data.categorydata;
                                   return ListView.separated(
-                                      controller: _scrollController,
+                                      //controller: _scrollController,
                                       cacheExtent: 9999,
                                       //key: PageStorageKey(key),
                                       shrinkWrap: true,
@@ -659,7 +660,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                                   var freshItems = snapshot.data;
                                   print("fresh..." + freshItems.toString());
                                   return ListView.builder(
-                                    controller: _scrollController,
+                                      // controller: _scrollController,
                                       cacheExtent: 9999,
                                       shrinkWrap: true,
                                       itemCount: freshItems.length,

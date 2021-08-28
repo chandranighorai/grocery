@@ -574,6 +574,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   Widget CustomAppbar() {
     return AppBar(
+      // leading: InkWell(
+      //     onTap: () {
+      //       print("button Clicked...");
+      //       Navigator.pop(context);
+      //     },
+      //     child: Icon(Icons.arrow_back)),
       title: Center(
         child: Text(
           "Vedic",

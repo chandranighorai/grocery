@@ -92,7 +92,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     getAgentCredit();
     // TODO: implement initState
     super.initState();
-
   }
 
   //===========
@@ -207,7 +206,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }*/
 
   _getAddress() async {
-
     setState(() {
       isAdressApiCalling = true;
       _mAddressList = [];
@@ -262,11 +260,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         }
       } else {
         showCustomToast(serverMessage);
-
       }
     } else {
       showCustomToast("Something went wrong.\nPlease try again.");
-
     }
     debugPrint("Address Size ${mList.length}");
     setState(() {
@@ -343,7 +339,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "You can track your order from the "+"My Order""+ section.",
+                            "You can track your order from the " +
+                                "My Order" "+ section.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,
@@ -398,7 +395,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   _placeOrder() async {
-
     if (selectedPaymmentMethod == "Credit" && creditLimit < totalAmpount) {
       showAlertDialog(context,
           "Your credit limit is less than your order total.\nPlease contact admin for incresing your limit or select another method",
@@ -413,7 +409,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var user_id = prefs.getString('user_id');
-    if(defaultAddress.id == null){
+    if (defaultAddress.id == null) {
       showCustomToast("Please add an address");
       return;
     }
@@ -592,9 +588,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             }
                           },
                         ),*/
-                        isAdressApiCalling ? Center(
-                          child: CircularProgressIndicator(),
-                        ):Container(),
+                        isAdressApiCalling
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Container(),
                         _mAddressList.length <= 0
                             ? Container()
                             : Container(
@@ -918,7 +916,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             child: Center(
                               child: TextButton(
                                 onPressed: () {
-                                  !isOrderPlaced ? _placeOrder(): showCustomToast("Please wait order is getting placed.");
+                                  !isOrderPlaced
+                                      ? _placeOrder()
+                                      : showCustomToast(
+                                          "Please wait order is getting placed.");
                                 },
                                 child: Text(
                                   'Place Order',
