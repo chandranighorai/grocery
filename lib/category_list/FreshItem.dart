@@ -10,6 +10,7 @@ import 'package:groceryapp/util/AppColors.dart';
 import 'package:groceryapp/util/Consts.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 //import 'package:cached_network_image/cached_network_image.dart';
 
 import '../util/Util.dart';
@@ -161,61 +162,72 @@ class _FreshItemState extends State<FreshItem> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              height: 140.0,
-              width: MediaQuery.of(context).size.width / 2 - 90,
-              // child: FadeInImage(
-              //   placeholder: MemoryImage(kTransparentImage),
-              //   image: NetworkImage(widget.itemProduct.productImage.toString()),
-              // ),
-              // Image(
-              //   image: CachedNetworkImageProvider(
-              //       widget.itemProduct.productImage.toString()),
-              //   //fit: BoxFit.cover,
-              // )
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: NetworkImage(widget.itemProduct.productImage.toString()),
-                fit: BoxFit.contain,
-              )),
-              // child: ClipRRect(
-              //   borderRadius: BorderRadius.circular(25.0),
-              //   child: Image.network(
-              //     widget.itemProduct.productImage.toString(),
-              //     //item.productImage,
-              //     height: 140.0,
-              //     width: MediaQuery.of(context).size.width / 2 - 90,
-              //     fit: BoxFit.contain,
-              //     errorBuilder: (BuildContext context, Object exception,
-              //         StackTrace stackTrace) {
-              //       return Container();
-              //     },
-              //     loadingBuilder: (BuildContext context, Widget child,
-              //         ImageChunkEvent loadingProgress) {
-              //       if (loadingProgress == null) return child;
-              //       return Container(
-              //         height: 120.0,
-              //         width: MediaQuery.of(context).size.width / 2 - 50,
-              //         child: Center(
-              //           child: SizedBox(
-              //             height: 20,
-              //             width: 20,
-              //             child: CircularProgressIndicator(
-              //               valueColor: new AlwaysStoppedAnimation<Color>(
-              //                 Colors.grey,
-              //               ),
-              //               strokeWidth: 2,
-              //               value: loadingProgress.expectedTotalBytes != null
-              //                   ? loadingProgress.cumulativeBytesLoaded /
-              //                       loadingProgress.expectedTotalBytes
-              //                   : null,
-              //             ),
-              //           ),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
-            ),
+                height: 140.0,
+                width: MediaQuery.of(context).size.width / 2 - 90,
+                // child: FadeInImage(
+                //   placeholder: MemoryImage(kTransparentImage),
+                //   image: NetworkImage(widget.itemProduct.productImage.toString()),
+                // ),
+                // Image(
+                //   image: CachedNetworkImageProvider(
+                //       widget.itemProduct.productImage.toString()),
+                //   //fit: BoxFit.cover,
+                // )
+
+                // decoration: BoxDecoration(
+                //     image: DecorationImage(
+                //   image: NetworkImage(widget.itemProduct.productImage.toString()),
+                //   fit: BoxFit.contain,
+                // )),
+                child: FadeInImage(
+                  image: ResizeImage(
+                    CachedNetworkImageProvider(
+                        widget.itemProduct.productImage.toString()),
+                    width: (MediaQuery.of(context).size.width).toInt(),
+                  ),
+                  placeholder: AssetImage("images/load.gif"),
+                  //fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, st) {},
+                )
+                // child: ClipRRect(
+                //   borderRadius: BorderRadius.circular(25.0),
+                //   child: Image.network(
+                //     widget.itemProduct.productImage.toString(),
+                //     //item.productImage,
+                //     height: 140.0,
+                //     width: MediaQuery.of(context).size.width / 2 - 90,
+                //     fit: BoxFit.contain,
+                //     errorBuilder: (BuildContext context, Object exception,
+                //         StackTrace stackTrace) {
+                //       return Container();
+                //     },
+                //     loadingBuilder: (BuildContext context, Widget child,
+                //         ImageChunkEvent loadingProgress) {
+                //       if (loadingProgress == null) return child;
+                //       return Container(
+                //         height: 120.0,
+                //         width: MediaQuery.of(context).size.width / 2 - 50,
+                //         child: Center(
+                //           child: SizedBox(
+                //             height: 20,
+                //             width: 20,
+                //             child: CircularProgressIndicator(
+                //               valueColor: new AlwaysStoppedAnimation<Color>(
+                //                 Colors.grey,
+                //               ),
+                //               strokeWidth: 2,
+                //               value: loadingProgress.expectedTotalBytes != null
+                //                   ? loadingProgress.cumulativeBytesLoaded /
+                //                       loadingProgress.expectedTotalBytes
+                //                   : null,
+                //             ),
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
+                ),
             SizedBox(
               height: 0,
             ),

@@ -23,6 +23,7 @@ import '../util/Consts.dart';
 import '../util/Util.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:image_viewer/image_viewer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductDetails extends StatefulWidget {
   final ProductModel itemProduct;
@@ -312,7 +313,11 @@ class _ProductDetails extends State<ProductDetails> {
             }
             if (productId == arrCartProducts[i]['product_id'].toString()) {
               print("productId..." + productId.toString());
-              print("productId..." + productSize.toString());
+              print("productId...size..." + productSize.toString());
+              print("productId...arrCart..." +
+                  arrCartProducts[i]['product_id'].toString());
+              print("productId...arrSize..." +
+                  arrCartProducts[i]['size'].toString());
               if (productSize == arrCartProducts[i]['size'].toString()) {
                 setState(() {
                   _isAddedToCart = true;
@@ -918,34 +923,52 @@ class _ProductDetails extends State<ProductDetails> {
                                             child: Stack(
                                               children: [
                                                 Container(
-                                                  // height: 250,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width -
-                                                      50,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              9),
-                                                      image: DecorationImage(
-                                                          image: NetworkImage(
-                                                              item))),
-                                                  // child: ClipRRect(
-                                                  //   // borderRadius:
-                                                  //   //     BorderRadius.circular(
-                                                  //   //         9),
-                                                  //   child: Image.network(
-                                                  //     item,
-                                                  //     //fit: BoxFit.fill,
-                                                  //     //fit: BoxFit.fill,
-                                                  //     width:
-                                                  //         MediaQuery.of(context)
-                                                  //                 .size
-                                                  //                 .width -
-                                                  //             50,
-                                                  //   ),
-                                                  // ),
-                                                ),
+                                                    // height: 250,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width -
+                                                            50,
+                                                    child: FadeInImage(
+                                                      image: ResizeImage(
+                                                        CachedNetworkImageProvider(
+                                                            item.toString()),
+                                                        width: (MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width)
+                                                            .toInt(),
+                                                      ),
+                                                      placeholder: AssetImage(
+                                                          "images/load.gif"),
+                                                      //fit: BoxFit.cover,
+                                                      imageErrorBuilder:
+                                                          (context, error,
+                                                              st) {},
+                                                    )
+                                                    // decoration: BoxDecoration(
+                                                    //     borderRadius:
+                                                    //         BorderRadius.circular(
+                                                    //             9),
+                                                    //     image: DecorationImage(
+                                                    //         image: NetworkImage(
+                                                    //             item))),
+                                                    // child: ClipRRect(
+                                                    //   // borderRadius:
+                                                    //   //     BorderRadius.circular(
+                                                    //   //         9),
+                                                    //   child: Image.network(
+                                                    //     item,
+                                                    //     //fit: BoxFit.fill,
+                                                    //     //fit: BoxFit.fill,
+                                                    //     width:
+                                                    //         MediaQuery.of(context)
+                                                    //                 .size
+                                                    //                 .width -
+                                                    //             50,
+                                                    //   ),
+                                                    // ),
+                                                    ),
                                                 Align(
                                                   alignment:
                                                       Alignment.bottomCenter,

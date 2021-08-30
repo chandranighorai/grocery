@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../category_list/CategoryModel.dart';
 import '../products/ProductListScreen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 //import 'package:cached_network_image/cached_network_image.dart';
 
 class CategoryItem extends StatefulWidget {
@@ -42,26 +43,40 @@ class _CategoryItemState extends State<CategoryItem> {
       child: Column(
         children: [
           Container(
-            height: containerWidth,
-            width: containerWidth,
-            decoration: BoxDecoration(
+              height: containerWidth,
+              width: containerWidth,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(9.0)),
+              // image: DecorationImage(
+              //     image:
+              //         NetworkImage(categoryData.categoryimgstat.toString()),
+              //     fit: BoxFit.cover)
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(9.0),
-                image: DecorationImage(
-                    image:
-                        NetworkImage(categoryData.categoryimgstat.toString()),
-                    fit: BoxFit.cover)),
-            // child: FadeInImage(
-            //     placeholder: MemoryImage(kTransparentImage),
-            //     //placeholder: "images/image_bg.png",
-            //     image: NetworkImage(categoryData.categoryimgstat.toString()),
-            //     fit: BoxFit.cover),
-            // Image(
-            //   image: CachedNetworkImageProvider(
-            //       categoryData.categoryimgstat.toString()),
-            //   fit: BoxFit.cover,
-            // )
-            //),
-          ),
+                child: FadeInImage(
+                  image: ResizeImage(
+                    CachedNetworkImageProvider(
+                        categoryData.categoryimgstat.toString()),
+                    width: (MediaQuery.of(context).size.width).toInt(),
+                  ),
+                  placeholder: AssetImage("images/load.gif"),
+                  fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, st) {},
+                ),
+              )
+              //),
+              // child: FadeInImage(
+              //     placeholder: MemoryImage(kTransparentImage),
+              //     //placeholder: "images/image_bg.png",
+              //     image: NetworkImage(categoryData.categoryimgstat.toString()),
+              //     fit: BoxFit.cover),
+              // Image(
+              //   image: CachedNetworkImageProvider(
+              //       categoryData.categoryimgstat.toString()),
+              //   fit: BoxFit.cover,
+              // )
+              //),
+              ),
           // ClipRRect(
           //   borderRadius: BorderRadius.circular(9.0),
           //   child: Image.network(

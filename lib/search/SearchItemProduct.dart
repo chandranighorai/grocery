@@ -14,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../product_details/ProductDetails.dart';
 import '../util/Consts.dart';
 import 'SearchModel.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class SearchItemProduct extends StatefulWidget {
   final Productdata productdata;
@@ -36,6 +38,7 @@ class _ItemProductState extends State<SearchItemProduct> {
   Productdata itemProduct;
   var requestParam;
   String deviceID;
+  DefaultCacheManager manager = new DefaultCacheManager();
   //List<ProductAttribute> productAttr;
   @override
   initState() {
@@ -51,6 +54,11 @@ class _ItemProductState extends State<SearchItemProduct> {
     isWish = itemProduct.isInWishlist == 1 ? true : false;
     isAgent = false;
     super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+    manager.emptyCache();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -135,6 +143,10 @@ class _ItemProductState extends State<SearchItemProduct> {
         ? itemProduct.productAttribute[0].productRegularPrice
         : itemProduct.productRegularPrice;
 
+    var size = (itemProduct.productType == "variable")
+        ? itemProduct.productAttribute[0].name
+        : itemProduct.productQuantityInfo;
+
     // var regularPrice = (itemProduct.productType == "variable")
     //     ? itemProduct.productAttribute[0].productRegularPrice
     //     : itemProduct.productRegularPrice;
@@ -153,6 +165,7 @@ class _ItemProductState extends State<SearchItemProduct> {
     requestParam += "&price=" + productPrice;
     requestParam += "&regular_price=" + regularPrice;
     requestParam += "&quantity=1";
+    requestParam += "&size=" + size;
     print(Uri.parse(Consts.ADD_CART + requestParam));
     print("requestParam.11.." + requestParam.toString());
     final http.Response response = await http.get(
@@ -248,54 +261,64 @@ class _ItemProductState extends State<SearchItemProduct> {
                       width: 10,
                     ),
                     Container(
-                      height: 100.0,
-                      width: 100.0,
-                      decoration: BoxDecoration(
+                        height: 100.0,
+                        width: 100.0,
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30.0),
-                          image: DecorationImage(
-                              image: NetworkImage(widget
-                                  .productdata.galleryImages[0]
-                                  .toString()))),
-                      // child: ClipRRect(
-                      //   borderRadius: BorderRadius.circular(30.0),
-                      //   child: Image.network(
-                      //     widget.productdata.galleryImages[0],
-                      //     height: 100.0,
-                      //     width: 100.0,
-                      //     errorBuilder: (BuildContext context, Object exception,
-                      //         StackTrace stackTrace) {
-                      //       return Container();
-                      //     },
-                      //     loadingBuilder: (BuildContext context, Widget child,
-                      //         ImageChunkEvent loadingProgress) {
-                      //       if (loadingProgress == null) return child;
-                      //       return Container(
-                      //         height: 100.0,
-                      //         width: 100.0,
-                      //         child: Center(
-                      //           child: SizedBox(
-                      //             height: 20,
-                      //             width: 20,
-                      //             child: CircularProgressIndicator(
-                      //               valueColor:
-                      //                   new AlwaysStoppedAnimation<Color>(
-                      //                 Colors.grey,
-                      //               ),
-                      //               strokeWidth: 2,
-                      //               value: loadingProgress.expectedTotalBytes !=
-                      //                       null
-                      //                   ? loadingProgress
-                      //                           .cumulativeBytesLoaded /
-                      //                       loadingProgress.expectedTotalBytes
-                      //                   : null,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
-                    ),
+                          // image: DecorationImage(
+                          //     image: NetworkImage(widget
+                          //         .productdata.galleryImages[0]
+                          //         .toString()))
+                        ),
+                        child: FadeInImage(
+                          image: ResizeImage(
+                            CachedNetworkImageProvider(
+                                widget.productdata.galleryImages[0].toString()),
+                            width: MediaQuery.of(context).size.width.toInt(),
+                          ),
+                          placeholder: AssetImage("images/app_logo.png"),
+                          imageErrorBuilder: (context, error, st) {},
+                        )
+                        // child: ClipRRect(
+                        //   borderRadius: BorderRadius.circular(30.0),
+                        //   child: Image.network(
+                        //     widget.productdata.galleryImages[0],
+                        //     height: 100.0,
+                        //     width: 100.0,
+                        //     errorBuilder: (BuildContext context, Object exception,
+                        //         StackTrace stackTrace) {
+                        //       return Container();
+                        //     },
+                        //     loadingBuilder: (BuildContext context, Widget child,
+                        //         ImageChunkEvent loadingProgress) {
+                        //       if (loadingProgress == null) return child;
+                        //       return Container(
+                        //         height: 100.0,
+                        //         width: 100.0,
+                        //         child: Center(
+                        //           child: SizedBox(
+                        //             height: 20,
+                        //             width: 20,
+                        //             child: CircularProgressIndicator(
+                        //               valueColor:
+                        //                   new AlwaysStoppedAnimation<Color>(
+                        //                 Colors.grey,
+                        //               ),
+                        //               strokeWidth: 2,
+                        //               value: loadingProgress.expectedTotalBytes !=
+                        //                       null
+                        //                   ? loadingProgress
+                        //                           .cumulativeBytesLoaded /
+                        //                       loadingProgress.expectedTotalBytes
+                        //                   : null,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+                        ),
                     SizedBox(
                       width: 20,
                     ),

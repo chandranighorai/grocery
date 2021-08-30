@@ -13,7 +13,8 @@ import 'package:platform_device_id/platform_device_id.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../product_details/ProductDetails.dart';
 import '../util/Consts.dart';
-//import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class ItemProduct extends StatefulWidget {
   final ProductModel itemProduct;
@@ -36,6 +37,7 @@ class _ItemProductState extends State<ItemProduct> {
   ProductModel itemProduct;
   var requestParam;
   String deviceID;
+  DefaultCacheManager manager = new DefaultCacheManager();
 
   @override
   initState() {
@@ -46,6 +48,11 @@ class _ItemProductState extends State<ItemProduct> {
     isWish = itemProduct.isInWishList == 1 ? true : false;
     isAgent = widget.isAgent;
     super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+    //manager.emptyCache();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -145,6 +152,10 @@ class _ItemProductState extends State<ItemProduct> {
           ? itemProduct.productAttribute[0].productRegularPrice
           : itemProduct.productRegularPrice;
 
+      var size = (itemProduct.productType == "variable")
+          ? itemProduct.productAttribute[0].name
+          : itemProduct.productQuantityInfo;
+
       var requestParam = "?";
       requestParam += "user_id=" + user_id;
       // requestParam += "&device_id=" + deviceID.toString();
@@ -154,8 +165,9 @@ class _ItemProductState extends State<ItemProduct> {
       //print('requestParam' + requestParam.toString());
       requestParam += "&regular_price=" + regularPrice;
       requestParam += "&quantity=1";
+      requestParam += "&size=" + size;
       //print('requestParam' + requestParam.toString());
-      print(Uri.parse(Consts.ADD_CART + requestParam));
+      print("hghg..." + Uri.parse(Consts.ADD_CART + requestParam).toString());
       final http.Response response = await http.get(
         Uri.parse(Consts.ADD_CART + requestParam),
       );
@@ -240,63 +252,72 @@ class _ItemProductState extends State<ItemProduct> {
                       width: 10,
                     ),
                     Container(
-                      height: 100.0,
-                      width: 100.0,
-                      // child: Image(
-                      //   image: CachedNetworkImageProvider(
-                      //       itemProduct.productImage.toString()),
-                      //   //fit: BoxFit.cover,
-                      // )
-                      // child: FadeInImage(
-                      //   placeholder: MemoryImage(kTransparentImage),
-                      //   image:
-                      //       NetworkImage(itemProduct.productImage.toString()),
-                      // ),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  itemProduct.productImage.toString()))),
-
-                      // child: ClipRRect(
-                      //   borderRadius: BorderRadius.circular(30.0),
-                      //   child: Image.network(
-                      //     itemProduct.productImage,
-                      //     height: 100.0,
-                      //     width: 100.0,
-                      //     errorBuilder: (BuildContext context, Object exception,
-                      //         StackTrace stackTrace) {
-                      //       return Container();
-                      //     },
-                      //     loadingBuilder: (BuildContext context, Widget child,
-                      //         ImageChunkEvent loadingProgress) {
-                      //       if (loadingProgress == null) return child;
-                      //       return Container(
-                      //         height: 100.0,
-                      //         width: 100.0,
-                      //         child: Center(
-                      //           child: SizedBox(
-                      //             height: 20,
-                      //             width: 20,
-                      //             child: CircularProgressIndicator(
-                      //               valueColor:
-                      //                   new AlwaysStoppedAnimation<Color>(
-                      //                 Colors.grey,
-                      //               ),
-                      //               strokeWidth: 2,
-                      //               value: loadingProgress.expectedTotalBytes !=
-                      //                       null
-                      //                   ? loadingProgress
-                      //                           .cumulativeBytesLoaded /
-                      //                       loadingProgress.expectedTotalBytes
-                      //                   : null,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       );
-                      //     },
-                      // ),
-                    ),
-                    //),
+                        height: 100.0,
+                        width: 100.0,
+                        // child: Image(
+                        //   image: CachedNetworkImageProvider(
+                        //       itemProduct.productImage.toString()),
+                        //   //fit: BoxFit.cover,
+                        // )
+                        // child: FadeInImage(
+                        //   placeholder: MemoryImage(kTransparentImage),
+                        //   image:
+                        //       NetworkImage(itemProduct.productImage.toString()),
+                        // ),
+                        // decoration: BoxDecoration(
+                        //     image: DecorationImage(
+                        //         image: NetworkImage(
+                        //             itemProduct.productImage.toString()))),
+                        child: FadeInImage(
+                          image: ResizeImage(
+                            CachedNetworkImageProvider(
+                                itemProduct.productImage),
+                            width: (MediaQuery.of(context).size.width).toInt(),
+                          ),
+                          placeholder: AssetImage("images/load.gif"),
+                          //fit: BoxFit.cover,
+                          imageErrorBuilder: (context, error, st) {},
+                        )
+                        // child: ClipRRect(
+                        //   borderRadius: BorderRadius.circular(30.0),
+                        //   child: Image.network(
+                        //     itemProduct.productImage,
+                        //     height: 100.0,
+                        //     width: 100.0,
+                        //     errorBuilder: (BuildContext context, Object exception,
+                        //         StackTrace stackTrace) {
+                        //       return Container();
+                        //     },
+                        //     loadingBuilder: (BuildContext context, Widget child,
+                        //         ImageChunkEvent loadingProgress) {
+                        //       if (loadingProgress == null) return child;
+                        //       return Container(
+                        //         height: 100.0,
+                        //         width: 100.0,
+                        //         child: Center(
+                        //           child: SizedBox(
+                        //             height: 20,
+                        //             width: 20,
+                        //             child: CircularProgressIndicator(
+                        //               valueColor:
+                        //                   new AlwaysStoppedAnimation<Color>(
+                        //                 Colors.grey,
+                        //               ),
+                        //               strokeWidth: 2,
+                        //               value: loadingProgress.expectedTotalBytes !=
+                        //                       null
+                        //                   ? loadingProgress
+                        //                           .cumulativeBytesLoaded /
+                        //                       loadingProgress.expectedTotalBytes
+                        //                   : null,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+                        ),
                     SizedBox(
                       width: 20,
                     ),

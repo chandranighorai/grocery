@@ -7,6 +7,7 @@ import '../util/AppColors.dart';
 import 'ShoppingCartModel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ItemShoppingCart extends StatefulWidget {
   final ShoppingCartModel itemShopingCart;
@@ -109,12 +110,21 @@ class _ItemShoppingCartState extends State<ItemShoppingCart> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10.0),
                     child: Container(
-                      height: 100.0,
-                      width: 100.0,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(item.product_image))),
-                    ),
+                        height: 100.0,
+                        width: 100.0,
+                        child: FadeInImage(
+                          image: ResizeImage(
+                            CachedNetworkImageProvider(item.product_image),
+                            width: (MediaQuery.of(context).size.width).toInt(),
+                          ),
+                          placeholder: AssetImage("images/load.gif"),
+                          //fit: BoxFit.cover,
+                          imageErrorBuilder: (context, error, st) {},
+                        )
+                        // decoration: BoxDecoration(
+                        //     image: DecorationImage(
+                        //         image: NetworkImage(item.product_image))),
+                        ),
                     // child: Image.network(
                     //   item.product_image,
                     //   height: 100.0,

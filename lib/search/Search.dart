@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:groceryapp/login/LoginScreen.dart';
 import 'package:groceryapp/shopping_cart/ShoppingCartScreen.dart';
 import 'package:groceryapp/util/AppColors.dart';
 import 'package:groceryapp/util/Variables.dart';
@@ -178,12 +179,20 @@ class _SearchScreenState extends State<Search> {
   }
 
   _gotoShoppinCartScreen() async {
-    var openCart = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ShoppingCartScreen(),
-      ),
-    );
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var userId = pref.getString("user_id");
+    if (userId == null) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } else {
+      var openCart = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ShoppingCartScreen(),
+        ),
+      );
+    }
+    _handleFetchCart();
   }
 
   //======== Fetch Cart ======

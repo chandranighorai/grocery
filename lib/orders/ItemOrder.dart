@@ -21,7 +21,8 @@ class ItemOrder extends StatefulWidget {
   const ItemOrder({
     Key key,
     this.index,
-    this.myOrderModel, this.orderId,
+    this.myOrderModel,
+    this.orderId,
   }) : super(key: key);
 
   @override
@@ -55,8 +56,6 @@ class _ItemOrderState extends State<ItemOrder> {
   //     ? AppColors.orderCancelled
   //     : AppColors.orderCompleted;
 
-
-
   void _reOrderItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var user_id = prefs.getString('user_id');
@@ -66,29 +65,24 @@ class _ItemOrderState extends State<ItemOrder> {
       Uri.parse(Consts.REORDER + requestParam),
     );
     print(Consts.REORDER + requestParam);
-    if(response.statusCode ==200){
+    if (response.statusCode == 200) {
       print(response.body);
       var responseData = jsonDecode(response.body);
       var serverStatus = responseData['status'];
       var serverMessage = responseData['message'];
-      if(serverStatus == "success"){
+      if (serverStatus == "success") {
         Navigator.push(
           context,
           new MaterialPageRoute(
-            builder: (BuildContext context) => ShoppingCartScreen(
-
-            ),
-
+            builder: (BuildContext context) => ShoppingCartScreen(),
           ),
         );
       }
       showCustomToast(serverMessage);
-    }
-    else{
+    } else {
       showCustomToast(Consts.SERVER_NOT_RESPONDING);
     }
   }
-
 
   @override
   void initState() {
@@ -103,7 +97,7 @@ class _ItemOrderState extends State<ItemOrder> {
     myOrderModel = widget.myOrderModel;
 
     showDetails = false;
-    if(widget.orderId == myOrderModel.orderId){
+    if (widget.orderId == myOrderModel.orderId) {
       showDetails = true;
     }
     for (var i = 0; i < myOrderModel.orderDetails.length; i++) {
@@ -132,7 +126,6 @@ class _ItemOrderState extends State<ItemOrder> {
     });
     return showDetails;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +169,6 @@ class _ItemOrderState extends State<ItemOrder> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
                             Text(
                               "Order Date : ",
                               style: TextStyle(
@@ -193,7 +185,9 @@ class _ItemOrderState extends State<ItemOrder> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 7,),
+                        SizedBox(
+                          height: 7,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -204,7 +198,6 @@ class _ItemOrderState extends State<ItemOrder> {
                                 fontSize: 14,
                               ),
                             ),
-
                             Text(
                               "#${myOrderModel.orderUniqueId}",
                               style: TextStyle(
@@ -215,7 +208,6 @@ class _ItemOrderState extends State<ItemOrder> {
                             ),
                           ],
                         ),
-
                         SizedBox(
                           height: 6,
                         ),
@@ -262,12 +254,10 @@ class _ItemOrderState extends State<ItemOrder> {
                             ),
                           ],
                         ),
-
                         SizedBox(
                           height: 25,
                         ),
                         Row(
-
                           children: [
                             Container(
                               decoration: BoxDecoration(
@@ -286,12 +276,13 @@ class _ItemOrderState extends State<ItemOrder> {
                                     horizontal: 25.0,
                                   ),
                                   child: TextButton(
-                                    onPressed: (){
+                                    onPressed: () {
                                       // _showDetailWidget();
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => OrderDetailsScreen(
+                                          builder: (context) =>
+                                              OrderDetailsScreen(
                                             mItem: myOrderModel,
                                           ),
                                         ),
@@ -308,9 +299,10 @@ class _ItemOrderState extends State<ItemOrder> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
+                            // SizedBox(
+                            //   width: 20,
+                            // ),
+                            Spacer(),
                             Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
