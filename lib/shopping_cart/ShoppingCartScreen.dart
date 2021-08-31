@@ -48,6 +48,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   String paymentMethod;
   int couponId;
   bool _rowLoad = false;
+  double total;
 
   TextStyle headingtextStyle = TextStyle(
     fontSize: 18,
@@ -89,7 +90,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     promoDisAmount = 0;
 
     discountType = '';
-    promoAmount = 0;
+    promoAmount = 0.0;
     promoApplied = "";
     paymentMethod = "COD";
     couponId = 0;
@@ -176,7 +177,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       } else {
         Variables.itemCount = 0;
       }
-      double total = totalPrice + shippingCharge + taxAmount;
+      total = totalPrice + shippingCharge + taxAmount;
       debugPrint("Returned total $total");
       if (total <= 999.00) {
         setState(() {
@@ -187,14 +188,20 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         setState(() {
           isApply = true;
           promoAmount = ((total * promoDisAmount) / 100);
+          print("pro0mo...." + promoAmount.toString());
         });
       }
       setState(() {
         mProductList = mList;
         quentity = productdataCount.length.toString();
         _subTotalPrice = totalPrice;
+        if (total <= 999.00) {
+          totalAmount = (totalPrice + shippingCharge + taxAmount);
+        } else {
+          totalAmount = (totalPrice + shippingCharge + taxAmount) - promoAmount;
+        }
 
-        totalAmount = totalPrice + shippingCharge + taxAmount;
+        //totalAmount = totalPrice + shippingCharge + taxAmount;
         totalAmountWithoutDiscount = totalAmount;
         savedAmount = savedPrice;
         if (mList.length > 0) {
@@ -566,33 +573,16 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8),
                                       child: isApply == true
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  "${promoApplied} is applied",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: AppColors
-                                                        .shoppingCartDesctext,
-                                                  ),
-                                                ),
-                                                Row(
+                                          ? total > 999
+                                              ? Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      "\u20B9",
-                                                      style: TextStyle(
-                                                        fontSize: 19,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        // color: Color(0XFFD20014),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      " -$promoAmount",
+                                                      "${promoApplied} ",
+
+                                                      //"${promoApplied} is applied",
                                                       style: TextStyle(
                                                         fontSize: 16,
                                                         fontWeight:
@@ -601,10 +591,32 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                                                             .shoppingCartDesctext,
                                                       ),
                                                     ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "\u20B9",
+                                                          style: TextStyle(
+                                                            fontSize: 19,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            // color: Color(0XFFD20014),
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          " -$promoAmount",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: AppColors
+                                                                .shoppingCartDesctext,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ],
-                                                ),
-                                              ],
-                                            )
+                                                )
+                                              : SizedBox()
                                           : Container(),
                                     ),
                               SizedBox(
@@ -989,6 +1001,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       hasItemsInCart = false;
       _rowLoad = rl;
       isApiCalled = false;
+      //_applyPromo();
     });
   }
 
@@ -1019,13 +1032,24 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           promoDisAmount = result['discount'];
           promoAmount = ((totalAmount * promoAmount) / 100);
         }
+        print("promo amount..." + promoAmount.toString());
+        print("promo amount..." + totalAmount.toString());
+        // setState(() {
         promoApplied = result['promo_code'];
         couponId = result['promo_code_id'];
         paymentMethod = result['payment_method'];
         totalAmount = totalAmount - promoAmount;
+        //print("promo amount..." + totalAmount.toString());
+        // });
+        // promoApplied = result['promo_code'];
+        // couponId = result['promo_code_id'];
+        // paymentMethod = result['payment_method'];
+        // totalAmount = totalAmount - promoAmount;
       });
     } else {
-      showCustomToast("Offer Applicable from Total Rs. 999");
+      if (total < 999) {
+        showCustomToast("Offer Applicable from Total Rs. 999");
+      }
     }
   }
 }

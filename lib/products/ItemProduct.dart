@@ -20,13 +20,15 @@ class ItemProduct extends StatefulWidget {
   final ProductModel itemProduct;
   final bool isAgent;
   final Function() notifyCart;
+  final Function() dataUpdate;
 
-  const ItemProduct({
-    Key key,
-    this.itemProduct,
-    this.isAgent,
-    this.notifyCart,
-  }) : super(key: key);
+  const ItemProduct(
+      {Key key,
+      this.itemProduct,
+      this.isAgent,
+      this.notifyCart,
+      this.dataUpdate})
+      : super(key: key);
   @override
   _ItemProductState createState() => _ItemProductState();
 }
@@ -113,6 +115,7 @@ class _ItemProductState extends State<ItemProduct> {
         var serverMessage = responseData['message'];
         if (serverCode == "200") {
           showCustomToast(serverMessage);
+          widget.dataUpdate();
           if (user_id == '') {
             prefs.setString("user_id", responseData['user_id'].toString());
             prefs.setString("usertype", responseData['user_type'].toString());

@@ -161,9 +161,10 @@ class _ItemShoppingCartState extends State<ItemShoppingCart> {
                     // ),
                   ),
                 ),
-                SizedBox(
-                  width: 20,
-                ),
+                // SizedBox(
+                //   width: 20,
+                // ),
+                //Spacer(),
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10.0),

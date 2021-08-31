@@ -46,6 +46,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Future<List<ProductModel>> _productList;
   Future<List<WishListModel>> _productwishList;
   bool _showLoder;
+  bool dataLoad = true;
   List<String> sortByList = ["Product Sorting"];
   String _searchKey;
   String _categoryID;
@@ -133,7 +134,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
       var responseData = jsonDecode(response.body);
       var serverMessage = responseData['message'];
       var productData = responseData['productdata'];
-      //print(response.body);
+      //print("...ppp...." + responseData.toString());
+      print("...ppp...." + productData.length.toString());
       if (responseData['status'] == "success") {
         if (productData.length > 0) {
           debugPrint("success ${productData.length}");
@@ -247,12 +249,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
       } else {
         setState(() {
           isAvailable = false;
-          noProductMessage = serverMessage;
+          noProductMessage = "Product Not Found";
         });
-        showCustomToast(serverMessage);
+        //showCustomToast(serverMessage);
       }
       setState(() {
         _showLoder = false;
+        dataLoad = true;
       });
     } else {
       showCustomToast("Error while conneting to server");
@@ -320,6 +323,19 @@ class _ProductListScreenState extends State<ProductListScreen> {
   void _updateCart() {
     debugPrint("Update cart");
     _handleFetchCart();
+  }
+
+  void dataUpdate() {
+    print("showloader..." + _showLoder.toString());
+    print("showloader..." + widget.myFav.toString());
+    // setState(() {
+    // });
+    if (widget.myFav == true) {
+      setState(() {
+        dataLoad = false;
+        _productList = _getProducts(_categoryID);
+      });
+    }
   }
 
   @override
@@ -470,50 +486,54 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   )
                                 : Container(),
                           ),
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height - 200,
-                                child:
-                                    //ProductList(productList: _productList,isAgent: isAgent,notifyCart: _updateCart)
-                                    FutureBuilder(
-                                  initialData: null,
-                                  future: _productList,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    if (snapshot.hasData) {
-                                      var arrProducts = snapshot.data;
-                                      return ListView.builder(
-                                        padding: EdgeInsets.all(0),
-                                        shrinkWrap: true,
-                                        itemCount: arrProducts.length,
-                                        scrollDirection: Axis.vertical,
-                                        itemBuilder: (context, int index) {
-                                          ProductModel itemProduct =
-                                              arrProducts[index];
-                                          return ItemProduct(
-                                            itemProduct: itemProduct,
-                                            isAgent: isAgent,
-                                            notifyCart: _updateCart,
-                                          );
+                          dataLoad == true
+                              ? Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 5.0),
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height -
+                                              200,
+                                      child:
+                                          //ProductList(productList: _productList,isAgent: isAgent,notifyCart: _updateCart)
+                                          FutureBuilder(
+                                        initialData: null,
+                                        future: _productList,
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot snapshot) {
+                                          if (snapshot.hasData) {
+                                            var arrProducts = snapshot.data;
+                                            return ListView.builder(
+                                              padding: EdgeInsets.all(0),
+                                              shrinkWrap: true,
+                                              itemCount: arrProducts.length,
+                                              scrollDirection: Axis.vertical,
+                                              itemBuilder:
+                                                  (context, int index) {
+                                                ProductModel itemProduct =
+                                                    arrProducts[index];
+                                                return ItemProduct(
+                                                    itemProduct: itemProduct,
+                                                    isAgent: isAgent,
+                                                    notifyCart: _updateCart,
+                                                    dataUpdate: dataUpdate);
+                                              },
+                                            );
+                                          } else {
+                                            return _showLoder
+                                                ? Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  )
+                                                : Container();
+                                          }
                                         },
-                                      );
-                                    } else {
-                                      return _showLoder
-                                          ? Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : Container();
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                          )
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Center(child: CircularProgressIndicator()),
                         ],
                       ),
                     )

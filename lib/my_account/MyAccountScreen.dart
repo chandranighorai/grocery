@@ -220,6 +220,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                           categoryID: '',
                                           searchKeyword: '',
                                           myFav: true,
+                                          //notify: _handleFetch,
                                         ),
                                       ),
                                     );
