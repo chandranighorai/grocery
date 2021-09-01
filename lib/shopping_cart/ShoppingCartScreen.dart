@@ -1024,12 +1024,21 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     if (totalAmount > 999.00) {
       setState(() {
         discountType = result['discount_type'];
+        print("DiscountType..." + discountType.toString());
         if (discountType == "PromoCode") {
           promoAmount = result['discount'];
           promoDisAmount = result['discount'];
+          print("DiscountType...promoAmount.. " + promoAmount.toString());
+          print("DiscountType...promoDisAmount.. " + promoDisAmount.toString());
+
+          ///********/
+          promoAmount = ((totalAmount * promoAmount) / 100);
+          print("DiscountType..." + promoAmount.toString());
         } else {
           promoAmount = result['discount'];
+          print("promo amount...000..." + promoAmount.toString());
           promoDisAmount = result['discount'];
+          print("TotalAmount..." + totalAmount.toString());
           promoAmount = ((totalAmount * promoAmount) / 100);
         }
         print("promo amount..." + promoAmount.toString());

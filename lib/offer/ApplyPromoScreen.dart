@@ -9,6 +9,7 @@ import '../util/Consts.dart';
 import '../util/Util.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class ApplyPromoScreen extends StatefulWidget {
   final double totalAmount;
@@ -77,6 +78,10 @@ class _ApplyPromoScreenState extends State<ApplyPromoScreen> {
   }
 
   _validatePromo(String promoCode) async {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formated = formatter.format(now);
+    print("Fomaterr..." + formated.toString());
     var requestParam = "?";
     requestParam += "code=" + promoCode;
     final http.Response response = await http.get(
@@ -87,6 +92,7 @@ class _ApplyPromoScreenState extends State<ApplyPromoScreen> {
       var serverStatus = responseData['status'];
       var serverMessage = responseData['message'];
       var couponData = responseData['coupondata'];
+      print("CouponData..." + responseData.toString());
       if (serverStatus == "success") {
         var couponAmount = couponData['coupon_amount'];
         var couponId = couponData['coupon_id'];
@@ -99,7 +105,17 @@ class _ApplyPromoScreenState extends State<ApplyPromoScreen> {
             promoData['discount_type'] = "PromoCode";
           },
         );
-        Navigator.pop(context, promoData);
+        DateTime dd = DateTime.parse(formated);
+        print("ValDAte..." + dd.toString());
+        DateTime valDate = DateTime.parse(couponData["coupon_end"]);
+        print("ValDAte..." + valDate.toString());
+        bool valDate1 = dd.isAfter(valDate);
+        print("ValDAte..." + valDate1.toString());
+        if (valDate1) {
+          showCustomToast("Coupon Expired!!!");
+        } else {
+          Navigator.pop(context, promoData);
+        }
       } else {
         showCustomToast(serverMessage);
       }

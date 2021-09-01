@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:groceryapp/category_list/CategorytListScreen.dart';
 import 'package:groceryapp/products/BrandDetails.dart';
 import 'package:groceryapp/search/Search.dart';
 import 'package:groceryapp/shopping_cart/ShoppingCartScreen.dart';
@@ -594,12 +595,20 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   Widget CustomAppbar() {
     return AppBar(
-      // leading: InkWell(
-      //     onTap: () {
-      //       print("button Clicked...");
-      //       Navigator.pop(context);
-      //     },
-      //     child: Icon(Icons.arrow_back)),
+      leading: InkWell(
+          onTap: () {
+            print("button Clicked...");
+            if (widget.myFav == true) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CategorytListScreen()),
+                  (route) => false);
+            } else {
+              Navigator.pop(context);
+            }
+          },
+          child: Icon(Icons.arrow_back)),
       title: Center(
         child: Text(
           "Vedic",
