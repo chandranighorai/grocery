@@ -103,6 +103,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
       var responseData = jsonDecode(response.body);
       var serverMessage = responseData['status'];
       var reviews = responseData["reviews"];
+      print("Reviews..." + reviews.toString());
       print(responseData);
       if (responseData['status'] == "success") {
         // print(mList);

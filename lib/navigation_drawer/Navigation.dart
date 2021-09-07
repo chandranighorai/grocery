@@ -26,7 +26,7 @@ class _Navigation extends State<Navigation> {
   Future<int> _counter;
   int quantity;
   var userData = {};
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+  GoogleSignIn googleSignIn = GoogleSignIn();
   Future<Object> _checkUserIsLoggedIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString("user_id");
@@ -56,8 +56,8 @@ class _Navigation extends State<Navigation> {
       () async {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         await preferences.clear();
-        Navigator.pop(context);
         await googleSignIn.signOut();
+        Navigator.pop(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -146,7 +146,8 @@ class _Navigation extends State<Navigation> {
                                   height: 9,
                                 ),
                                 Text(
-                                  userObject['userEmail'] == null
+                                  userObject['userEmail'] == null ||
+                                          userObject['userEmail'] == "null"
                                       ? ""
                                       : "${userObject['userEmail']}",
                                   style: TextStyle(

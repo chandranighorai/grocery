@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
 import '../category_list/CategorytListScreen.dart';
 import '../signup/RegisterModel.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +19,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'dart:convert' as JSON;
 
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  scopes: <String>[
-    'email',
-    'https://www.googleapis.com/auth/userinfo.profile',
-  ],
-);
+// GoogleSignIn _googleSignIn = GoogleSignIn(
+//   scopes: <String>[
+//     'email',
+//     'https://www.googleapis.com/auth/userinfo.profile',
+//   ],
+// );
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -31,6 +33,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   //===========================
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+    ],
+  );
+
   GoogleSignInAccount _currentUser;
   String userEmail = "";
   String userPassword = "";
@@ -89,14 +98,14 @@ class _LoginScreenState extends State<LoginScreen> {
     String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
     RegExp regExp = new RegExp(patttern);
     if (isNumeric(userEmail) && !regExp.hasMatch(userEmail)) {
-      showCustomToast("Pleaase enter a valid phone number");
+      showCustomToast("Please enter a valid phone number");
       return;
     } else if (!isEmail(userEmail)) {
-      showCustomToast("Pleaase enter a valid email");
+      showCustomToast("Please enter a valid email");
       return;
     }
     if (userPassword.trim() == "") {
-      showCustomToast("Pleaase enter password");
+      showCustomToast("Please enter password");
       return;
     }
     var requestParam =
@@ -105,9 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
     requestParam += "&device_token=" + deviceToken;
 
     print(Uri.parse(Consts.LOGIN_USER + requestParam));
-    final http.Response response = await http.get(
-      Uri.parse(Consts.LOGIN_USER + requestParam),
-    );
+    final http.Response response =
+        await http.get(Uri.parse(Consts.LOGIN_USER + requestParam));
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
       var serverMessage = responseData['message'];
@@ -143,7 +151,10 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     deviceToken = "";
     getToken();
+    print("currentUser0..." + _currentUser.toString());
+    print("currentUser0..." + _googleSignIn.toString());
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+      print("Account..." + account.toString());
       setState(() {
         _currentUser = account;
       });
@@ -151,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(_currentUser);
         // _handleGetContact(_currentUser);
         _handleUserInfo(_currentUser);
-      }
+      } else {}
     });
     // _googleSignIn.signInSilently();
 
@@ -159,9 +170,17 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
+  void dispose() {
+    super.dispose();
+    _googleSignIn.signIn();
+  }
+
   Future<void> _handleSignInWithGoogle() async {
     try {
       await _googleSignIn.signIn();
+      print("_handleSignInWithGoogle in clicked");
+      //print("current_user" + _currentUser.toString());
+      //_handleUserInfo(_currentUser);
     } catch (error) {
       print(error);
     }
@@ -170,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _handleUserInfo(GoogleSignInAccount user) async {
     if (user != null) {
       var arrName = user.displayName.split(" ");
-
+      print("ArrNAme..." + arrName.toString());
       if (arrName.length > 0) {
         print(arrName[0] + "\n");
         print(arrName[arrName.length - 1]);
@@ -200,6 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _handleLogininfo(String profileFb) async {
     final graphResponse = await http.get(Uri.parse(
         'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${profileFb}'));
+    print("facebook statusCode..." + graphResponse.statusCode.toString());
     final profile = JSON.jsonDecode(graphResponse.body);
     // final profile = JSON.jsonDecode(profileFb);
     userProfile = profile;
@@ -242,6 +262,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _signUpWithGoogleServer() async {
+    print("Google login clicked");
+    print("userEmail..." + userEmail.toString());
+    if (userEmail.toString() == "null") {
+      userEmail = "null";
+    }
     var userRegType = "CU";
     if (userType == userTypeList[2]) {
       userRegType = "DI";
@@ -314,12 +339,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _loginWithFacebook() async {
     var userObject = {};
+    print("Facebook clicked...");
     FacebookAuth.instance
         .login(permissions: ["public_profile", "email"]).then((value) {
+      print("Value of faceBook...." + value.toString());
       FacebookAuth.instance.getUserData().then((userData) {
-        print(userData);
+        print("userData..." + userData.toString());
         debugPrint("Name ${userData['name']}");
-        debugPrint("Name ${userData['email']}");
+        //debugPrint("Name ${userData['email']}");
 
         var arrName = userData['name'].split(' ');
         if (arrName.length >= 2) {
@@ -605,7 +632,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             InkWell(
               onTap: () {
+                //initiateFacebookLogin();
                 _loginWithFacebook();
+                //_handleLogininfo();
               },
               child: Image.asset(
                 "images/ic_facebook.png",
@@ -689,5 +718,45 @@ class _LoginScreenState extends State<LoginScreen> {
             });
       },
     );
+  }
+
+  bool isLoggedIn = false;
+  Map userObj = {};
+
+  initiateFacebookLogin() async {
+    var facebookLogin = FacebookLogin();
+    //print("profile..." + facebookLogin.logIn(['email']).toString());
+    print("facebook login...in click");
+    var facebookLoginResult =
+        await facebookLogin.logIn(["email", "public_profile"]);
+    print("profile..." + facebookLoginResult.status.toString());
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        //onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        //onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("LoggedIn");
+        var graphResponse = await http.get(Uri.parse(
+            "https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${facebookLoginResult.accessToken.token}"));
+
+        var profile = json.decode(graphResponse.body);
+        print("profile..." + profile.toString());
+
+        onLoginStatusChanged(true, profileData: profile);
+        //onLoginStatusChanged(true);
+        break;
+    }
+  }
+
+  void onLoginStatusChanged(bool isLoggedIn, {profileData}) {
+    print("profile..." + profileData.toString());
+    setState(() {
+      this.isLoggedIn = isLoggedIn;
+    });
   }
 }

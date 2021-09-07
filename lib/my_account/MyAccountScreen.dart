@@ -600,7 +600,8 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          userObject['userEmail'] == null
+                          userObject['userEmail'] == null ||
+                                  userObject['userEmail'] == "null"
                               ? ""
                               : userObject['userEmail'],
                           style: TextStyle(

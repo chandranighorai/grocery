@@ -43,7 +43,7 @@ class _PostReviewScreenState extends State<PostReviewScreen> {
 
   postReview() async {
     var reviewMessage = reviewMessageController.text;
-
+    print("reviewMessage..." + reviewMessage.toString());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var user_id = prefs.getString('user_id');
     var email =
@@ -62,7 +62,7 @@ class _PostReviewScreenState extends State<PostReviewScreen> {
     }
     requestParam += "&user_email=" + email;
 
-    debugPrint("${Uri.parse(Consts.postReview + requestParam)}");
+    debugPrint("ss..${Uri.parse(Consts.postReview + requestParam)}");
     final http.Response response = await http.get(
       Uri.parse(Consts.postReview + requestParam),
     );

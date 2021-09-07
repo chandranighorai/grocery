@@ -144,7 +144,7 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
       var responseData = jsonDecode(response.body);
       var serverMessage = responseData['message'];
       var productData = responseData['productdata'];
-      //print("item..." + productData.toString());
+      print("item..." + productData.toString());
       if (responseData['status'] == "success") {
         if (productData.length > 0) {
           debugPrint("success ${productData.length}");

@@ -133,10 +133,14 @@ class _FreshItemState extends State<FreshItem> {
     //ProductAttribute productAttribute = widget.pr;
     //print("dfdsf" + productAttribute.toString());
     if (widget.itemProduct.productType == "variable") {
-      selectPrice = double.parse(
-          widget.itemProduct.productAttribute[0].productPrice.toString());
+      // selectPrice = double.parse(
+      //     widget.itemProduct.productAttribute[0].productPrice.toString());
+      selectPrice = double.parse(widget
+          .itemProduct.productAttribute[0].productRegularPrice
+          .toString());
     } else {
-      selectPrice = double.parse(widget.itemProduct.productPrice);
+      //selectPrice = double.parse(widget.itemProduct.productPrice);
+      selectPrice = double.parse(widget.itemProduct.productRegularPrice);
     }
 
     if (widget.itemProduct.productType == "variable") {
