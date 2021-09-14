@@ -525,24 +525,27 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                       // The card widget with top padding,
                       // incase if you wanted bottom padding to work,
                       // set the `alignment` of container to Alignment.bottomCenter
-                      new Container(
-                        alignment: Alignment.topCenter,
-                        padding: new EdgeInsets.only(
-                          top: Consts.shapeHeight * .65,
-                          right: 0.0,
-                          left: 0.0,
-                        ),
 
-                        child: imgList.length > 0
-                            ? offerSlider()
-                            : Container(
-                                height: 100,
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ),
-                        // ),
-                      )
+                      //carousel slider
+
+                      // new Container(
+                      //   alignment: Alignment.topCenter,
+                      //   padding: new EdgeInsets.only(
+                      //     top: Consts.shapeHeight * .65,
+                      //     right: 0.0,
+                      //     left: 0.0,
+                      //   ),
+
+                      //   child: imgList.length > 0
+                      //       ? offerSlider()
+                      //       : Container(
+                      //           height: 100,
+                      //           child: Center(
+                      //             child: CircularProgressIndicator(),
+                      //           ),
+                      //         ),
+                      //   // ),
+                      // )
                     ],
                   ),
                   Padding(

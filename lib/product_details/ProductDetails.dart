@@ -975,11 +975,11 @@ class _ProductDetails extends State<ProductDetails> {
                                                   child: InkWell(
                                                     onTap: () {
                                                       // _addtocartBtnPressed();
-                                                      ImageViewer
-                                                          .showImageSlider(
-                                                        images: imgList,
-                                                        startingPosition: 0,
-                                                      );
+                                                      // ImageViewer
+                                                      //     .showImageSlider(
+                                                      //   images: imgList,
+                                                      //   startingPosition: 0,
+                                                      // );
                                                     },
                                                     child: Container(
                                                       height: 60,
