@@ -14,19 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "574669325970-8lv7f5i5cn8blco69g2513kg5npct3n0.apps.googleusercontent.com",
+          "client_id": "574669325970-8q2ou18sis2vg34rlvd5nl60b219l1uj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vedic.groceryapp",
+            "certificate_hash": "206cd03cd288171838af385df047151c632e438b"
+          }
+        },
+        {
+          "client_id": "574669325970-ffmp9gbbhuukbv1in9ukfcn2ppohftj3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.vedic.groceryapp",
             "certificate_hash": "6bf14bfde920c685024554efa4d2cca3569f4581"
-          }
-        },
-        {
-          "client_id": "574669325970-hfjjk232d6l9tg0f6mk9kadcbk37s9td.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.vedic.groceryapp",
-            "certificate_hash": "f11a1190cf60089201195cc45d066fc638b10d2c"
           }
         },
         {
