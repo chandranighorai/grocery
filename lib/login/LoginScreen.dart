@@ -113,7 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     requestParam += "&device_token=" + deviceToken;
 
-    print(Uri.parse(Consts.LOGIN_USER + requestParam));
+    // print(Uri.parse(Consts.LOGIN_USER + requestParam));
+    // print("requsetParam...." + requestParam.toString());
     final http.Response response =
         await http.get(Uri.parse(Consts.LOGIN_USER + requestParam));
     if (response.statusCode == 200) {

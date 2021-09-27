@@ -19,15 +19,16 @@ import 'SearchItemProduct.dart';
 import 'SearchModel.dart';
 
 class Search extends StatefulWidget {
+  final bool agent;
   // final String searchKeyword;
   // final String categoryID;
   // final String categoryName;
-  // const Search({
-  //   Key key,
-  //   this.searchKeyword,
-  //   this.categoryID,
-  //   this.categoryName,
-  // }) : super(key: key);
+  const Search({Key key, this.agent
+      //this.searchKeyword,
+      //this.categoryID,
+      //this.categoryName,
+      })
+      : super(key: key);
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -82,7 +83,7 @@ class _SearchScreenState extends State<Search> {
       // _productList=_getProducts(_categoryID);
     }
     // _productwishList = fetchWish();
-    isAgent = false;
+    isAgent = widget.agent;
     super.initState();
   }
 
@@ -104,7 +105,7 @@ class _SearchScreenState extends State<Search> {
 
     if (prefs.get("usertype") != null && prefs.get("usertype") == "DI") {
       setState(() {
-        isAgent = true;
+        isAgent = widget.agent;
       });
     }
 
@@ -147,6 +148,7 @@ class _SearchScreenState extends State<Search> {
         print("response DAta..length." + responseData.toString());
         var serverMessage = responseData['message'];
         var productData = responseData['productdata'];
+        print("productList..." + productData.toString());
         print("hjh..." +
             responseData['productdata'][0]["product_title"].toString());
         if (responseData['status'] == "success") {
@@ -253,6 +255,7 @@ class _SearchScreenState extends State<Search> {
     double shapeHeight = 150;
     //_updateCart();
     // print(_searchKey);
+    print("Search..." + widget.agent.toString());
     return Scaffold(
       backgroundColor: Colors.white,
       // key: UniqueKey(),
@@ -415,33 +418,46 @@ class _SearchScreenState extends State<Search> {
                                                 snapshot.data.productdata;
                                             print("response DAta..show." +
                                                 categories.length.toString());
-                                            return ListView.builder(
-                                                itemCount: categories.length,
-                                                //scrollDirection: Axis.horizontal,
-                                                scrollDirection: Axis.vertical,
-                                                controller: _scrollController,
-                                                // physics:
-                                                //     AlwaysScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemBuilder:
-                                                    (context, int index) {
-                                                  Productdata categoryData =
-                                                      categories[index];
-                                                  print("uu..." +
-                                                      categoryData.toString());
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 12.0),
-                                                    child: SearchItemProduct(
-                                                      productdata: categoryData,
-                                                      notifyCart: _updateCart,
-                                                    ),
-                                                  );
-                                                });
+                                            return categories.length == 0
+                                                ? Center(
+                                                    child: Text("No data"),
+                                                  )
+                                                : ListView.builder(
+                                                    itemCount:
+                                                        categories.length,
+                                                    //scrollDirection: Axis.horizontal,
+                                                    scrollDirection:
+                                                        Axis.vertical,
+                                                    controller:
+                                                        _scrollController,
+                                                    // physics:
+                                                    //     AlwaysScrollableScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemBuilder:
+                                                        (context, int index) {
+                                                      Productdata categoryData =
+                                                          categories[index];
+                                                      print("uu..." +
+                                                          categoryData
+                                                              .toString());
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 12.0),
+                                                        child: SearchItemProduct(
+                                                            productdata:
+                                                                categoryData,
+                                                            notifyCart:
+                                                                _updateCart,
+                                                            isAgent:
+                                                                widget.agent),
+                                                      );
+                                                    });
                                           } else {
                                             return Center(
-                                                // child: CircularProgressIndicator(),
+                                                //child:
+                                                //CircularProgressIndicator(),
                                                 );
                                           }
                                         }),

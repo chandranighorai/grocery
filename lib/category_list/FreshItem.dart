@@ -27,7 +27,7 @@ class FreshItem extends StatefulWidget {
       {Key key,
       this.itemProduct,
       this.pr,
-      List<ProductAttribute> item1,
+      //List<ProductAttribute> item1,
       this.isAgent,
       this.notifyCart,
       this.deviceId})
@@ -51,6 +51,7 @@ class _FreshItemState extends State<FreshItem> {
     item = widget.itemProduct;
     pr = widget.itemProduct.productAttribute;
     print("Pr..." + pr.toString());
+    print("Pr..." + widget.isAgent.toString());
     isAgent = widget.isAgent != null ? widget.isAgent : false;
     //print("Iteam..." + item.toString());
     super.initState();
@@ -119,7 +120,8 @@ class _FreshItemState extends State<FreshItem> {
     // print("Fresh..1." + widget.itemProduct.productType.toString());
     // print("Fresh..11." + widget.itemProduct.productAttribute.toString());
     var productAt = widget.itemProduct.productAttribute;
-    //print("ff.." + productAt.length.toString());
+    print("ff.." + widget.itemProduct.toString());
+    print("Agent..." + widget.isAgent.toString());
     //List<ProductAttribute> productAttr = [];
     if (productAt.length > 0) {
       //ProductAttribute pr = ProductAttribute();
@@ -132,6 +134,8 @@ class _FreshItemState extends State<FreshItem> {
     }
     //ProductAttribute productAttribute = widget.pr;
     //print("dfdsf" + productAttribute.toString());
+    //print("productType..." + widget.itemProduct.productType.toString());
+    print("productImage..." + widget.itemProduct.productImage.toString());
     if (widget.itemProduct.productType == "variable") {
       // selectPrice = double.parse(
       //     widget.itemProduct.productAttribute[0].productPrice.toString());

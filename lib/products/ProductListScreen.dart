@@ -83,7 +83,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
     _productList = _getProducts(_categoryID);
     // _productwishList = fetchWish();
-    isAgent = false;
+    isAgent = widget.isAgent == true ? true : false;
     super.initState();
   }
 
@@ -674,10 +674,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
           onPressed: () {
             // if (openSearch && _searchKey != null && _searchKey.isNotEmpty) {
+            print("subCategory..." + widget.isAgent.toString());
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Search(),
+                builder: (context) => Search(agent: widget.isAgent),
               ),
             );
             //   setState(() {

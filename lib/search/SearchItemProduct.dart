@@ -19,14 +19,11 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class SearchItemProduct extends StatefulWidget {
   final Productdata productdata;
-  // final bool isAgent;
+  final bool isAgent;
   final Function() notifyCart;
 
   const SearchItemProduct(
-      {Key key,
-      this.productdata,
-      // this.isAgent,
-      this.notifyCart})
+      {Key key, this.productdata, this.isAgent, this.notifyCart})
       : super(key: key);
   @override
   _ItemProductState createState() => _ItemProductState();
@@ -52,7 +49,7 @@ class _ItemProductState extends State<SearchItemProduct> {
     print("item brand..." + itemProduct.isInWishlist.toString());
 
     isWish = itemProduct.isInWishlist == 1 ? true : false;
-    isAgent = false;
+    isAgent = widget.isAgent == true ? true : false;
     super.initState();
   }
 
@@ -150,12 +147,12 @@ class _ItemProductState extends State<SearchItemProduct> {
     // var regularPrice = (itemProduct.productType == "variable")
     //     ? itemProduct.productAttribute[0].productRegularPrice
     //     : itemProduct.productRegularPrice;
-    print(user_id);
-    print("user_id..." + user_id.toString());
-    print("user_id..." + deviceID.toString());
-    print("user_id..." + itemProduct.productId.toString());
-    print("user_id..." + itemProduct.productTitle.trim().toString());
-    print("user_id..." + productPrice.toString());
+    // print(user_id);
+    // print("user_id..." + user_id.toString());
+    // print("user_id..." + deviceID.toString());
+    // print("user_id..." + itemProduct.productId.toString());
+    // print("user_id..." + itemProduct.productTitle.trim().toString());
+    // print("user_id..." + productPrice.toString());
 
     var requestParam = "?";
     requestParam += "user_id=" + user_id;
@@ -220,7 +217,9 @@ class _ItemProductState extends State<SearchItemProduct> {
   Widget build(BuildContext context) {
     // double containerWidth = 100;
     //print("hjhj" + itemProduct.toString());
-    print("hjhj..." + itemProduct.productId.toString());
+    // print("hjhj..." +
+    //     widget.productdata.productAttribute[0].productDistributorPrice
+    //         .toString());
     // print("hjhj..." + itemProduct.productTitle.toString());
     // print("hjhj0.." + itemProduct.productAttribute.toString());
     // print("cd..." + itemProduct.productKeyword.toString());

@@ -4,6 +4,7 @@ import '../signup/RegisterModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 saveUserLoginPrefs(RegisterUserModel registerUserModel) async {
+  print("userType..." + registerUserModel.userType.toString());
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
   preferences.setBool("isLoggedIn", true);

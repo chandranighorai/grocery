@@ -9,8 +9,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 class CategoryItem extends StatefulWidget {
   final CategoryData categoryData;
   final Function notifyCart;
+  final bool isAgent;
 
-  const CategoryItem({Key key, this.categoryData, this.notifyCart})
+  const CategoryItem(
+      {Key key, this.categoryData, this.notifyCart, this.isAgent})
       : super(key: key);
   @override
   _CategoryItemState createState() => _CategoryItemState();
@@ -21,7 +23,7 @@ class _CategoryItemState extends State<CategoryItem> {
   Widget build(BuildContext context) {
     double containerWidth = 100;
     CategoryData categoryData = widget.categoryData;
-    print("klkl" + widget.categoryData.name);
+    print("klkl" + widget.isAgent.toString());
     return InkWell(
       onTap: () {
         print("catId.." + categoryData.catId.toString());
@@ -33,7 +35,7 @@ class _CategoryItemState extends State<CategoryItem> {
               categoryID: categoryData.catId,
               categoryName: categoryData.name,
               searchKeyword: "",
-              // isAgent:isAgent,
+               isAgent:widget.isAgent,
               notify: widget.notifyCart,
             ),
           ),

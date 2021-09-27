@@ -80,7 +80,7 @@ class _ProductDetails extends State<ProductDetails> {
     quantityController.text = "$_itemCount";
     _isAddedToCart = false;
     _callingUpdateApi = false;
-    _isSearch = false;
+    //_isSearch = false;
     quantity = 0;
     super.initState();
 
@@ -91,9 +91,7 @@ class _ProductDetails extends State<ProductDetails> {
     if (_isSearch) {
       imgList = widget.productdata.galleryImages;
       isWish = widget.productdata.isInWishlist == 1 ? true : false;
-      // print("product_attr..." +
-      //     widget.productdata.productAttribute[0].productPrice.length
-      //         .toString());
+
       if (isAgent) {
         if (widget.productdata.productType == "variable") {
           productPrice = double.parse(widget
@@ -104,7 +102,10 @@ class _ProductDetails extends State<ProductDetails> {
           productPrice = double.parse(
               widget.productdata.productDistributorPrice.toString());
           colorchange = productPrice;
+          //print("ColorxHn..." + colorchange.toString());
         }
+        print("ColorxHn..." + productPrice.toString());
+        print("ColorxHn...1.." + colorchange.toString());
       } else {
         if (widget.productdata.productType == "variable") {
           productPrice = double.parse(
@@ -124,6 +125,9 @@ class _ProductDetails extends State<ProductDetails> {
       isWish = widget.itemProduct.isInWishList == 1 ? true : false;
       if (isAgent) {
         //isWish = widget.itemProduct.isInWishList == 1 ? true : false;
+        // print("product_attr..." +
+        //     widget.itemProduct.productAttribute[0].productDistributorPrice
+        //         .toString());
         if (widget.itemProduct.productType == "variable") {
           productPrice = double.parse(widget
               .itemProduct.productAttribute[0].productDistributorPrice
@@ -133,6 +137,7 @@ class _ProductDetails extends State<ProductDetails> {
           productPrice = double.parse(
               widget.itemProduct.productDistributorPrice.toString());
           colorchange = productPrice;
+          //print("ColorxHn..." + colorchange.toString());
         }
       } else {
         if (widget.itemProduct.productType == "variable") {
@@ -640,7 +645,9 @@ class _ProductDetails extends State<ProductDetails> {
   Widget build(BuildContext context) {
     ProductModel itemProduct = widget.itemProduct;
     //print("product_id..." + widget.itemProduct.productId.toString());
-    //print("product_id..." + widget.productdata.productId.toString());
+    print("product_id..gg." +
+        widget.productdata.productAttribute[0].productDistributorPrice
+            .toString());
     //Productdata pro = widget.productdata;
     //print("isInWishList...in pd" + widget.itemProduct.isInWishList.toString());
     //print("isInWishList...in pd" + pro.isInWishlist.toString());
@@ -649,6 +656,7 @@ class _ProductDetails extends State<ProductDetails> {
     //     itemProduct.productAttribute[0].toString());
     // debugPrint(itemProduct.isInWishList.toString());
     double shapeHeight = 170;
+    print("isSearch..." + _isSearch.toString());
     return WillPopScope(
       onWillPop: () {
         Navigator.pop(context, "refresh cart");
@@ -1418,53 +1426,87 @@ class _ProductDetails extends State<ProductDetails> {
                                                                         .name
                                                                         .toString(),
                                                                     index,
-                                                                    double.parse(widget
-                                                                        .itemProduct
-                                                                        .productAttribute[
-                                                                            index]
-                                                                        .productPrice
-                                                                        .toString()));
+                                                                    widget.isAgent ==
+                                                                            true
+                                                                        ? double.parse(widget
+                                                                            .itemProduct
+                                                                            .productAttribute[
+                                                                                index]
+                                                                            .productDistributorPrice
+                                                                            .toString())
+                                                                        : double.parse(widget
+                                                                            .itemProduct
+                                                                            .productAttribute[index]
+                                                                            .productPrice
+                                                                            .toString()));
                                                                 setState(() {
                                                                   //_handleFetchCart();
                                                                   if (quantityController
                                                                           .text
                                                                           .toString() ==
                                                                       "0") {
-                                                                    price = double.parse(widget
-                                                                        .itemProduct
-                                                                        .productAttribute[
-                                                                            index]
-                                                                        .productPrice
-                                                                        .toString());
-                                                                  } else {
-                                                                    price = double.parse(widget
+                                                                    price = widget.isAgent ==
+                                                                            true
+                                                                        ? double.parse(widget
                                                                             .itemProduct
                                                                             .productAttribute[
                                                                                 index]
+                                                                            .productDistributorPrice
+                                                                            .toString())
+                                                                        : double.parse(widget
+                                                                            .itemProduct
+                                                                            .productAttribute[index]
                                                                             .productPrice
-                                                                            .toString()) *
-                                                                        int.parse(
-                                                                            quantityController.text);
+                                                                            .toString());
+                                                                  } else {
+                                                                    price = widget.isAgent ==
+                                                                            true
+                                                                        ? double.parse(widget
+                                                                            .itemProduct
+                                                                            .productAttribute[
+                                                                                index]
+                                                                            .productDistributorPrice
+                                                                            .toString())
+                                                                        : double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) *
+                                                                            int.parse(quantityController.text);
                                                                   }
 
-                                                                  productPrice = double.parse(widget
-                                                                      .itemProduct
-                                                                      .productAttribute[
-                                                                          index]
-                                                                      .productPrice
-                                                                      .toString());
+                                                                  productPrice = widget
+                                                                              .isAgent ==
+                                                                          true
+                                                                      ? double.parse(widget
+                                                                          .itemProduct
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .productDistributorPrice
+                                                                          .toString())
+                                                                      : double.parse(widget
+                                                                          .itemProduct
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .productPrice
+                                                                          .toString());
                                                                   print('Price...' +
                                                                       price
                                                                           .toString());
                                                                   print('product Price...' +
                                                                       productPrice
                                                                           .toString());
-                                                                  colorchange = double.parse(widget
-                                                                      .itemProduct
-                                                                      .productAttribute[
-                                                                          index]
-                                                                      .productPrice
-                                                                      .toString());
+                                                                  colorchange = widget
+                                                                              .isAgent ==
+                                                                          true
+                                                                      ? double.parse(widget
+                                                                          .itemProduct
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .productDistributorPrice
+                                                                          .toString())
+                                                                      : double.parse(widget
+                                                                          .itemProduct
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .productPrice
+                                                                          .toString());
                                                                   // print("ColorChange..." +
                                                                   //     colorchange
                                                                   //         .toString());
@@ -1536,6 +1578,17 @@ class _ProductDetails extends State<ProductDetails> {
                                                               //   // colorchange =
                                                               //   //     true;
                                                               // });
+                                                              // print("ColorxHn..." +
+                                                              //     colorchange
+                                                              //         .toString());
+                                                              // print("ColorxHn..." +
+                                                              //     widget
+                                                              //         .itemProduct
+                                                              //         .productAttribute[
+                                                              //             index]
+                                                              //         .productDistributorPrice
+                                                              //         .toString()
+                                                              //         .toString());
                                                             },
                                                             child: Padding(
                                                               padding:
@@ -1550,7 +1603,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                                 decoration: BoxDecoration(
                                                                     boxShadow: [
                                                                       BoxShadow(
-                                                                          color: double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) == colorchange
+                                                                          color: (widget.isAgent == true ? double.parse(widget.itemProduct.productAttribute[index].productDistributorPrice.toString()) : double.parse(widget.itemProduct.productAttribute[index].productPrice.toString())) == colorchange
                                                                               ? Colors.red.withOpacity(0.2)
                                                                               : Colors.transparent,
                                                                           blurRadius: 2.0)
@@ -1583,7 +1636,10 @@ class _ProductDetails extends State<ProductDetails> {
                                                                           .grey,
                                                                     ),
                                                                     Text(
-                                                                      "\u20B9 ${widget.itemProduct.productAttribute[index].productPrice.toString()}",
+                                                                      widget.isAgent ==
+                                                                              true
+                                                                          ? "\u20B9 ${widget.itemProduct.productAttribute[index].productDistributorPrice.toString()}"
+                                                                          : "\u20B9 ${widget.itemProduct.productAttribute[index].productPrice.toString()}",
                                                                       style: TextStyle(
                                                                           fontWeight: FontWeight
                                                                               .bold,
@@ -1673,25 +1729,27 @@ class _ProductDetails extends State<ProductDetails> {
                                                                             .name
                                                                             .toString(),
                                                                         index,
-                                                                        double.parse(widget
-                                                                            .productdata
-                                                                            .productAttribute[index]
-                                                                            .productPrice
-                                                                            .toString()));
+                                                                        widget.isAgent ==
+                                                                                true
+                                                                            ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                            : double.parse(widget.productdata.productAttribute[index].productPrice.toString()));
                                                                     setState(
                                                                         () {
                                                                       if (quantityController
                                                                               .text
                                                                               .toString() ==
                                                                           "0") {
-                                                                        price = double.parse(widget
-                                                                            .productdata
-                                                                            .productAttribute[index]
-                                                                            .productPrice
-                                                                            .toString());
+                                                                        price = widget.isAgent ==
+                                                                                true
+                                                                            ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                            : double.parse(widget.productdata.productAttribute[index].productPrice.toString());
                                                                       } else {
-                                                                        price = double.parse(widget.productdata.productAttribute[index].productPrice.toString()) *
-                                                                            int.parse(quantityController.text);
+                                                                        price = widget.isAgent ==
+                                                                                true
+                                                                            ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice
+                                                                                .toString())
+                                                                            : double.parse(widget.productdata.productAttribute[index].productPrice.toString()) *
+                                                                                int.parse(quantityController.text);
                                                                       }
 
                                                                       print("Index...1.." +
@@ -1699,18 +1757,32 @@ class _ProductDetails extends State<ProductDetails> {
                                                                               .toString());
                                                                       weightIndex =
                                                                           index;
-                                                                      productPrice = double.parse(widget
-                                                                          .productdata
-                                                                          .productAttribute[
-                                                                              index]
-                                                                          .productPrice
-                                                                          .toString());
-                                                                      colorchange = double.parse(widget
-                                                                          .productdata
-                                                                          .productAttribute[
-                                                                              index]
-                                                                          .productPrice
-                                                                          .toString());
+                                                                      productPrice = widget.isAgent ==
+                                                                              true
+                                                                          ? double.parse(widget
+                                                                              .productdata
+                                                                              .productAttribute[
+                                                                                  index]
+                                                                              .productDistributorPrice
+                                                                              .toString())
+                                                                          : double.parse(widget
+                                                                              .productdata
+                                                                              .productAttribute[index]
+                                                                              .productPrice
+                                                                              .toString());
+                                                                      colorchange = widget.isAgent ==
+                                                                              true
+                                                                          ? double.parse(widget
+                                                                              .productdata
+                                                                              .productAttribute[
+                                                                                  index]
+                                                                              .productDistributorPrice
+                                                                              .toString())
+                                                                          : double.parse(widget
+                                                                              .productdata
+                                                                              .productAttribute[index]
+                                                                              .productPrice
+                                                                              .toString());
                                                                       // print("ColorChange..." +
                                                                       //     colorchange
                                                                       //         .toString());
@@ -1724,6 +1796,17 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       //         .toString());
                                                                     });
                                                                   }
+                                                                  print("ColorxHn..." +
+                                                                      colorchange
+                                                                          .toString());
+                                                                  print("ColorxHn..." +
+                                                                      widget
+                                                                          .productdata
+                                                                          .productAttribute[
+                                                                              index]
+                                                                          .productDistributorPrice
+                                                                          .toString()
+                                                                          .toString());
                                                                   // showAddToCArt(
                                                                   //     widget
                                                                   //         .productdata
@@ -1807,8 +1890,22 @@ class _ProductDetails extends State<ProductDetails> {
                                                                     decoration: BoxDecoration(
                                                                         boxShadow: [
                                                                           BoxShadow(
-                                                                              color: double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == colorchange ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                                                                              color: widget.isAgent == true
+                                                                                  ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                                  : double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == colorchange
+                                                                                      ? Colors.red.withOpacity(0.2)
+                                                                                      : Colors.transparent,
+                                                                              //color: Colors.transparent,
                                                                               blurRadius: 2.0)
+                                                                          // BoxShadow(
+                                                                          //     color:
+                                                                          //         // widget.isAgent == true
+                                                                          //         //     ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                          //         //     : double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == colorchange
+                                                                          //         //         ? Colors.red.withOpacity(0.2)
+                                                                          //         //         :
+                                                                          //         Colors.transparent,
+                                                                          //     blurRadius: 2.0)
                                                                         ],
                                                                         border: Border.all(
                                                                             color:
@@ -1832,7 +1929,9 @@ class _ProductDetails extends State<ProductDetails> {
                                                                               Colors.grey,
                                                                         ),
                                                                         Text(
-                                                                          "\u20B9 ${widget.productdata.productAttribute[index].productPrice.toString()}",
+                                                                          widget.isAgent == true
+                                                                              ? "\u20B9 ${widget.productdata.productAttribute[index].productDistributorPrice.toString()}"
+                                                                              : "\u20B9 ${widget.productdata.productAttribute[index].productPrice.toString()}",
                                                                           style: TextStyle(
                                                                               fontWeight: FontWeight.bold,
                                                                               fontSize: MediaQuery.of(context).size.width * 0.04),
@@ -1895,34 +1994,35 @@ class _ProductDetails extends State<ProductDetails> {
                                                                         );
                                                                       } else {
                                                                         showAddToCArt(
-                                                                            widget.itemProduct.productAttribute[index].name.toString(),
+                                                                            widget.itemProduct.productAttribute[index].name
+                                                                                .toString(),
                                                                             index,
-                                                                            double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()));
+                                                                            widget.isAgent == true
+                                                                                ? double.parse(widget.itemProduct.productAttribute[index].productDistributorPrice.toString())
+                                                                                : double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()));
 
                                                                         setState(
                                                                             () {
                                                                           if (quantityController.text.toString() ==
                                                                               "0") {
-                                                                            price =
-                                                                                double.parse(widget.itemProduct.productAttribute[index].productPrice.toString());
+                                                                            price = widget.isAgent == true
+                                                                                ? double.parse(widget.itemProduct.productAttribute[index].productDistributorPrice.toString())
+                                                                                : double.parse(widget.itemProduct.productAttribute[index].productPrice.toString());
                                                                           } else {
-                                                                            price =
-                                                                                double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
+                                                                            price = widget.isAgent == true
+                                                                                ? double.parse(widget.itemProduct.productAttribute[index].productDistributorPrice.toString())
+                                                                                : double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
                                                                           }
                                                                           weightIndex =
                                                                               index;
                                                                           // productPrice =
                                                                           //     price;
-                                                                          productPrice = double.parse(widget
-                                                                              .itemProduct
-                                                                              .productAttribute[index]
-                                                                              .productPrice
-                                                                              .toString());
-                                                                          colorchange = double.parse(widget
-                                                                              .itemProduct
-                                                                              .productAttribute[index]
-                                                                              .productPrice
-                                                                              .toString());
+                                                                          productPrice = widget.isAgent == true
+                                                                              ? double.parse(widget.itemProduct.productAttribute[index].productDistributorPrice.toString())
+                                                                              : double.parse(widget.itemProduct.productAttribute[index].productPrice.toString());
+                                                                          colorchange = widget.isAgent == true
+                                                                              ? double.parse(widget.itemProduct.productAttribute[index].productDistributorPrice.toString())
+                                                                              : double.parse(widget.itemProduct.productAttribute[index].productPrice.toString());
                                                                           // print("ColorChange..." +
                                                                           //     colorchange.toString());
 
@@ -1992,7 +2092,11 @@ class _ProductDetails extends State<ProductDetails> {
                                                                         decoration:
                                                                             BoxDecoration(boxShadow: [
                                                                           BoxShadow(
-                                                                              color: double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) == colorchange ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                                                                              color: widget.isAgent == true
+                                                                                  ? double.parse(widget.itemProduct.productAttribute[index].productDistributorPrice.toString())
+                                                                                  : double.parse(widget.itemProduct.productAttribute[index].productPrice.toString()) == colorchange
+                                                                                      ? Colors.red.withOpacity(0.2)
+                                                                                      : Colors.transparent,
                                                                               blurRadius: 2.0)
                                                                         ], border: Border.all(color: Colors.grey)),
                                                                         child:
@@ -2008,7 +2112,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                                               color: Colors.grey,
                                                                             ),
                                                                             Text(
-                                                                              "\u20B9 ${widget.itemProduct.productAttribute[index].productPrice.toString()}",
+                                                                              widget.isAgent == true ? "\u20B9 ${widget.itemProduct.productAttribute[index].productDistributorPrice.toString()}" : "\u20B9 ${widget.itemProduct.productAttribute[index].productPrice.toString()}",
                                                                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.04),
                                                                             ),
                                                                             Text(
@@ -2063,34 +2167,35 @@ class _ProductDetails extends State<ProductDetails> {
                                                                         );
                                                                       } else {
                                                                         showAddToCArt(
-                                                                            widget.productdata.productAttribute[index].name.toString(),
+                                                                            widget.productdata.productAttribute[index].name
+                                                                                .toString(),
                                                                             index,
-                                                                            double.parse(widget.productdata.productAttribute[index].productPrice.toString()));
+                                                                            widget.isAgent == true
+                                                                                ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                                : double.parse(widget.productdata.productAttribute[index].productPrice.toString()));
 
                                                                         setState(
                                                                             () {
                                                                           if (quantityController.text.toString() ==
                                                                               "0") {
-                                                                            price =
-                                                                                double.parse(widget.productdata.productAttribute[index].productPrice.toString());
+                                                                            price = widget.isAgent == true
+                                                                                ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                                : double.parse(widget.productdata.productAttribute[index].productPrice.toString());
                                                                           } else {
-                                                                            price =
-                                                                                double.parse(widget.productdata.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
+                                                                            price = widget.isAgent == true
+                                                                                ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                                : double.parse(widget.productdata.productAttribute[index].productPrice.toString()) * int.parse(quantityController.text);
                                                                           }
                                                                           weightIndex =
                                                                               index;
                                                                           // productPrice =
                                                                           //     price;
-                                                                          productPrice = double.parse(widget
-                                                                              .productdata
-                                                                              .productAttribute[index]
-                                                                              .productPrice
-                                                                              .toString());
-                                                                          colorchange = double.parse(widget
-                                                                              .productdata
-                                                                              .productAttribute[index]
-                                                                              .productPrice
-                                                                              .toString());
+                                                                          productPrice = widget.isAgent == true
+                                                                              ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                              : double.parse(widget.productdata.productAttribute[index].productPrice.toString());
+                                                                          colorchange = widget.isAgent == true
+                                                                              ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                              : double.parse(widget.productdata.productAttribute[index].productPrice.toString());
                                                                           print("ColorChange..." +
                                                                               colorchange.toString());
                                                                           print("Index...1.." +
@@ -2171,7 +2276,11 @@ class _ProductDetails extends State<ProductDetails> {
                                                                         decoration:
                                                                             BoxDecoration(boxShadow: [
                                                                           BoxShadow(
-                                                                              color: double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == colorchange ? Colors.red.withOpacity(0.2) : Colors.transparent,
+                                                                              color: widget.isAgent == true
+                                                                                  ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
+                                                                                  : double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == colorchange
+                                                                                      ? Colors.red.withOpacity(0.2)
+                                                                                      : Colors.transparent,
                                                                               blurRadius: 2.0)
                                                                         ], border: Border.all(color: Colors.grey)),
                                                                         child:
@@ -2187,7 +2296,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                                               color: Colors.grey,
                                                                             ),
                                                                             Text(
-                                                                              "\u20B9 ${widget.productdata.productAttribute[index].productPrice.toString()}",
+                                                                              widget.isAgent == true ? "\u20B9 ${widget.productdata.productAttribute[index].productDistributorPrice.toString()}" : "\u20B9 ${widget.productdata.productAttribute[index].productPrice.toString()}",
                                                                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.04),
                                                                             ),
                                                                             Text(
