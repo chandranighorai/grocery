@@ -191,12 +191,12 @@ class _ProductDetails extends State<ProductDetails> {
       String productQty,
       String productRegularPrice) async {
     prefs = await SharedPreferences.getInstance();
-    print("isSearch...add cart Click...");
-    print("ID..." + productId.toString());
-    print("ID..." + productTitle.toString());
-    print("ID..." + productPrice.toString());
-    print("ID..." + productQty.toString());
-    print("ID..." + productRegularPrice.toString());
+    // print("isSearch...add cart Click...");
+    // print("ID..." + productId.toString());
+    // print("ID..." + productTitle.toString());
+    // print("ID..." + productPrice.toString());
+    // print("ID..." + productQty.toString());
+    // print("ID..." + productRegularPrice.toString());
 
     //print("isSearch...add cart Click..."+_itemCount.toString());
     var user_id = prefs.getString('user_id');
@@ -211,9 +211,9 @@ class _ProductDetails extends State<ProductDetails> {
       );
     } else {
       //print(user_id);
-      print("isSearch...weightIndex..." + weightIndex.toString());
-      print("isSearch...productQty..." + productQty.toString());
-      print("isSearch...productQty..." + _itemCount.toString());
+      // print("isSearch...weightIndex..." + weightIndex.toString());
+      // print("isSearch...productQty..." + productQty.toString());
+      // print("isSearch...productQty..." + _itemCount.toString());
       var requestParam = "?";
       requestParam += "user_id=" + user_id;
       // requestParam += "&device_id=" + deviceID.toString();
@@ -317,12 +317,12 @@ class _ProductDetails extends State<ProductDetails> {
               }
             }
             if (productId == arrCartProducts[i]['product_id'].toString()) {
-              print("productId..." + productId.toString());
-              print("productId...size..." + productSize.toString());
-              print("productId...arrCart..." +
-                  arrCartProducts[i]['product_id'].toString());
-              print("productId...arrSize..." +
-                  arrCartProducts[i]['size'].toString());
+              // print("productId..." + productId.toString());
+              // print("productId...size..." + productSize.toString());
+              // print("productId...arrCart..." +
+              // arrCartProducts[i]['product_id'].toString());
+              // print("productId...arrSize..." +
+              //     arrCartProducts[i]['size'].toString());
               if (productSize == arrCartProducts[i]['size'].toString()) {
                 setState(() {
                   _isAddedToCart = true;
@@ -361,7 +361,7 @@ class _ProductDetails extends State<ProductDetails> {
   }
 
   _updateCart(String productId, int quantity) async {
-    print("Quantity..." + quantity.toString());
+    //print("Quantity..." + quantity.toString());
     if (quantity <= 0) {}
     setState(() {
       _callingUpdateApi = true;
@@ -374,7 +374,7 @@ class _ProductDetails extends State<ProductDetails> {
     );
     print("updateCart///" + Consts.UPDATE_CART + requestParam);
     if (response.statusCode == 200) {
-      print(response.body);
+      //print(response.body);
       setState(() {
         _callingUpdateApi = false;
       });
@@ -645,9 +645,9 @@ class _ProductDetails extends State<ProductDetails> {
   Widget build(BuildContext context) {
     ProductModel itemProduct = widget.itemProduct;
     //print("product_id..." + widget.itemProduct.productId.toString());
-    print("product_id..gg." +
-        widget.productdata.productAttribute[0].productDistributorPrice
-            .toString());
+    // print("product_id..gg." +
+    //     widget.productdata.productAttribute[0].productDistributorPrice
+    //         .toString());
     //Productdata pro = widget.productdata;
     //print("isInWishList...in pd" + widget.itemProduct.isInWishList.toString());
     //print("isInWishList...in pd" + pro.isInWishlist.toString());
@@ -1694,6 +1694,25 @@ class _ProductDetails extends State<ProductDetails> {
                                                             itemBuilder:
                                                                 (context,
                                                                     int index) {
+                                                              // bool p = widget
+                                                              //             .isAgent ==
+                                                              //         true
+                                                              //     ? double.parse(widget
+                                                              //         .productdata
+                                                              //         .productAttribute[
+                                                              //             index]
+                                                              //         .productDistributorPrice
+                                                              //         .toString())
+                                                              //     : double.parse(widget
+                                                              //                 .productdata
+                                                              //                 .productAttribute[index]
+                                                              //                 .productPrice
+                                                              //                 .toString()) ==
+                                                              //             colorchange
+                                                              //         ? 1
+                                                              //         : 0 == 1;
+                                                              // print("ppp..1.." +
+                                                              //     p.toString());
                                                               return InkWell(
                                                                 onTap: () {
                                                                   print("Index..." +
@@ -1796,17 +1815,16 @@ class _ProductDetails extends State<ProductDetails> {
                                                                       //         .toString());
                                                                     });
                                                                   }
-                                                                  print("ColorxHn..." +
-                                                                      colorchange
-                                                                          .toString());
-                                                                  print("ColorxHn..." +
-                                                                      widget
-                                                                          .productdata
-                                                                          .productAttribute[
-                                                                              index]
-                                                                          .productDistributorPrice
-                                                                          .toString()
-                                                                          .toString());
+                                                                  // print("ColorxHn..." +
+                                                                  //     colorchange
+                                                                  //         .toString());
+                                                                  // print("ColorxHn..." +
+                                                                  //     widget
+                                                                  //         .productdata
+                                                                  //         .productAttribute[
+                                                                  //             index]
+                                                                  //         .productDistributorPrice
+                                                                  //         .toString());
                                                                   // showAddToCArt(
                                                                   //     widget
                                                                   //         .productdata
@@ -1890,11 +1908,7 @@ class _ProductDetails extends State<ProductDetails> {
                                                                     decoration: BoxDecoration(
                                                                         boxShadow: [
                                                                           BoxShadow(
-                                                                              color: widget.isAgent == true
-                                                                                  ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString())
-                                                                                  : double.parse(widget.productdata.productAttribute[index].productPrice.toString()) == colorchange
-                                                                                      ? Colors.red.withOpacity(0.2)
-                                                                                      : Colors.transparent,
+                                                                              color: (widget.isAgent == true ? double.parse(widget.productdata.productAttribute[index].productDistributorPrice.toString()) : double.parse(widget.productdata.productAttribute[index].productPrice.toString())) == colorchange ? Colors.red.withOpacity(0.2) : Colors.transparent,
                                                                               //color: Colors.transparent,
                                                                               blurRadius: 2.0)
                                                                           // BoxShadow(

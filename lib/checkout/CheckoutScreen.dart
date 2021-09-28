@@ -430,7 +430,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       isOrderPlaced = true;
     });
 
-    debugPrint(Consts.placeOrder + requestParam);
+    debugPrint("hjhjhj..." + Consts.placeOrder + requestParam);
     final http.Response response = await http.get(
       Uri.parse(Consts.placeOrder + requestParam),
     );

@@ -91,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //========== Login handler =========
   void loginUser(BuildContext context) async {
+    print("logIn..." + userEmail.trim().toString());
     if (userEmail.trim() == "") {
       showCustomToast("Please enter email.");
       return;
@@ -100,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (isNumeric(userEmail) && !regExp.hasMatch(userEmail)) {
       showCustomToast("Please enter a valid phone number");
       return;
-    } else if (!isEmail(userEmail)) {
+    } else if (!isEmail(userEmail.trim())) {
       showCustomToast("Please enter a valid email");
       return;
     }

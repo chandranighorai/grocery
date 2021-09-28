@@ -120,7 +120,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     final http.Response response = await http.get(
       Uri.parse(Consts.VIEW_CART + requestParam),
     );
-    print(Consts.VIEW_CART + requestParam);
+    print("cart..." + Consts.VIEW_CART + requestParam);
     if (response.statusCode == 200) {
       var responseData = jsonDecode(response.body);
       var serverMessage = responseData['status'];
@@ -128,7 +128,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       print(responseData);
       if (responseData['status'] == "success") {
         // print(mList);
-
         if (productdataCount.length > 0) {
           for (int i = 0; i < productdataCount.length; i++) {
             // List<String> galleryImages =[];
