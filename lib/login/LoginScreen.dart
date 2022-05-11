@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-
 import '../category_list/CategorytListScreen.dart';
 import '../signup/RegisterModel.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(token);
         setState(() {
           deviceToken = token;
+          print("Device Token..." + deviceToken.toString());
         });
       });
     } else {
@@ -189,6 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _handleUserInfo(GoogleSignInAccount user) async {
+    
     if (user != null) {
       var arrName = user.displayName.split(" ");
       print("ArrNAme..." + arrName.toString());

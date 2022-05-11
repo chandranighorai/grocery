@@ -414,7 +414,9 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
     //   if (_scrollController.position.pixels ==
     //       _scrollController.position.maxScrollExtent) {}
     // });
-
+    FirebaseMessaging.instance
+        .getToken()
+        .then((value) => print("Fcm Value...." + value.toString()));
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage message) {
@@ -608,9 +610,10 @@ class _CategorytListScreenState extends State<CategorytListScreen> {
                                           padding: const EdgeInsets.only(
                                               right: 12.0),
                                           child: CategoryItem(
-                                              categoryData: categoryData,
-                                              notifyCart: _updateCart,
-                                              isAgent: isAgent,),
+                                            categoryData: categoryData,
+                                            notifyCart: _updateCart,
+                                            isAgent: isAgent,
+                                          ),
                                         );
                                       });
                                 } else {
